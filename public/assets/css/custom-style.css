@@ -1,0 +1,222 @@
+/*your custom css goes here*/
+
+/* Floating buttons */
+.floating-buttons-section {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    padding: 10px;
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 1px 1px 4px 0px #3333336e;
+}
+
+.floating-buttons-inner a {
+    color: #666;
+    display: block;
+    padding: 5px 0px;
+}
+
+
+
+.footer-widget a {
+    color: #000;
+}
+
+
+.bg-gray-200 {
+    background-color: #eaeaea;
+    color: #222;
+}
+
+
+/* multi step form */
+
+#container {
+    max-width: 550px;
+}
+
+.step-container {
+    position: relative;
+    text-align: center;
+    transform: translateY(-43%);
+}
+
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid #007bff;
+    line-height: 30px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    /* Added cursor pointer */
+}
+
+.step-line {
+    position: absolute;
+    top: 16px;
+    left: 50px;
+    width: calc(100% - 100px);
+    height: 2px;
+    background-color: #007bff;
+    z-index: -1;
+}
+
+#multi-step-form {
+    overflow-x: hidden;
+}
+
+
+
+.frontend-app-container{
+    background-color: #efefef;
+}
+
+.hov-popup-shadow{
+    background-color: #fff;
+    margin: 5px;
+    transition: all ease-in-out ;
+}
+
+.hov-popup-shadow:hover{
+    box-shadow: 1px 1px 7px 0px rgb(73 80 87 / 38%);
+}
+
+.flex-space-between{
+    justify-content: space-between;
+}
+
+.text-underline{
+    text-decoration: underline;
+}
+
+
+@media screen and (max-width: 1200px){
+    .sidebar-xl .collapse-sidebar{
+        width: 100vw;
+        max-width: none;
+    }
+}
+
+.image-icon{
+    width: 26px;
+}
+
+
+.request-for-quotation .sourcing{
+    background: #ddd;
+    padding: 30px;
+    padding-top: 50px;
+    border-radius: 10px;
+}
+
+.request-for-quotation .title{
+    color: #404040;
+
+}
+
+.request-for-quotation .title span{
+    background: red;
+    font-size: 28px;
+    padding: 3px 20px;
+    color: #fff;
+    border-radius: 10px;
+    padding-left: 28px;
+    position: relative;
+}
+
+.request-for-quotation .title span::after{
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.request-for-quotation .sourcing ul li{
+    font-size: 20px;
+    margin-bottom: 10px;
+    list-style: none;
+    /* border-top: 1px solid #203df0; */
+    border-bottom: 1px solid #203df0;
+}
+
+.request-for-quotation .sourcing ul li span{
+    background: #203df0;
+    padding: 3px 10px;
+    color: #fff;
+    display: inline-block;
+    margin: 0;
+}
+
+.request-for-quotation .get-quotation{
+    background-color: #eaeaea;
+    padding: 30px;
+}
+
+
+.home-rfq-content{ padding: 50px 30px; }
+
+.home-rfq-content h1,
+.home-rfq-content h3,
+.home-rfq-content h6,
+.home-rfq-content ul li{
+    color: #fff;
+}
+
+.home-skyscaper{
+    background: #efefef;
+}
+
+.home-banners{
+    background: #efefef;
+}
+
+.home-new-arrivals{
+    background: #efefef;
+}
+
+@media (min-width: 768px){
+    .h-md-40px,
+    .size-md-40px {
+        height: 70px;
+    }
+}
+
+
+.aiz-user-sidenav .aiz-side-nav-link > svg *, 
+.aiz-user-sidenav .aiz-side-nav-link:hover > svg *, 
+.aiz-user-sidenav .level-2-active > svg *, 
+.aiz-user-sidenav .level-3-active > svg *{
+
+    fill: #2151f3;
+}
+
+
+.aiz-side-nav-list .aiz-side-nav-icon{
+    color: #2151f3;
+}
+
+p{
+    font-size: 1rem;
+}
+
+.product-details p{
+    font-size: 13px;
+    margin: 0;
+}
+
+section.ceylon-brands{
+    background: #d0e7fb;
+    padding: 50px 0px;
+}
