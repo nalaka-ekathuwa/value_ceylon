@@ -1,0 +1,8 @@
+[25-Mar-2025 02:34:44 UTC] PHP Fatal error:  Uncaught Error: Class "Route" not found in /home/valuecey/public_html/routes/web.php:63
+Stack trace:
+#0 {main}
+  thrown in /home/valuecey/public_html/routes/web.php on line 63
+[30-May-2025 15:41:32 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/valuecey/public_html/routes/api.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/valuecey/public_html/routes/api.php on line 8
