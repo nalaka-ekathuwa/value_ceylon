@@ -32,4 +32,3 @@ install.zip
 /nbproject
 /public/app-translations
 public/uploads.zip
-app/Providers/AppServiceProvider.php
