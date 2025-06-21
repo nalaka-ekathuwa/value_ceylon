@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\RFQController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -347,9 +348,13 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
     Route::get('/rfq/{rfq}/edit',[RFQController::class,'edit'])->name('customer.rfq.edit');
     Route::put('/rfq/{rfq}/edit',[RFQController::class,'update'])->name('customer.rfq.update');
     
+    Route::post('/prescription/save',[PrescriptionController::class,'save'])->name('customer.prescription.save');
 });
 
 Route::get('value-ceylon-sourcing', [RFQController::class, 'index'])->name('customer.request-for-quotation');
+
+Route::get('upload_presctiption', [PrescriptionController::class, 'index'])->name('customer.upload-presctiption');
+
 Route::get('about-value-ceylon', [HomeController::class, 'aboutValueCeylon'])->name('about-value-ceylon');
 Route::get('advertise-with-us', [HomeController::class, 'advertiseWithUs'])->name('advertise-with-us');
 Route::get('sell-on-value-ceylon', [HomeController::class, 'sellOnValueCeylon'])->name('sell-on-value-ceylon');
