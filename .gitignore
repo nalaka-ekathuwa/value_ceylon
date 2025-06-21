@@ -32,5 +32,5 @@ install.zip
 /nbproject
 /public/app-translations
 public/uploads.zip
-myText.txt
+public/assets/myText.txt
 app/Providers/AppServiceProvider.php
