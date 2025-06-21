@@ -559,7 +559,13 @@
                                     </a>
                                 </li>
 
-                                
+                                <li class="list-inline-item mr-0 animate-underline-white">
+                                    <a href="{{ route('customer.upload-presctiption') }}" class="fs-15 px-3 py-3 d-inline-block fw-700 text-dark  header_menu_links hov-bg-black-10">
+                                        <img src="{{ static_asset('assets/img/icons/post.png') }}" alt="" class="img-fluid image-icon">
+                                        <span>Upload Prescription</span>
+                                    </a>
+                                </li>
+
                             </ul>
                         </div>
                     </div>
