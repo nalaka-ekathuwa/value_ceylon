@@ -50,6 +50,8 @@ use App\Http\Controllers\Payment\SslcommerzController;
 use App\Http\Controllers\Payment\MercadopagoController;
 use App\Http\Controllers\Payment\AuthorizenetController;
 
+use Illuminate\Support\Facades\Artisan;
+
 /*
   |--------------------------------------------------------------------------
   | Web Routes
@@ -60,6 +62,12 @@ use App\Http\Controllers\Payment\AuthorizenetController;
   | contains the "web" middleware group. Now create something great!
   |
  */
+Route::get('/clear-cache', function () {
+    Artisan::call('optimize:clear');
+    // Artisan::call('cache:clear');
+    // Artisan::call('route:cache');
+    return '✅ Laravel caches cleared successfully!';
+});
 
 Route::get('category-datafill',[App\Http\Controllers\DataFillController::class, 'category']);
 
