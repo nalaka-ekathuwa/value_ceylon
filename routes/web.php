@@ -366,6 +366,10 @@ Route::get('upload_presctiption', [PrescriptionController::class, 'index'])->nam
 Route::get('about-value-ceylon', [HomeController::class, 'aboutValueCeylon'])->name('about-value-ceylon');
 Route::get('advertise-with-us', [HomeController::class, 'advertiseWithUs'])->name('advertise-with-us');
 Route::get('sell-on-value-ceylon', [HomeController::class, 'sellOnValueCeylon'])->name('sell-on-value-ceylon');
+Route::get('faq', [HomeController::class, 'faq'])->name('faq');
+Route::get('faq_seller', [HomeController::class, 'faq_seller'])->name('faq_seller');
+Route::get('faq_customer', [HomeController::class, 'faq_customer'])->name('faq_customer');
+Route::get('faq_special', [HomeController::class, 'faq_special'])->name('faq_special');
 
 Route::get('translation-check/{check}', [LanguageController::class, 'get_translation']);
 

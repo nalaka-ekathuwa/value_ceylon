@@ -807,6 +807,19 @@ class HomeController extends Controller
         return view('frontend.about-value-ceylon');
     }
 
+    public function faq(){
+        return view('frontend.faq');
+    }
+    public function faq_seller(){
+        return view('frontend.faq_seller');
+    }
+        public function faq_customer(){
+        return view('frontend.faq_customer');
+    }
+        public function faq_special(){
+        return view('frontend.faq_special');
+    }
+
     public function lorem(){
         return view('frontend.lorem');
     }

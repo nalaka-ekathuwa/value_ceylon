@@ -127,31 +127,31 @@
             <!-- Quick links -->
             <div class="col-md-6 col-lg-3">
                 <div class="text-center text-sm-left mt-4">
-                    <a href="{{ route('about-value-ceylon') }}"><h4 class="fs-14 text-uppercase fw-700 mb-3">{{ translate('About valueceylon.com') }}</h4></a>
+                    <h4 class="fs-14 text-uppercase fw-700 mb-3">{{ translate('Useful Links') }}</h4>
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
+                                <a href="{{ route('about-value-ceylon') }}">About Us</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
+                                <a href="{{ route('contact-us') }}">Contact us </a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
+                                <a target="_blank" href="{{ static_asset('uploads/policy/Policy.pdf') }}">Privacy Policy</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
+                                <a target="_blank" href="{{ static_asset('uploads/policy/Terms.pdf') }}">Terms and Conditions</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
                                 <a href="{{ route('lorem') }}">Our Services</a>
-                            </p>
-                        </li>
-                        <li class="mb-2">
-                            <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Privacy Policy | Terms and Conditions</a>
-                            </p>
-                        </li>
-                        <li class="mb-2">
-                            <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Careers</a>
-                            </p>
-                        </li>
-                        <li class="mb-2">
-                            <p  class="fs-14  mb-1">
-                                <a href="{{ route('contact-us') }}">Contact us / Customer Service</a>
-                            </p>
-                        </li>
-                        <li class="mb-2">
-                            <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">News and Events</a>
                             </p>
                         </li>
                     </ul>
@@ -160,16 +160,26 @@
 
             <div class="col-md-6 col-lg-3">
                 <div class="text-center text-sm-left mt-4">
-                    <h4 class="fs-14  text-uppercase fw-700 mb-3">{{ translate('Help') }}</h4>
+                    <h4 class="fs-14  text-uppercase fw-700 mb-3">{{ translate('Help & Support') }}</h4>
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Help Center</a>
+                                <a href="{{ route('faq') }}">Frequently Asked Questions</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">FAQ page</a>
+                                <a href="{{ route('faq_seller') }}">Seller Support</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
+                                <a href="{{ route('faq_customer') }}">Customer Support</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
+                                <a href="{{ route('faq_special') }}">Special Features</a>
                             </p>
                         </li>
 
