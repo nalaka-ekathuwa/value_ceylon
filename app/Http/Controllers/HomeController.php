@@ -44,12 +44,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
+
         $featured_categories = Cache::rememberForever('featured_categories', function () {
             return Category::with('bannerImage')->where('featured', 1)->get();
         });
 
-        return view('frontend.'.get_setting('homepage_select').'.index', compact('featured_categories'));
+        return view('frontend.' . get_setting('homepage_select') . '.index', compact('featured_categories'));
 
     }
 
@@ -58,7 +58,7 @@ class HomeController extends Controller
     public function load_todays_deal_section()
     {
         $todays_deal_products = filter_products(Product::where('todays_deal', '1'))->get();
-        return view('frontend.'.get_setting('homepage_select').'.partials.todays_deal', compact('todays_deal_products'));
+        return view('frontend.' . get_setting('homepage_select') . '.partials.todays_deal', compact('todays_deal_products'));
     }
 
     public function load_newest_product_section()
@@ -69,17 +69,17 @@ class HomeController extends Controller
 
         // dd($newest_products);
 
-        return view('frontend.'.get_setting('homepage_select').'.partials.newest_products_section', compact('newest_products'));
+        return view('frontend.' . get_setting('homepage_select') . '.partials.newest_products_section', compact('newest_products'));
     }
 
     public function load_featured_section()
     {
-        return view('frontend.'.get_setting('homepage_select').'.partials.featured_products_section');
+        return view('frontend.' . get_setting('homepage_select') . '.partials.featured_products_section');
     }
 
     public function load_best_selling_section()
     {
-        return view('frontend.'.get_setting('homepage_select').'.partials.best_selling_section');
+        return view('frontend.' . get_setting('homepage_select') . '.partials.best_selling_section');
     }
 
     public function load_auction_products_section()
@@ -92,37 +92,40 @@ class HomeController extends Controller
 
     public function load_home_categories_section()
     {
-        return view('frontend.'.get_setting('homepage_select').'.partials.home_categories_section');
+        return view('frontend.' . get_setting('homepage_select') . '.partials.home_categories_section');
     }
 
     public function load_best_sellers_section()
     {
-        return view('frontend.'.get_setting('homepage_select').'.partials.best_sellers_section');
+        return view('frontend.' . get_setting('homepage_select') . '.partials.best_sellers_section');
     }
 
 
     // newly added 
-    public function load_categories_products_section(){
-       
+    public function load_categories_products_section()
+    {
+
         $products = get_featured_products(12);
 
-        return view('frontend.'.get_setting('homepage_select').'.partials.load-category-products', compact('products'));
+        return view('frontend.' . get_setting('homepage_select') . '.partials.load-category-products', compact('products'));
     }
 
-    public function load_skyskaper_products(){
+    public function load_skyskaper_products()
+    {
 
         $products = get_best_selling_products(12);
 
-        return view('frontend.'.get_setting('homepage_select').'.partials.load-skyscaper-products', compact('products'));
+        return view('frontend.' . get_setting('homepage_select') . '.partials.load-skyscaper-products', compact('products'));
     }
 
 
-    public function load_new_arrivals(){
+    public function load_new_arrivals()
+    {
         $products = Cache::remember('new_arrivals', 3600, function () {
             return filter_products(Product::latest())->limit(8)->get();
         });
 
-        return view('frontend.'.get_setting('homepage_select').'.partials.load-new-arrivals-products', compact('products'));
+        return view('frontend.' . get_setting('homepage_select') . '.partials.load-new-arrivals-products', compact('products'));
     }
 
 
@@ -132,9 +135,9 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
-        if(Route::currentRouteName() == 'seller.login' && get_setting('vendor_system_activation') == 1){
+        if (Route::currentRouteName() == 'seller.login' && get_setting('vendor_system_activation') == 1) {
             return view('frontend.seller_login');
-        }else if(Route::currentRouteName() == 'deliveryboy.login' && addon_is_activated('delivery_boy')){
+        } else if (Route::currentRouteName() == 'deliveryboy.login' && addon_is_activated('delivery_boy')) {
             return view('frontend.deliveryboy_login');
         }
         return view('frontend.user_login');
@@ -210,7 +213,7 @@ class HomeController extends Controller
             return redirect()->route('seller.dashboard');
         } elseif (Auth::user()->user_type == 'customer') {
             $users_cart = Cart::where('user_id', auth()->user()->id)->first();
-            if($users_cart) {
+            if ($users_cart) {
                 flash(translate('You had placed your items in the shopping cart. Try to order before the product quantity runs out.'))->warning();
             }
             return view('frontend.user.customer.dashboard');
@@ -285,18 +288,18 @@ class HomeController extends Controller
             session(['link' => url()->current()]);
         }
 
-        $detailedProduct  = Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
+        $detailedProduct = Product::with('reviews', 'brand', 'stocks', 'user', 'user.shop')->where('auction_product', 0)->where('slug', $slug)->where('approved', 1)->first();
 
         if ($detailedProduct != null && $detailedProduct->published) {
-            if((get_setting('vendor_system_activation') != 1) && $detailedProduct->added_by == 'seller'){
+            if ((get_setting('vendor_system_activation') != 1) && $detailedProduct->added_by == 'seller') {
                 abort(404);
             }
 
-            if($detailedProduct->added_by == 'seller' && $detailedProduct->user->banned == 1){
+            if ($detailedProduct->added_by == 'seller' && $detailedProduct->user->banned == 1) {
                 abort(404);
             }
 
-            if(!addon_is_activated('wholesale') && $detailedProduct->wholesale_product == 1){
+            if (!addon_is_activated('wholesale') && $detailedProduct->wholesale_product == 1) {
                 abort(404);
             }
 
@@ -307,7 +310,7 @@ class HomeController extends Controller
             // Pagination using Ajax
             if (request()->ajax()) {
                 if ($request->type == 'query') {
-                    return Response::json(View::make('frontend.'.get_setting('homepage_select').'.partials.product_query_pagination', array('product_queries' => $product_queries))->render());
+                    return Response::json(View::make('frontend.' . get_setting('homepage_select') . '.partials.product_query_pagination', array('product_queries' => $product_queries))->render());
                 }
                 if ($request->type == 'review') {
                     return Response::json(View::make('frontend.product_details.reviews', array('reviews' => $reviews))->render());
@@ -317,9 +320,11 @@ class HomeController extends Controller
             // review status
             $review_status = 0;
             if (Auth::check()) {
-                $OrderDetail = OrderDetail::with(['order' => function ($q) {
-                    $q->where('user_id', Auth::id());
-                }])->where('product_id', $detailedProduct->id)->where('delivery_status', 'delivered')->first();
+                $OrderDetail = OrderDetail::with([
+                    'order' => function ($q) {
+                        $q->where('user_id', Auth::id());
+                    }
+                ])->where('product_id', $detailedProduct->id)->where('delivery_status', 'delivered')->first();
                 $review_status = $OrderDetail ? 1 : 0;
             }
             if ($request->has('product_referral_code') && addon_is_activated('affiliate_system')) {
@@ -346,9 +351,9 @@ class HomeController extends Controller
         if (get_setting('vendor_system_activation') != 1) {
             return redirect()->route('home');
         }
-        $shop  = Shop::where('slug', $slug)->first();
+        $shop = Shop::where('slug', $slug)->first();
         if ($shop != null) {
-            if($shop->user->banned == 1){
+            if ($shop->user->banned == 1) {
                 abort(404);
             }
             if ($shop->verification_status != 0) {
@@ -365,9 +370,9 @@ class HomeController extends Controller
         if (get_setting('vendor_system_activation') != 1) {
             return redirect()->route('home');
         }
-        $shop  = Shop::where('slug', $slug)->first();
+        $shop = Shop::where('slug', $slug)->first();
         if ($shop != null && $type != null) {
-            if($shop->user->banned == 1){
+            if ($shop->user->banned == 1) {
                 abort(404);
             }
             if ($type == 'all-products') {
@@ -431,7 +436,7 @@ class HomeController extends Controller
 
     public function all_categories(Request $request)
     {
-        $categories = Category::with(['childrenCategories','catIcon'])->where('parent_id', 0)->orderBy('order_level', 'desc')->get();
+        $categories = Category::with(['childrenCategories', 'catIcon'])->where('parent_id', 0)->orderBy('order_level', 'desc')->get();
 
         // dd($categories->first()->catIcon);
         return view('frontend.all_category', compact('categories'));
@@ -569,45 +574,45 @@ class HomeController extends Controller
 
     public function sellerpolicy()
     {
-        $page =  Page::where('type', 'seller_policy_page')->first();
+        $page = Page::where('type', 'seller_policy_page')->first();
         return view("frontend.policies.sellerpolicy", compact('page'));
     }
 
     public function returnpolicy()
     {
-        $page =  Page::where('type', 'return_policy_page')->first();
+        $page = Page::where('type', 'return_policy_page')->first();
         return view("frontend.policies.returnpolicy", compact('page'));
     }
 
     public function supportpolicy()
     {
-        $page =  Page::where('type', 'support_policy_page')->first();
+        $page = Page::where('type', 'support_policy_page')->first();
         return view("frontend.policies.supportpolicy", compact('page'));
     }
 
     public function terms()
     {
-        $page =  Page::where('type', 'terms_conditions_page')->first();
+        $page = Page::where('type', 'terms_conditions_page')->first();
         return view("frontend.policies.terms", compact('page'));
     }
 
     public function privacypolicy()
     {
-        $page =  Page::where('type', 'privacy_policy_page')->first();
+        $page = Page::where('type', 'privacy_policy_page')->first();
         return view("frontend.policies.privacypolicy", compact('page'));
     }
 
     public function get_pick_up_points(Request $request)
     {
         $pick_up_points = PickupPoint::all();
-        return view('frontend.'.get_setting('homepage_select').'.partials.pick_up_points', compact('pick_up_points'));
+        return view('frontend.' . get_setting('homepage_select') . '.partials.pick_up_points', compact('pick_up_points'));
     }
 
     public function get_category_items(Request $request)
     {
         // $category = Category::findOrFail($request->id);
         $categories = Category::with('childrenCategories')->findOrFail($request->id);
-        return view('frontend.'.get_setting('homepage_select').'.partials.category_elements', compact('categories'));
+        return view('frontend.' . get_setting('homepage_select') . '.partials.category_elements', compact('categories'));
     }
 
     public function premium_package_index()
@@ -689,7 +694,7 @@ class HomeController extends Controller
     public function email_change_callback(Request $request)
     {
         if ($request->has('new_email_verificiation_code') && $request->has('email')) {
-            $verification_code_of_url_param =  $request->input('new_email_verificiation_code');
+            $verification_code_of_url_param = $request->input('new_email_verificiation_code');
             $user = User::where('new_email_verificiation_code', $verification_code_of_url_param)->first();
 
             if ($user != null) {
@@ -786,45 +791,70 @@ class HomeController extends Controller
     }
 
 
-    public function newCustomerLogin(){
+    public function newCustomerLogin()
+    {
 
         Auth::logout();
         return redirect()->route('user.login');
     }
 
 
-    public function advertiseWithUs(){
-        
+    public function advertiseWithUs()
+    {
+
         return view('frontend.advertise-with-us');
     }
 
 
-    public function aboutValueCeylon(){
+    public function aboutValueCeylon()
+    {
         return view('frontend.about-value-ceylon');
     }
 
-    public function sellOnValueCeylon(){
+    public function sellOnValueCeylon()
+    {
         return view('frontend.about-value-ceylon');
     }
 
-    public function faq(){
+    public function faq()
+    {
         return view('frontend.faq');
     }
-    public function faq_seller(){
+    public function faq_seller()
+    {
         return view('frontend.faq_seller');
     }
-        public function faq_customer(){
+    public function faq_customer()
+    {
         return view('frontend.faq_customer');
     }
-        public function faq_special(){
+    public function faq_special()
+    {
         return view('frontend.faq_special');
     }
+    public function terms_condition()
+    {
+        return view('frontend.terms');
+    }
+        public function policy_section()
+    {
+        return view('frontend.policy');
+    }
 
-    public function lorem(){
+
+    public function lorem()
+    {
         return view('frontend.lorem');
     }
-    
-    public function contact(){
-        return view('frontend.lorem');
+
+    public function contact()
+    {
+        return view('frontend.contact');
+    }
+        public function our_services()
+    {
+        return view('frontend.our_services');
     }
 }
+
+

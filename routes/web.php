@@ -360,7 +360,6 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
 });
 
 Route::get('value-ceylon-sourcing', [RFQController::class, 'index'])->name('customer.request-for-quotation');
-
 Route::get('upload_presctiption', [PrescriptionController::class, 'index'])->name('customer.upload-presctiption');
 
 Route::get('about-value-ceylon', [HomeController::class, 'aboutValueCeylon'])->name('about-value-ceylon');
@@ -370,9 +369,11 @@ Route::get('faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('faq_seller', [HomeController::class, 'faq_seller'])->name('faq_seller');
 Route::get('faq_customer', [HomeController::class, 'faq_customer'])->name('faq_customer');
 Route::get('faq_special', [HomeController::class, 'faq_special'])->name('faq_special');
+Route::get('terms_condition', [HomeController::class, 'terms_condition'])->name('terms_condition');
+Route::get('policy_section', [HomeController::class, 'policy_section'])->name('policy_section');
+Route::get('our_services', [HomeController::class, 'our_services'])->name('our_services');
 
 Route::get('translation-check/{check}', [LanguageController::class, 'get_translation']);
-
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -422,7 +423,6 @@ Route::controller(VoguepayController::class)->group(function () {
     Route::get('/vogue-pay/callback', 'handleCallback');
     Route::get('/vogue-pay/failure/{id}', 'paymentFailure');
 });
-
 
 //Iyzico
 Route::any('/iyzico/payment/callback/{payment_type}/{amount?}/{payment_method?}/{combined_order_id?}/{customer_package_id?}/{seller_package_id?}', [IyzicoController::class, 'callback'])->name('iyzico.callback');
@@ -506,11 +506,3 @@ Route::controller(PageController::class)->group(function () {
     //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
-
-
-
-
-
-
-
-

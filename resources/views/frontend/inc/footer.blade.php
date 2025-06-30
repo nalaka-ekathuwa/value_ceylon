@@ -80,15 +80,10 @@
                             </li>
                         @endif
 
-
-
-
                         <li class="list-inline-item ml-2 mr-2">
                             <a  href="#" target="_blank"
                                 class="twitter"><svg style="margin-top:-9px" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/></svg></a>
                         </li>
-
-
 
                     </ul>
 
@@ -141,17 +136,17 @@
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a target="_blank" href="{{ static_asset('uploads/policy/Policy.pdf') }}">Privacy Policy</a>
+                                <a href="{{ route('policy_section') }}">Privacy Policy</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a target="_blank" href="{{ static_asset('uploads/policy/Terms.pdf') }}">Terms and Conditions</a>
+                                <a href="{{ route('terms_condition') }}">Terms and Conditions</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Our Services</a>
+                                <a href="{{ route('our_services') }}">Our Services</a>
                             </p>
                         </li>
                     </ul>
