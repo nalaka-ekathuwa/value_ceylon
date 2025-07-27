@@ -6,8 +6,8 @@
             <div class="row">
 
                 <!-- <div class="col-md-12 mb-3">
-                                            <img class="img-fluid" src="{{ static_asset('assets/img/banner/sourcing-banner.jpg') }}">
-                                        </div> -->
+                                                        <img class="img-fluid" src="{{ static_asset('assets/img/banner/sourcing-banner.jpg') }}">
+                                                    </div> -->
 
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-4">
@@ -67,32 +67,12 @@
                                     </h5>
                                 @endif
 
-                                <h5>Customer Information</h5>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="">Customer Name</label>
-                                            <input type="text" name="cus_name" class="form-control"
-                                                value="{{ old('cus_name') }}" required>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="">Email address </label>
-                                            <input type="email" name="email" class="form-control" value="{{ old('email') }}"
-                                                required>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <h5 class="mt-3">Patient Information | රෝගියාගේ තොරතුරු</h5>
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="">Patient Name | රෝගියාගේ නම  </label>
+                                            <label for="">Patient Name | රෝගියාගේ නම </label>
                                             <input type="text" name="patient_name" class="form-control"
                                                 value="{{ old('patient_name') }}" required>
                                         </div>
@@ -110,22 +90,22 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="">Contact Number | දුරකථන අංකය</label>
-                                            <input type="text" name="contact_number" class="form-control"
+                                            <input type="tel" name="contact_number" class="form-control"
                                                 value="{{ old('contact_number') }}" required>
                                         </div>
 
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="">Gender | ස්ත්‍රී පුරුෂභාවය  </label> <br><br>
+                                            <label for="">Gender | ස්ත්‍රී පුරුෂභාවය </label> <br><br>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                                    id="inlineRadio1" value="option1">
+                                                <input class="form-check-input" type="radio" name="gender" required
+                                                    id="inlineRadio1" value="male">
                                                 <label class="form-check-label" for="inlineRadio1">Male | පිරිමි</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                                    id="inlineRadio2" value="option2">
+                                                <input class="form-check-input" type="radio" name="gender"
+                                                    id="inlineRadio2" value="female">
                                                 <label class="form-check-label" for="inlineRadio2">Female | ගැහැණු</label>
                                             </div>
                                         </div>
@@ -135,11 +115,28 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="">Delivery Address | ලිපිනය :  </label>
+                                            <label for="">Delivery Address | ලිපිනය : </label>
                                             <input type="text" name="address" class="form-control" value="" required>
                                         </div>
                                     </div>
                                 </div>
+
+                                <h5 class="mt-3">Pharmacy Details | ෆාමසි විස්තර</h5>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="">Pharmacy You prefer</label>
+                                        <select name="seller_id" class="form-control" required>
+                                            <option value="">Select a verified shop</option>
+                                            @forelse ($shops as $shop)
+                                                @if ($shop->user) {{-- Optional: Only show shops with user relation --}}
+                                                    <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                                                @endif
+                                            @empty
+                                                <option value="">No shops available</option>
+                                            @endforelse
+                                        </select>
+                                    </div>
+                                </div><br>
 
                                 <h5 class="mt-3">Prescription Details | බෙහෙත් වට්ටෝරු විස්තර</h5>
 
@@ -148,18 +145,18 @@
                                         <div class="form-group">
                                             <label for="duration">Duration | ඖෂධ අවශ්‍ය කාල සීමාව </label>
                                             <select name="duration" class="form-control" id="" required>
-                                                <option value="1">one week</option>
-                                                <option value="2">two weeks</option>
-                                                <option value="3">three weeks</option>
-                                                <option value="4">one month</option>
-                                                <option value="5">two months</option>
+                                                <option value="1">One week | සතියක්</option>
+                                                <option value="2">Two weeks | සති දෙකක්</option>
+                                                <option value="3">Three weeks | සති තුනක්</option>
+                                                <option value="4">One month | මාසයක්</option>
+                                                <option value="5">Two months | මාස දෙකක්</option>
                                             </select>
                                         </div>
 
                                     </div>
                                     <div class="col-md-7">
                                         <div class="form-group">
-                                            <label for="">Delivery Method </label>
+                                            <label for="">Delivery Method | බෙදාහැරීමේ ක්රමය</label>
                                             <select name="delivery_method" class="form-control" id="" required>
                                                 <option value="1">Standard delivery (1–3 business days)- Rs. 500.00
                                                 </option>
@@ -172,15 +169,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for="">Upload Prescription | ඔබේ වෛද්‍යවරයාගේ බෙහෙත් වට්ටෝරුව අමුණන්න  </label>
-                                        <p class="text-muted"><small>Please mention about your product requirements and
-                                                product features to
-                                                make
-                                                sure Fast and efficient responses from suppliers. You can include Raw
-                                                material,
-                                                price expectations, Size/Dimensions ,Brand Names, Standards ,Required
-                                                Company/Product Certification(s) and packaging
-                                                requirements.</small></p>
+                                        <label for="">Upload Prescription | ඔබේ වෛද්‍යවරයාගේ බෙහෙත් වට්ටෝරුව අමුණන්න
+                                        </label>
                                         <input name="prescription" id="" type="file" class="form-control" required>
                                     </div>
                                 </div>
@@ -189,17 +179,18 @@
                                     <div class="col-md-12">
                                         <br>
                                         <label class="text-muted">Do you allow equivalent (generic or brand) substitutes
-                                            if your prescribed medicine is unavailable?" <br> 
-                                            ඔබේ නිර්දේශිත ඖෂධය නොමැති නම්, ඔබ සමාන (සාමාන්‍ය හෝ වෙළඳ නාම) ආදේශක වලට ඉඩ දෙනවාද?</label>
+                                            if your prescribed medicine is unavailable?" <br>
+                                            ඔබේ නිර්දේශිත ඖෂධය නොමැති නම්, ඔබ සමාන (සාමාන්‍ය හෝ වෙළඳ නාම) ආදේශක වලට ඉඩ
+                                            දෙනවාද?</label>
                                         <br>
 
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="substitutes" name="substitutes"
+                                            <input type="radio" id="substitutes" name="substitutes" value="yes" required
                                                 class="custom-control-input">
                                             <label class="custom-control-label" for="substitutes">Yes | ඔව් </label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="substitutes2" name="substitutes"
+                                            <input type="radio" id="substitutes2" name="substitutes" value="no"
                                                 class="custom-control-input">
                                             <label class="custom-control-label" for="substitutes2">No | නැත</label>
                                         </div>
@@ -208,26 +199,29 @@
 
                                 <div class="row">
                                     <div class="col-md-12 mt-3">
-                                        <label for="">Patient Allergies if have | ඔබට යම්කිසි ඖෂධ අසාත්මිකතාවයක් ඇත්නම් සඳහන් කරන්න</label>
+                                        <label for="">Special notes | විශේෂ සටහන් :</label>
+                                        <p><small>• If you or the patient has any known drug allergies, please mention them
+                                                clearly in the "Additional Notes" section during prescription upload.I ඔබට
+                                                යම්කිසි ඖෂධ අසාත්මිකතාවයක් ඇත්නම් සඳහන් කරන්න<br>
+                                                • This helps our pharmacists ensure safe dispensing and avoid harmful
+                                                medicine interactions.
+
+                                            </small></p>
                                         <textarea name="allergies" id="" cols="30" rows="3" class="form-control"></textarea>
                                     </div>
 
                                     <div class="col-md-12 mt-3">
-                                        <p><small>By submitting the sourcing request form, you will also gain the
-                                                membership
-                                                for
-                                                Value Ceylon Online Sourcing. A registration confirmation will be sent
-                                                to
-                                                you
-                                                later to access all the benefits and stay up to date with the latest
-                                                offerings.
-                                                Please see our Privacy Policy and Cookie Policy for information
-                                                regarding
-                                                the
-                                                processing of your data. By clicking "Submit" you agree that you have
-                                                read
-                                                our
-                                                Privacy and Cookie Policies and accepted our Terms and conditions.
+                                        <p><small>
+                                                By submitting your prescription, you will automatically be registered as a
+                                                member of Value Ceylon Health’s Online Pharmacy Platform. A confirmation
+                                                will be sent to you, giving you access to order tracking, health updates,
+                                                and special offers.
+                                                Please refer to our <a href="{{ route('policy_section') }}" target="_blank"
+                                                    rel="noopener noreferrer">[Privacy Policy]</a> and [Cookie Policy] to
+                                                understand how
+                                                we process your personal and medical data.
+                                                By clicking “Submit”, you confirm that you have read and agreed to our
+                                                Privacy and Cookie Policies, and accepted our Terms and Conditions.
                                             </small></p>
                                     </div>
 

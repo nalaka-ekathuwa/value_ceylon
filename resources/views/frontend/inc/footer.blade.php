@@ -46,7 +46,6 @@
                 </div>
             </div> --}}
 
-
             <!-- Follow & Apps -->
             <div class="col-xl-6 col-lg-6">
                 <!-- Social -->
