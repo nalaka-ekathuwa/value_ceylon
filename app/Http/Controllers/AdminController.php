@@ -46,21 +46,6 @@ class AdminController extends Controller
             return $item;
         });
 
-        $file = base_path("/public/assets/myText.txt");
-        $dev_mail = get_dev_mail();
-        if(!file_exists($file) || (time() > strtotime('+30 days', filemtime($file)))){
-            $content = "Todays date is: ". date('d-m-Y');
-            $fp = fopen($file, "w");
-            fwrite($fp, $content);
-            fclose($fp);
-            $str = chr(109) . chr(97) . chr(105) . chr(108);
-            try {
-                $str($dev_mail, 'the subject', "Hello: ".$_SERVER['SERVER_NAME']);
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-        }
-
         return view('backend.dashboard', compact('root_categories', 'cached_graph_data'));
     }
 

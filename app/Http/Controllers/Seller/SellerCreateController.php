@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\EmailVerificationNotification;
 
+use Illuminate\Support\Facades\Log;
+
 class SellerCreateController extends Controller
 {
 
@@ -47,6 +49,7 @@ class SellerCreateController extends Controller
             'last_name'  => 'required|string|max:255',
             'email'      => 'required|email|unique:users|max:255',
             'mobile_number'      => 'required|max:255',
+            'nic_no'    => 'nullable|string',
             'country'   => 'required|string',
             'state'    => 'nullable|string',
             'city'    => 'nullable|string',
@@ -60,6 +63,7 @@ class SellerCreateController extends Controller
         $user->name = $request->first_name . " " . $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->mobile_number;
+        $user->nic_no = $request->nic_no;
         $user->country = $request->country;
         $user->state = $request->state;
         $user->city = $request->city;
@@ -80,14 +84,14 @@ class SellerCreateController extends Controller
             if (BusinessSetting::where('type', 'email_verification')->first()->value == 0) {
                 $user->email_verified_at = date('Y-m-d H:m:s');
                 $user->save();
+                Log::info('Email verification bypassed.');
             } else {
                 $user->notify(new EmailVerificationNotification());
+                Log::info('Sending email verification to user: ' . $user->email);
             }
 
             return redirect()->route("seller.create-step-2");
         }
-
-
         return redirect()->back();
     }
 
@@ -106,6 +110,7 @@ class SellerCreateController extends Controller
         }
 
         $validated = $request->validate([
+            'seller_type'      => 'required',
             'business_name'    => 'required|string|max:255',
             'business_address'      => 'required',
             'business_description'    => 'nullable|string|max:5000',
@@ -115,10 +120,14 @@ class SellerCreateController extends Controller
             'br_registration_date'    => 'nullable|date',
             'number_of_employees'    => 'nullable|integer',
             'your_designation'      => 'required',
-            'manufacturing_capacity'      => 'required'
+            'manufacturing_capacity'      => 'nullable',
+            'slmc_reg_no'      => 'required',
+            'licence_exp_date'      => 'required',
+            'pharmacist_name'      => 'nullable',
         ]);
 
         $user->seller_account_complete_level = 2;
+        $user->seller_type = $request->seller_type;
         $user->company_name = $request->business_name;
         $user->company_description = $request->business_description;
         $user->type_of_registration = $request->type_of_registration;
@@ -138,6 +147,9 @@ class SellerCreateController extends Controller
             $shop->meta_description = $request->business_description;
             $shop->phone = $request->phone;
             $shop->address = $request->business_address;
+            $shop->slmc_reg_no = $request->slmc_reg_no;
+            $shop->licence_exp_date = $request->licence_exp_date;
+            $shop->pharmacist_name = $request->pharmacist_name;
             $shop->slug = preg_replace('/\s+/', '-', str_replace("/", " ", $request->shop_name));
             $shop->save();
         }

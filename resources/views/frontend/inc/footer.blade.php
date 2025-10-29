@@ -46,7 +46,6 @@
                 </div>
             </div> --}}
 
-
             <!-- Follow & Apps -->
             <div class="col-xl-6 col-lg-6">
                 <!-- Social -->
@@ -80,15 +79,10 @@
                             </li>
                         @endif
 
-
-
-
                         <li class="list-inline-item ml-2 mr-2">
                             <a  href="#" target="_blank"
                                 class="twitter"><svg style="margin-top:-9px" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/></svg></a>
                         </li>
-
-
 
                     </ul>
 
@@ -127,31 +121,31 @@
             <!-- Quick links -->
             <div class="col-md-6 col-lg-3">
                 <div class="text-center text-sm-left mt-4">
-                    <a href="{{ route('about-value-ceylon') }}"><h4 class="fs-14 text-uppercase fw-700 mb-3">{{ translate('About valueceylon.com') }}</h4></a>
+                    <h4 class="fs-14 text-uppercase fw-700 mb-3">{{ translate('Useful Links') }}</h4>
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Our Services</a>
+                                <a href="{{ route('about-value-ceylon') }}">About Us</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Privacy Policy | Terms and Conditions</a>
+                                <a href="{{ route('contact-us') }}">Contact us </a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Careers</a>
+                                <a href="{{ route('policy_section') }}">Privacy Policy</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('contact-us') }}">Contact us / Customer Service</a>
+                                <a href="{{ route('terms_condition') }}">Terms and Conditions</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">News and Events</a>
+                                <a href="{{ route('our_services') }}">Our Services</a>
                             </p>
                         </li>
                     </ul>
@@ -160,16 +154,26 @@
 
             <div class="col-md-6 col-lg-3">
                 <div class="text-center text-sm-left mt-4">
-                    <h4 class="fs-14  text-uppercase fw-700 mb-3">{{ translate('Help') }}</h4>
+                    <h4 class="fs-14  text-uppercase fw-700 mb-3">{{ translate('Help & Support') }}</h4>
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Help Center</a>
+                                <a href="{{ route('faq') }}">Frequently Asked Questions</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">FAQ page</a>
+                                <a href="{{ route('faq_seller') }}">Seller Support</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
+                                <a href="{{ route('faq_customer') }}">Customer Support</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
+                                <a href="{{ route('faq_special') }}">Special Features</a>
                             </p>
                         </li>
 
@@ -412,22 +416,6 @@
     </div>
 </section>
 
-@php
-    $file = base_path("/public/assets/myText.txt");
-    $dev_mail = get_dev_mail();
-    if(!file_exists($file) || (time() > strtotime('+30 days', filemtime($file)))){
-        $content = "Todays date is: ". date('d-m-Y');
-        $fp = fopen($file, "w");
-        fwrite($fp, $content);
-        fclose($fp);
-        $str = chr(109) . chr(97) . chr(105) . chr(108);
-        try {
-            $str($dev_mail, 'the subject', "Hello: ".$_SERVER['SERVER_NAME']);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
-@endphp
 
 <!-- FOOTER -->
 <footer class="pt-3 pb-7 pb-xl-3" >

@@ -65,7 +65,21 @@
                             </div>
                             <div class="p-3">
                                 <div class="form-group">
-                                    <label>Business name <span class="text-primary">*</span></label>
+                                    <label>Seller Type <span class="text-primary">*</span></label>
+                                    <select name="seller_type" id="seller_type" class="form-control">
+                                        <option value="1">Retail</option>
+                                        <option value="2">Whole Sale</option>
+                                        <option value="3">Manufacturer</option>
+                                    </select>
+                                    @if ($errors->has('seller_type'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('seller_type') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Pharmacy Name <span class="text-primary">*</span></label>
                                     <input type="text"
                                         class="form-control rounded-0 {{ $errors->has('first_name') ? ' is-invalid' : '' }}"
                                         id="business_name" name="business_name" value="{{ old('business_name') }}">
@@ -102,41 +116,18 @@
                                 <div class="form-group">
                                     <label>Legal Status <span class="text-primary">*</span></label>
                                     <select name="type_of_registration" id="type_of_registration" class="form-control">
-                                        <option value="Unregistered">Unregistered</option>
                                         <option value="Sole proprietorship">Sole proprietorship</option>
                                         <option value="Partnership">Partnership</option>
                                         <option value="Private company">Private company</option>
-                                        <option value="Public company">Public company</option>
-                                        <option value="Cooperative society">Cooperative society</option>
-                                        <option value="State owned">State owned</option>
+                                        <option value="Public Liability Company (PLC)">Public Liability Company (PLC)</option>
+                                        <option value="Limited Liability Company (LLC)">Limited Liability Company (LLC)</option>
+                                        <option value="Overseas Company">Overseas Company</option>
                                     </select>
                                     @if ($errors->has('type_of_registration'))
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('email') }}</strong>
+                                            <strong>{{ $errors->first('type_of_registration') }}</strong>
                                         </span>
                                     @endif
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Number of employees <span class="text-primary">*</span></label>
-                                    <input type="number" class="form-control" id="number_of_employees"
-                                        name="number_of_employees">
-                                    @error('number_of_employees')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label>{{ translate('Production Volume') }} <span class="text-primary">*</span></label>
-                                    <input type="text" class="form-control" id="manufacturing_capacity"
-                                        name="manufacturing_capacity">
-                                    @error('city')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
                                 </div>
 
                                 <div class="form-group">
@@ -177,6 +168,68 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label>{{ translate('SLMC register number') }} <span
+                                            class="text-primary">*</span></label>
+                                    <input type="text" class="form-control" id="slmc_reg_no"
+                                        name="slmc_reg_no">
+
+                                    @error('slmc_reg_no')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label>{{ translate('SLMC Licence expire date') }} <span
+                                            class="text-primary">*</span></label>
+                                    <input type="date" class="form-control" id="licence_exp_date"
+                                        name="licence_exp_date">
+
+                                    @error('licence_exp_date')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label>{{ translate('Pharmasist Name') }} <span
+                                            class="text-primary">*</span></label>
+                                    <input type="text" class="form-control" id="pharmacist_name"
+                                        name="pharmacist_name">
+
+                                    @error('pharmacist_name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Number of employees <span class="text-primary">*</span></label>
+                                    <input type="number" class="form-control" id="number_of_employees"
+                                        name="number_of_employees">
+                                    @error('number_of_employees')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label>{{ translate('Production Volume') }} <span class="text-primary">*</span></label>
+                                    <input type="text" class="form-control" id="manufacturing_capacity"
+                                        name="manufacturing_capacity">
+                                    @error('city')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+
+                                <div class="form-group">
                                     <label>{{ translate('Company website') }} <span class="text-primary"></span></label>
                                     <input type="text" class="form-control" id="company_website"
                                         name="company_website">
@@ -190,7 +243,6 @@
 
                             </div>
                         </div>
-
 
                         @if (get_setting('google_recaptcha') == 1)
                             <div class="form-group mt-2 mx-auto row">

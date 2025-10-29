@@ -9,7 +9,7 @@
                     <img class="img-fluid" src="{{ static_asset('assets/img/banner/sourcing-banner.jpg') }}">
                 </div>
 
-                <div class="col-md-12">
+                {{-- <div class="col-md-12">
                     <h1 class="mb-5">Value Ceylon Sourcing… <small>Connect with Sri Lankan Verified B2B
                             Suppliers...</small></h1>
 
@@ -39,8 +39,95 @@
                 <div class="col-md-12 my-5">
                     <h3>Value Ceylon Business Matching specialist will contact you and provide suitable supplier
                         recommendations soon.</h3>
-                </div>
+                </div> --}}
             </div>
+
+            <section class="container my-5">
+  <!-- Page Header -->
+  <div class="text-center mb-4">
+    <h2 class="font-weight-bold">Value Ceylon Health Sourcing</h2>
+    <p class="lead">Connect with Sri Lankan Verified Pharmaceutical Suppliers</p>
+  </div>
+
+  <!-- Intro Card -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Looking for a trusted source of pharmaceutical and healthcare products in Sri Lanka?</h5>
+      <p class="card-text">
+        <strong>ValueCeylonHealth.com</strong> is your dedicated multi-vendor pharmacy platform, designed to connect clinics, hospitals, pharmacies, and healthcare professionals with licensed, NMRA-compliant suppliers across the island.
+      </p>
+    </div>
+  </div>
+
+  <!-- Feature Grid -->
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card border-left-primary shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🛡️ Verified by Quality Assurance Team</h5>
+          <p class="card-text">All sellers are screened and approved based on NMRA registration, product authenticity, and ethical practices.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card border-left-success shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">⚕️ NMRA & GMP Compliance</h5>
+          <p class="card-text">We ensure all sourced products meet Sri Lankan health regulations and GMP standards.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card border-left-info shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🔍 Customized Product Sourcing</h5>
+          <p class="card-text">Can’t find a specific item? Submit a request — we’ll match you with the right supplier.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card border-left-warning shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">💰 Cost-Saving B2B Solutions</h5>
+          <p class="card-text">Get wholesale pricing, manufacturer deals, and discounts for high-volume orders.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card border-left-danger shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🚀 Reliable Fulfillment</h5>
+          <p class="card-text">We coordinate with vendors to ensure on-time delivery, verified packaging, and proper storage.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card border-left-dark shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🤝 Business Matching Support</h5>
+          <p class="card-text">Our specialists will recommend the best suppliers based on your hospital, clinic, or NGO needs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="card bg-light shadow-sm mt-4">
+    <div class="card-body text-center">
+      <h5 class="mb-3">🚀 Get Started Today</h5>
+      <p class="mb-1">Submit your sourcing request through <strong>ValueCeylonHealth.com</strong> and streamline your procurement process with confidence.</p>
+      <p class="mb-0"><strong>We make your health business full of value.</strong></p>
+    </div>
+  </div>
+</section>
+
+
+            
 
             <div class="row mt-4 justify-content-center">
                 <div class="col-md-12">

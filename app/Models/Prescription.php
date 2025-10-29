@@ -10,15 +10,17 @@ class Prescription extends Model
     use HasFactory;
 
     protected $fillable = [
-        'cus_name',
-        'email',
         'patient_name',
         'patient_age',
         'contact_number',
         'duration',
         'delivery_method',
         'address',
+        'allergies',
+        'gender',
+        'substitutes',
         'user_id',
+        'seller_id',
         'prescription',
     ];
 
