@@ -43,7 +43,6 @@
                             <div class="step-circle" onclick="">3</div>
                             <div class="step-circle" onclick="">4</div>
                         </div>
-
                     </div>
 
                     @if ($errors->any())
@@ -117,6 +116,19 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label>{{ translate('NIC Number') }} <span class="text-primary">*</span></label>
+                                    <input type="text"
+                                        class="form-control rounded-0{{ $errors->has('nic_no') ? ' is-invalid' : '' }}"
+                                        value="{{ old('nic_no') }}" placeholder="{{ translate('NIC Number') }}"
+                                        name="nic_no" required>
+                                    @error('nic_no')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
                                     <label>{{ translate('Country or region') }} <span class="text-primary">*</span></label>
                                     <input type="text"
                                         class="form-control rounded-0{{ $errors->has('country') ? ' is-invalid' : '' }}"
@@ -146,11 +158,14 @@
                                     <label>{{ translate('Currency') }} <span class="text-primary">*</span></label>
                                     <select name="currency" id="currency"
                                         class="form-control {{ $errors->has('currency') ? ' is-invalid' : '' }}">
-                                        <option value="">Select currency</option>
+                                        <option value="" disabled>Select currency</option>
+
                                         @forelse ($currencies as $currency)
-                                            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+                                            <option value="{{ $currency->id }}" {{ (string) $currency->id === (string) old('currency', 29) ? 'selected' : '' }}>
+                                                {{ $currency->name }}
+                                            </option>
                                         @empty
-                                            <option value=""></option>
+                                            <option value="" disabled>No currencies available</option>
                                         @endforelse
                                     </select>
 
@@ -167,7 +182,9 @@
                                         class="form-control {{ $errors->has('currency') ? ' is-invalid' : '' }}">
                                         <option value="">Select language</option>
                                         @forelse ($languages as $language)
-                                            <option value="{{ $language->id }}">{{ $language->name }}</option>
+                                            <option value="{{ $language->id }}" {{ $language->id == 1 ? 'selected' : '' }}>
+                                                {{ $language->name }}
+                                            </option>
                                         @empty
                                             <option value=""></option>
                                         @endforelse
@@ -206,8 +223,8 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script type="text/javascript">
         // making the CAPTCHA  a required field for form submission
-        $(document).ready(function() {
-            $("#shop").on("submit", function(evt) {
+        $(document).ready(function () {
+            $("#shop").on("submit", function (evt) {
                 var response = grecaptcha.getResponse();
                 if (response.length == 0) {
                     //reCaptcha not verified

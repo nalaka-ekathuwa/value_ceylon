@@ -25,7 +25,7 @@ Route::group(['prefix' => 'seller'], function () {
     Route::get('/create-step-1', [SellerCreateController::class, 'stepOne'])->name('seller.create-step-1');
     Route::post('/create-step-1/submit', [SellerCreateController::class, 'stepOneSubmit'])->name('seller.create-step-1.submit');
 
-    Route::group(['middleware' => ['seller', 'user', 'prevent-back-history',]], function () {
+    Route::group(['middleware' => ['seller', 'user', 'prevent-back-history','verified']], function () {
         Route::get('/create-step-2', [SellerCreateController::class, 'stepTwo'])->name('seller.create-step-2');
         Route::post('/create-step-2/submit', [SellerCreateController::class, 'stepTwoSubmit'])->name('seller.create-step-2.submit');
 
