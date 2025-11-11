@@ -68,12 +68,12 @@
         rel="stylesheet">
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
     @if ($rtl == 1)
-        <link rel="stylesheet" href="{{ static_asset('assets/css/bootstrap-rtl.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-rtl.min.css') }}">
     @endif
-    <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css?v=') }}{{ rand(1000, 9999) }}">
-    <link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css?v=') }}{{ rand(1000, 9999) }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
 
 
     <script>
@@ -425,9 +425,9 @@
     @yield('modal')
 
     <!-- SCRIPTS -->
-    <script src="{{ static_asset('assets/js/vendors.js') }}"></script>
-    <script src="{{ static_asset('assets/js/aiz-core.js?v=') }}{{ rand(1000, 9999) }}"></script>
-    <script src="{{ static_asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors.js') }}"></script>
+    <script src="{{ asset('assets/js/aiz-core.js?v=') }}{{ rand(1000, 9999) }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 
 
 
@@ -877,7 +877,7 @@
 
             var iti = intlTelInput(input, {
                 separateDialCode: true,
-                utilsScript: "{{ static_asset('assets/js/intlTelutils.js') }}?1590403638580",
+                utilsScript: "{{ asset('assets/js/intlTelutils.js') }}?1590403638580",
                 onlyCountries: @php echo get_active_countries()-> pluck('code') @endphp,
                 customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
                     if (selectedCountryData.iso2 == 'bd') {
