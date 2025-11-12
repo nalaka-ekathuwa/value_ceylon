@@ -1,4 +1,9 @@
 /*your custom css goes here*/
+@media (min-width: 1500px) {
+    .container, .container-xxl {
+        max-width: 1640px !important;
+    }
+}
 
 /* Floating buttons */
 .floating-buttons-section {
@@ -219,4 +224,8 @@ p{
 section.ceylon-brands{
     background: #d0e7fb;
     padding: 50px 0px;
+}
+
+.top-nav-links {
+    color: #000;
 }
