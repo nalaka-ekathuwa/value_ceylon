@@ -1,5 +1,7 @@
 // multistep form
 
+//const { set } = require("lodash");
+
 var currentStep = 1;
 var updateProgressBar;
 
@@ -12,7 +14,8 @@ function displayStep(stepNumber) {
     }
 }
 
-$(document).ready(function () {
+jQuery(document).ready(function ($) {
+    console.log("Main JS Loaded");
     $('#multi-step-form').find('.step').slice(1).hide();
 
     $(".next-step").click(function () {
@@ -57,9 +60,9 @@ $(document).ready(function () {
         autoplaySpeed: 5000,
         arrows: false,
         pauseOnHover: false
-      });
+    });
 
-      $('.homepage-ad-slider-2').slick({
+    $('.homepage-ad-slider-2').slick({
         dots: false,
         infinite: true,
         speed: 300,
@@ -69,8 +72,45 @@ $(document).ready(function () {
         autoplaySpeed: 5000,
         arrows: false,
         pauseOnHover: false
-      });
+    });
       
+    setTimeout(function(){
+        console.log('Initializing New Arrivals Products Slider');
+        $('.new-arrivals-products-slider').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            arrows: true,
+            dots: false,
+            prevArrow: '<button type="button" class="slick-prev"></button>',
+            nextArrow: '<button type="button" class="slick-next"></button>',
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+    }, 1500);
 });
+
 
 
