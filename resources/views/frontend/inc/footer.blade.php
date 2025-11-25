@@ -176,6 +176,11 @@
                                 <a href="{{ route('faq_special') }}">Special Features</a>
                             </p>
                         </li>
+                        <li class="mb-2">
+                            <p  class="fs-14  mb-1">
+                                <a href="/sitemap.xml" target="_blank">Value Ceylon Sitemap</a>
+                            </p>
+                        </li>
 
                     </ul>
                 </div>

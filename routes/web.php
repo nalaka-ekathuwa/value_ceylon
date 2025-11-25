@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\PrescriptionController;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 use App\Http\Controllers\RFQController;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DemoController;
@@ -26,6 +28,7 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\FollowSellerController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\Payment\BkashController;
 use App\Http\Controllers\Payment\NagadController;
@@ -47,10 +50,9 @@ use App\Http\Controllers\Payment\VoguepayController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Payment\InstamojoController;
 use App\Http\Controllers\Payment\SslcommerzController;
+
 use App\Http\Controllers\Payment\MercadopagoController;
 use App\Http\Controllers\Payment\AuthorizenetController;
-
-use Illuminate\Support\Facades\Artisan;
 
 /*
   |--------------------------------------------------------------------------
@@ -506,3 +508,26 @@ Route::controller(PageController::class)->group(function () {
     //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
+
+
+Route::get('/sitemap.xml', function () {
+    $sitemapXml = Sitemap::create()
+        ->add(Url::create('/'))
+        ->add(Url::create('/blog'))
+        ->add(Url::create('/contact'))
+        ->add(Url::create('/products'))
+        ->render(); // XML string WITH xml declaration
+
+    // Inject XSL right after the existing xml declaration
+    $xml = preg_replace(
+        '/^<\?xml[^>]+\?>/i',
+        '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
+        '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>',
+        $sitemapXml
+    );
+
+    return response($xml, 200)
+        ->header('Content-Type', 'application/xml');
+});
+
+include_once base_path('routes/sitemap.php');
