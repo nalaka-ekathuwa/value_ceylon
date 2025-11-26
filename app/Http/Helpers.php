@@ -2474,3 +2474,16 @@ if( !function_exists('get_starting_category_banner_image')){
     }
 }
 
+if( !function_exists('get_product_by_id')){
+    function get_product_by_id($id){
+        return Product::where('id', $id)->first();
+    }
+}
+
+if( !function_exists('get_home_product_banner')){
+    function get_home_product_banner($titlePart = 'banner-product-id', $count = 1){
+        $banner = AdvertisingBanner::where('title', 'LIKE', "%{$titlePart}%")->inRandomOrder()->take($count)->get();
+        return $banner;
+    }
+}
+

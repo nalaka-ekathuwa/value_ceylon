@@ -75,8 +75,7 @@ jQuery(document).ready(function ($) {
     });
       
     setTimeout(function(){
-        console.log('Initializing New Arrivals Products Slider');
-        $('.new-arrivals-products-slider').slick({
+        $('#new-banner-products-slider').slick({
             slidesToShow: 4,
             slidesToScroll: 1,
             autoplay: true,
@@ -109,7 +108,7 @@ jQuery(document).ready(function ($) {
                 }
             ]
         });
-    }, 1500);
+    }, 2000);
 });
 
 

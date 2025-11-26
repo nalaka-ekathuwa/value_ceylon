@@ -231,12 +231,12 @@ section.ceylon-brands{
 }
 
 /* New product slider - Home page */
-.new-arrivals-products-slider .slick-slider {
+#new-banner-products-slider .slick-slider {
     position: relative;
     overflow: hidden;
 }
 
-.new-arrivals-products-slider .slick-prev, .new-arrivals-products-slider .slick-next {
+#new-banner-products-slider .slick-prev, #new-banner-products-slider .slick-next {
     position: absolute;
     top: 50%;                 
     transform: translateY(-50%); 
@@ -256,26 +256,26 @@ section.ceylon-brands{
     transition: all 0.25s ease;
 }
 
-.new-arrivals-products-slider .slick-prev:before,
-.new-arrivals-products-slider .slick-next:before {
+#new-banner-products-slider .slick-prev:before,
+#new-banner-products-slider .slick-next:before {
     display: none;
 }
 
-.new-arrivals-products-slider .slick-prev {
+#new-banner-products-slider .slick-prev {
     left: 0;
 }
 
-.new-arrivals-products-slider .slick-next {
+#new-banner-products-slider .slick-next {
     right: 0;
 }
 
-.new-arrivals-products-slider .slick-prev:hover,
-.new-arrivals-products-slider .slick-next:hover {
+#new-banner-products-slider .slick-prev:hover,
+#new-banner-products-slider .slick-next:hover {
     background: rgba(0,0,0,0.28);
 }
 
-.new-arrivals-products-slider .slick-prev:after,
-.new-arrivals-products-slider .slick-next:after {
+#new-banner-products-slider .slick-prev:after,
+#new-banner-products-slider .slick-next:after {
     content: "";
     width: 28px;
     height: 28px;
@@ -288,26 +288,26 @@ section.ceylon-brands{
     transition: opacity 0.2s ease;
 }
 
-.new-arrivals-products-slider .slick-prev:hover:after,
-.new-arrivals-products-slider .slick-next:hover:after {
+#new-banner-products-slider .slick-prev:hover:after,
+#new-banner-products-slider .slick-next:hover:after {
     opacity: 1;
 }
 
 
-.new-arrivals-products-slider .slick-prev:after {
+#new-banner-products-slider .slick-prev:after {
     mask-image: url('data:image/svg+xml;utf8,\
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="2.8" viewBox="0 0 24 24">\
         <path d="M15 6l-6 6 6 6"/>\
         </svg>');
 }
 
-.new-arrivals-products-slider .slick-next:after {
+#new-banner-products-slider .slick-next:after {
     mask-image: url('data:image/svg+xml;utf8,\
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="2.8" viewBox="0 0 24 24">\
         <path d="M9 6l6 6-6 6"/>\
         </svg>');
 }
 
-.new-arrivals-products-slider .slick-slide {
+#new-banner-products-slider .slick-slide {
     padding: 0 10px;
 }

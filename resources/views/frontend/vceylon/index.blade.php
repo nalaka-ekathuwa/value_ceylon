@@ -255,6 +255,31 @@
         </div>
     </section>
 
+    <!-- Frontend Product banners -->
+    <section class="home-banners">
+        <div class="container my-5">
+            @php
+                $product_banners = get_home_product_banner('banner-product-id', 5);
+            @endphp
+
+            <div class="row" id="new-banner-products-slider">
+                @foreach ($product_banners as $product_banner)
+                    @php
+                        $title_string = $product_banner->title;
+                        $product_id = (int) str_replace('banner-product-id-', '', $title_string);
+                        $product = get_product_by_id($product_id);
+                        $product_url = route('product', $product->slug);
+                    @endphp
+                    <a href="{{ $product_url }}" >
+                        <div class="">
+                            <img src="{{ uploaded_asset($product_banner->banner) }}" alt="" class="img-fluid">
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <!-- RFQ section -->
     <section class="rfq">
         <div class="container">
