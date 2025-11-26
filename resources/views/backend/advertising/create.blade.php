@@ -44,6 +44,13 @@
                             <span class="small text-muted">{{ translate('This image is shown as cover banner in flash deal details page.') }}</span>
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="meta">{{translate('Meta')}}</label>
+                        <div class="col-sm-9">
+                            <input type="text" placeholder="{{translate('Meta')}}" id="meta" name="meta" class="form-control">
+                        </div>
+                    </div>
          
                     <div class="form-group mb-0 text-right">
                         <button type="submit" class="btn btn-primary">{{translate('Save')}}</button>

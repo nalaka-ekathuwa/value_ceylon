@@ -28,7 +28,12 @@ class AdvertisingController extends Controller
             "category_id"=> "required",
         ]);
 
-        AdvertisingBanner::create($validated);
+        AdvertisingBanner::create([
+            'title'       => $validated['title'],
+            'banner'      => $validated['banner'],
+            'category_id' => $validated['category_id'],
+            'meta'        => $request->meta, 
+        ]);
 
         return redirect()->route('advertising.index');
     }
