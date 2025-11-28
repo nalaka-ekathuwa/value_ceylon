@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Upload;
-use App\Models\User;
-use Illuminate\Support\Facades\File;
 use Storage;
+use App\Models\User;
+use App\Models\Upload;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 
 class FileUploadController extends Controller
 {
-    //
-
     public function  image_upload(Request $request)
     {
+        
         $user = User::find(auth()->user()->id);
         if (!$user) {
             return response()->json([
@@ -39,6 +39,11 @@ class FileUploadController extends Controller
             $realImage = base64_decode($image);
 
             $dir = public_path('uploads/all');
+            
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+            }
+
             $full_path = "$dir/$request->filename";
 
             $file_put = file_put_contents($full_path, $realImage); // int or false
@@ -94,8 +99,8 @@ class FileUploadController extends Controller
             $newPath = "uploads/all/$newFileName";
 
             if (env('FILESYSTEM_DRIVER') == 's3') {
-                Storage::disk('s3')->put($newPath, file_get_contents(base_path('public/') . $newPath));
-                unlink(base_path('public/') . $newPath);
+                Storage::disk('s3')->put($newPath, file_get_contents(base_path('') . $newPath)); //Remove 'public/' from path
+                unlink(base_path('') . $newPath); //Remove 'public/' from path
             }
 
             $upload->extension = $extension;
@@ -123,4 +128,8 @@ class FileUploadController extends Controller
             ]);
         }
     }
+
+  
+
+
 }

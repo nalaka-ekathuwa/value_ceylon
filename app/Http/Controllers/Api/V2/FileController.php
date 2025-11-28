@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Http\Resources\V2\UploadedFileCollection;
+use Storage;
 use App\Models\Upload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
-use Storage;
+use App\Http\Resources\V2\UploadedFileCollection;
+
 class FileController extends Controller
 {
     public function index(){
@@ -22,7 +24,6 @@ class FileController extends Controller
     // any  base 64 image through uploader
     public function imageUpload(Request $request)
     {
-
         $type = array(
             "jpg" => "image",
             "jpeg" => "image",

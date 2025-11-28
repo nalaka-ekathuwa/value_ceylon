@@ -256,21 +256,21 @@
     </section>
 
     <!-- Frontend Product banners -->
-    <section class="home-banners">
-        <div class="container my-5">
-            @php
-                $product_banners = get_home_product_banner('home-product-banner', 5);
-            @endphp
+    @php
+        $product_banners = get_home_product_banner('home-product-banner', 5);
+    @endphp
 
-            @if (count($product_banners) > 0)
+    @if (count($product_banners) > 0)
+        <section class="home-banners">
+            <div class="container my-5">
                 <div class="row" id="new-banner-products-slider">
                     @foreach ($product_banners as $product_banner)
                         @php
                             if (!is_numeric($product_banner->meta)) {
                                 continue;
                             }
-                            $product_id = (int) $product_banner->meta;
-                            $product = get_product_by_id($product_id);
+                            $product_sku = $product_banner->meta;
+                            $product = get_product_by_sku($product_sku);
 
                             if (!$product) {
                                 continue;
@@ -284,9 +284,9 @@
                         </a>
                     @endforeach
                 </div>
-            @endif
-        </div>
-    </section>
+            </div>
+        </section>
+    @endif
 
     <!-- RFQ section -->
     <section class="rfq">

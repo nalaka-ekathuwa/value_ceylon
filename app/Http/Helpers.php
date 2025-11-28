@@ -1190,7 +1190,7 @@ if (!function_exists('my_asset')) {
             return Storage::disk(config('filesystems.default'))->url($path);
         }
 
-        return app('url')->asset('public/' . $path, $secure); //removed 'public/' to fix missing image issue
+        return app('url')->asset('' . $path, $secure); //removed 'public/' to fix missing image issue
     }
 }
 
@@ -2474,9 +2474,14 @@ if( !function_exists('get_starting_category_banner_image')){
     }
 }
 
-if( !function_exists('get_product_by_id')){
-    function get_product_by_id($id){
-        return Product::where('id', $id)->first();
+
+/**
+ * Get product by SKU
+ */
+if (!function_exists('get_product_by_sku')) {
+    function get_product_by_sku($sku) {
+        $productStock = ProductStock::where('sku', $sku)->first();
+        return $productStock ? $productStock->product : null;
     }
 }
 

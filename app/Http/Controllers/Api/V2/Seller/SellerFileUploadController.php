@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\V2\Seller;
 
-use App\Http\Resources\V2\UploadedFileCollection;
-use Illuminate\Http\Request;
-use App\Models\Upload;
-use Response;
 use Auth;
-use Storage;
 use Image;
+use Storage;
+use Response;
+use App\Models\Upload;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Resources\V2\UploadedFileCollection;
 
 class SellerFileUploadController extends Controller
 {
