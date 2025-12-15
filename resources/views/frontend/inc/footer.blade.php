@@ -178,7 +178,7 @@
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="/sitemap.xml" target="_blank">Value Ceylon Sitemap</a>
+                                <a href="/sitemap.xml" target="_blank">Sitemap</a>
                             </p>
                         </li>
 

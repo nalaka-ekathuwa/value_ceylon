@@ -17,6 +17,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\FeedbackController;
@@ -49,8 +50,8 @@ use App\Http\Controllers\Payment\RazorpayController;
 use App\Http\Controllers\Payment\VoguepayController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Payment\InstamojoController;
-use App\Http\Controllers\Payment\SslcommerzController;
 
+use App\Http\Controllers\Payment\SslcommerzController;
 use App\Http\Controllers\Payment\MercadopagoController;
 use App\Http\Controllers\Payment\AuthorizenetController;
 
@@ -509,25 +510,6 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
 
+//Sitemap 
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 
-Route::get('/sitemap.xml', function () {
-    $sitemapXml = Sitemap::create()
-        ->add(Url::create('/'))
-        ->add(Url::create('/blog'))
-        ->add(Url::create('/contact'))
-        ->add(Url::create('/products'))
-        ->render(); // XML string WITH xml declaration
-
-    // Inject XSL right after the existing xml declaration
-    $xml = preg_replace(
-        '/^<\?xml[^>]+\?>/i',
-        '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
-        '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>',
-        $sitemapXml
-    );
-
-    return response($xml, 200)
-        ->header('Content-Type', 'application/xml');
-});
-
-include_once base_path('routes/sitemap.php');

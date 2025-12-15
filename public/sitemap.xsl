@@ -9,6 +9,7 @@
     <xsl:template match="/">
         <html>
         <head>
+            <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
             <title>Sitemap</title>
             <style>
                 body { font-family: Arial, sans-serif; background: #f8f9fa; }
@@ -22,21 +23,37 @@
         <body style="margin: 0;">
             <div style="background: #4275f4; padding: 30px 30px 20px; color: #fff; font-size: 14px;">
                 <h1 style="margin: 0;">Value Ceylon Sitemap XML</h1>
-                <p>This sitemap provides a structured list of all the important URLs on the Value Ceylon website, helping search engines to crawl and index the site effectively.</p>
+                <p>This sitemap provides a structured list of all the important URLs on the Value Ceylon website.</p>
             </div>
 
             <div style="padding: 20px; font-size: 14px;">
+                <p>
+                    Total URLs:
+                    <strong>
+                        <xsl:value-of select="count(/s:urlset/s:url)"/>
+                    </strong>
+                </p>
+
                 <table>
                     <tr>
                         <th>URL</th>
                         <th>Change Frequency</th>
                         <th>Priority</th>
                     </tr>
+
                     <xsl:for-each select="/s:urlset/s:url">
                         <tr>
-                            <td><a href="{s:loc}"><xsl:value-of select="s:loc"/></a></td>
-                            <td><xsl:value-of select="s:changefreq"/></td>
-                            <td><xsl:value-of select="s:priority"/></td>
+                            <td>
+                                <a href="{s:loc}">
+                                    <xsl:value-of select="s:loc"/>
+                                </a>
+                            </td>
+                            <td>
+                                <xsl:value-of select="s:changefreq"/>
+                            </td>
+                            <td>
+                                <xsl:value-of select="s:priority"/>
+                            </td>
                         </tr>
                     </xsl:for-each>
                 </table>
@@ -45,3 +62,4 @@
         </html>
     </xsl:template>
 </xsl:stylesheet>
+
