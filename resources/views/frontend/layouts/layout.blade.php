@@ -63,7 +63,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
@@ -101,13 +103,19 @@
     </script>
 
     <style>
-        :root{
+        :root {
             --blue: #3490f3;
             --hov-blue: #2e7fd6;
             --soft-blue: rgba(0, 123, 255, 0.15);
-            --secondary-base: {{ get_setting('secondary_base_color', '#ffc519') }};
-            --hov-secondary-base: {{ get_setting('secondary_base_hov_color', '#dbaa17') }};
-            --soft-secondary-base: {{ hex2rgba(get_setting('secondary_base_color', '#ffc519'), 0.15) }};
+            --secondary-base:
+                {{ get_setting('secondary_base_color', '#ffc519') }}
+            ;
+            --hov-secondary-base:
+                {{ get_setting('secondary_base_hov_color', '#dbaa17') }}
+            ;
+            --soft-secondary-base:
+                {{ hex2rgba(get_setting('secondary_base_color', '#ffc519'), 0.15) }}
+            ;
             --gray: #9d9da6;
             --gray-dark: #8d8d8d;
             --secondary: #919199;
@@ -121,11 +129,18 @@
             --soft-white: #b5b5bf;
             --dark: #292933;
             --soft-dark: #1b1b28;
-            --primary: {{ get_setting('base_color', '#d43533') }};
-            --hov-primary: {{ get_setting('base_hov_color', '#9d1b1a') }};
-            --soft-primary: {{ hex2rgba(get_setting('base_color', '#d43533'), 0.15) }};
+            --primary:
+                {{ get_setting('base_color', '#d43533') }}
+            ;
+            --hov-primary:
+                {{ get_setting('base_hov_color', '#9d1b1a') }}
+            ;
+            --soft-primary:
+                {{ hex2rgba(get_setting('base_color', '#d43533'), 0.15) }}
+            ;
         }
-        body{
+
+        body {
             font-family: 'Public Sans', sans-serif;
             font-weight: 400;
         }
@@ -142,51 +157,68 @@
             border-radius: 0 !important;
             color: var(--dark);
         }
+
         .pagination .page-item {
             margin: 0 5px;
         }
 
-        .aiz-carousel.coupon-slider .slick-track{
+        .aiz-carousel.coupon-slider .slick-track {
             margin-left: 0;
         }
 
         .form-control:focus {
             border-width: 2px !important;
         }
+
         .iti__flag-container {
             padding: 2px;
         }
+
         .modal-content {
             border: 0 !important;
             border-radius: 0 !important;
         }
 
-        .tagify.tagify--focus{
+        .tagify.tagify--focus {
             border-width: 2px;
             border-color: var(--primary);
         }
 
-        #map{
-            width: 100%;
-            height: 250px;
-        }
-        #edit_map{
+        #map {
             width: 100%;
             height: 250px;
         }
 
-        .pac-container { z-index: 100000; }
+        #edit_map {
+            width: 100%;
+            height: 250px;
+        }
+
+        .pac-container {
+            z-index: 100000;
+        }
     </style>
 
 
 
 
 
-@php
-    echo get_setting('header_script');
-@endphp
-@vite(['resources/scss/app.scss', 'resources/js/app.js'])
+    @php
+        echo get_setting('header_script');
+    @endphp
+    <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
+    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
+    <!-- Reverting to manual include or commenting out if not strictly needed immediately to fix error, 
+         but based on webpack.mix.js, these are the targets. 
+         However, let's just comment out the vite line first or replace it with the mix output if intended. 
+         Given the user didn't ask to add mix, just fixing the error. 
+         But wait, if app.js is needed for functionality (vue components?), I should include it.
+         I'll include them using the asset helper.
+    -->
+    <link rel="stylesheet" href="{{ static_asset('css/app.css') }}">
+    <script src="{{ static_asset('js/app.js') }}" defer></script>
 </head>
+
 <body>
     <!-- aiz-main-wrapper -->
     <div class="aiz-main-wrapper d-flex flex-column bg-white">
@@ -219,4 +251,5 @@
     </script>
 
 </body>
+
 </html>

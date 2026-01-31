@@ -836,7 +836,7 @@ class HomeController extends Controller
     {
         return view('frontend.terms');
     }
-        public function policy_section()
+    public function policy_section()
     {
         return view('frontend.policy');
     }
@@ -851,7 +851,7 @@ class HomeController extends Controller
     {
         return view('frontend.contact');
     }
-        public function our_services()
+    public function our_services()
     {
         return view('frontend.our_services');
     }

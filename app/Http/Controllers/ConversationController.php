@@ -70,11 +70,18 @@ class ConversationController extends Controller
      */
     public function store(Request $request)
     {
-        $user_type = Product::findOrFail($request->product_id)->user->user_type;
+        $product = Product::findOrFail($request->product_id);
+
+        if ($product->user == null) {
+            flash(translate('Unable to send message: Seller information is missing.'))->error();
+            return back();
+        }
+
+        $user_type = $product->user->user_type;
 
         $conversation = new Conversation;
         $conversation->sender_id = Auth::user()->id;
-        $conversation->receiver_id = Product::findOrFail($request->product_id)->user->id;
+        $conversation->receiver_id = $product->user->id;
         $conversation->title = $request->title;
 
         if ($conversation->save()) {
@@ -95,7 +102,7 @@ class ConversationController extends Controller
     public function send_message_to_seller($conversation, $message, $user_type)
     {
         $array['view'] = 'emails.conversation';
-        $array['subject'] = translate('Sender').':- '. Auth::user()->name;
+        $array['subject'] = translate('Sender') . ':- ' . Auth::user()->name;
         $array['from'] = env('MAIL_FROM_ADDRESS');
         $array['content'] = translate('Hi! You recieved a message from ') . Auth::user()->name . '.';
         $array['sender'] = Auth::user()->name;
@@ -150,7 +157,7 @@ class ConversationController extends Controller
             $conversation->receiver_viewed = 1;
             $conversation->save();
         }
-        return view('frontend.'.get_setting('homepage_select').'.partials.messages', compact('conversation'));
+        return view('frontend.' . get_setting('homepage_select') . '.partials.messages', compact('conversation'));
     }
 
     /**

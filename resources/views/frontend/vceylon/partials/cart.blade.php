@@ -1,7 +1,7 @@
 @php
     $total = 0;
     $carts = get_user_cart();
-    if(count($carts) > 0) {
+    if (count($carts) > 0) {
         foreach ($carts as $key => $cartItem) {
             $product = get_single_product($cartItem['product_id']);
             $total = $total + cart_product_price($cartItem, $product, false) * $cartItem['quantity'];
@@ -9,9 +9,12 @@
     }
 @endphp
 <!-- Cart button with cart count -->
-<a href="javascript:void(0)" class="d-flex align-items-center text-dark  h-100" data-toggle="dropdown" data-display="static" title="{{translate('Cart')}}">
-    <span class="mr-2">
+<a href="javascript:void(0)" class="d-flex align-items-center text-dark  h-100" data-toggle="dropdown"
+    data-display="static" title="{{translate('Cart')}}">
+    <span class="mr-2 position-relative">
         <img src="{{ static_asset('/assets/img/icons/cart.png') }}" alt="" class="img-fluid image-icon">
+        <span class="badge badge-primary badge-inline badge-pill cart-count position-absolute"
+            style="top: -10px; right: -10px;">{{ count($carts) > 0 ? count($carts) : 0 }}</span>
     </span>
     <span class="d-none d-xl-block ml-2 fs-14 fw-700 ">{{ single_price($total) }}</span>
     <span class="nav-box-text d-none d-xl-block ml-2  fs-12">
@@ -40,11 +43,11 @@
                                 class="text-reset d-flex align-items-center flex-grow-1">
                                 <img src="{{ static_asset('assets/img/placeholder.jpg') }}"
                                     data-src="{{ uploaded_asset($product->thumbnail_img) }}"
-                                    class="img-fit lazyload size-60px has-transition"
-                                    alt="{{ $product->getTranslation('name') }}"
+                                    class="img-fit lazyload size-60px has-transition" alt="{{ $product->getTranslation('name') }}"
                                     onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
                                 <span class="minw-0 pl-2 flex-grow-1">
-                                    <span class="fw-700 fs-13 text-dark mb-2 text-truncate-2" title="{{ $product->getTranslation('name') }}">
+                                    <span class="fw-700 fs-13 text-dark mb-2 text-truncate-2"
+                                        title="{{ $product->getTranslation('name') }}">
                                         {{ $product->getTranslation('name') }}
                                     </span>
                                     <span class="fs-14 fw-400 text-secondary">{{ $cartItem['quantity'] }}x</span>
@@ -63,7 +66,8 @@
             @endforeach
         </ul>
         <!-- Subtotal -->
-        <div class="px-3 py-2 fs-15 border-top d-flex justify-content-between mx-4" style="border-color: #e5e5e5 !important;">
+        <div class="px-3 py-2 fs-15 border-top d-flex justify-content-between mx-4"
+            style="border-color: #e5e5e5 !important;">
             <span class="fs-14 fw-400 text-secondary">{{ translate('Subtotal') }}</span>
             <span class="fs-16 fw-700 text-dark">{{ single_price($total) }}</span>
         </div>
@@ -76,11 +80,11 @@
                     </a>
                 </div>
                 @if (Auth::check())
-                <div class="col-sm-6">
-                    <a href="{{ route('checkout.shipping_info') }}" class="btn btn-primary btn-sm btn-block rounded-4">
-                        {{ translate('Checkout') }}
-                    </a>
-                </div>
+                    <div class="col-sm-6">
+                        <a href="{{ route('checkout.shipping_info') }}" class="btn btn-primary btn-sm btn-block rounded-4">
+                            {{ translate('Checkout') }}
+                        </a>
+                    </div>
                 @endif
             </div>
         </div>

@@ -109,7 +109,8 @@
                         <tr>
                             <td><strong>Price / Discount</strong></td>
                             <td>
-                                <p>${{ $detailedProduct->unit_price - $detailedProduct->discount }} / @if ($detailedProduct->discount != 0)
+                                <p>${{ $detailedProduct->unit_price - $detailedProduct->discount }} /
+                                    @if ($detailedProduct->discount != 0)
                                         ${{ $detailedProduct->discount }} OFF
                                     @else
                                         No Discounts
@@ -209,12 +210,12 @@
                         <tr>
                             <td style="width:20%"><strong>Company Name</strong></td>
                             <td>
-                                @if ($detailedProduct->user->shop)
+                                @if ($detailedProduct->user && $detailedProduct->user->shop)
                                     <p>{{ $detailedProduct->user->shop->name }} <a
                                             href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}"
                                             class="btn btn-primary btn-xs">Go to shop home page</a> </p>
                                 @endif
-                                @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1)
+                                @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1 && $detailedProduct->user && $detailedProduct->user->shop)
                                     <p class="float-none">
                                         <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}"
                                             class="avatar avatar-lg mr-2 overflow-hidden border float-left float-lg-none float-xl-left">
@@ -240,27 +241,27 @@
 
                         <tr>
                             <td style="width:20%"><strong>Legal Status</strong></td>
-                            <td> {{ $detailedProduct->user->type_of_registration }} </td>
+                            <td> {{ optional($detailedProduct->user)->type_of_registration }} </td>
                         </tr>
 
                         <tr>
                             <td style="width:20%"><strong>Company Address</strong></td>
-                            <td> {{ $detailedProduct->user->company_address }} </td>
+                            <td> {{ optional($detailedProduct->user)->company_address }} </td>
                         </tr>
 
                         <tr>
                             <td style="width:20%"><strong>Year Established</strong></td>
-                            <td> {{ $detailedProduct->user->br_registration_date }} </td>
+                            <td> {{ optional($detailedProduct->user)->br_registration_date }} </td>
                         </tr>
 
                         <tr>
                             <td style="width:20%"><strong>Number of employees</strong></td>
-                            <td> {{ $detailedProduct->user->number_of_employees }} </td>
+                            <td> {{ optional($detailedProduct->user)->number_of_employees }} </td>
                         </tr>
 
                         <tr>
                             <td style="width:20%"><strong>Manufacturing capacity</strong></td>
-                            <td> {{ $detailedProduct->user->manufacturing_capacity }} </td>
+                            <td> {{ optional($detailedProduct->user)->manufacturing_capacity }} </td>
                         </tr>
 
                         <tr>
@@ -275,23 +276,23 @@
 
                         <tr>
                             <td style="width:20%"><strong>Creator designation</strong></td>
-                            <td> {{ $detailedProduct->user->your_designation }} </td>
+                            <td> {{ optional($detailedProduct->user)->your_designation }} </td>
                         </tr>
 
 
                         <tr>
                             <td style="width:20%"><strong>Business Registration</strong></td>
-                            <td> {{ $detailedProduct->user->br_number }} </td>
+                            <td> {{ optional($detailedProduct->user)->br_number }} </td>
                         </tr>
 
                         <tr>
                             <td style="width:20%"><strong>Business Registration Date</strong></td>
-                            <td> {{ $detailedProduct->user->br_registration_date }} </td>
+                            <td> {{ optional($detailedProduct->user)->br_registration_date }} </td>
                         </tr>
 
                         <tr>
                             <td style="width:20%"><strong>Website</strong></td>
-                            <td> {{ $detailedProduct->user->company_website }} </td>
+                            <td> {{ optional($detailedProduct->user)->company_website }} </td>
                         </tr>
 
                         <tr>
@@ -327,7 +328,7 @@
                         </label>
                         <div class="form-group col-md-9">
                             <input type="email" class="form-control" name="to_mail"
-                                value="{{ $detailedProduct->user->email }}" disabled>
+                                value="{{ optional($detailedProduct->user)->email }}" disabled>
                         </div>
                     </div>
 
@@ -346,7 +347,8 @@
                             Message *
                         </label>
                         <div class="form-group col-md-9">
-                            <textarea class="form-control" name="message" id="target-textbox" cols="30" rows="10"></textarea>
+                            <textarea class="form-control" name="message" id="target-textbox" cols="30"
+                                rows="10"></textarea>
                         </div>
                     </div>
 
@@ -383,12 +385,12 @@
 </div>
 
 <script>
- 
- document.addEventListener("DOMContentLoaded", function() {
-  document.querySelector('.clickable-text').click(function() {
-    var textToAppend = document.querySelector(this).text();
-    document.querySelector('#target-textarea').val(document.querySelector('#target-textarea').val() + ' ' + textToAppend);
-  });
-});
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector('.clickable-text').click(function () {
+            var textToAppend = document.querySelector(this).text();
+            document.querySelector('#target-textarea').val(document.querySelector('#target-textarea').val() + ' ' + textToAppend);
+        });
+    });
 
 </script>
