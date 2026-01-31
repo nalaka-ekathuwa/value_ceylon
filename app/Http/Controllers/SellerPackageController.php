@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\SellerPackage;
-use App\Models\SellerPackageTranslation;
-use App\Models\SellerPackagePayment;
-use App\Models\Shop;
-use Artisan;
 use Auth;
+use Artisan;
 use Session;
 use Carbon\Carbon;
+use App\Models\Shop;
+use Illuminate\Http\Request;
+use App\Models\SellerPackage;
+use Illuminate\Support\Facades\Log;
+use App\Models\SellerPackagePayment;
+use App\Models\SellerPackageTranslation;
 
 class SellerPackageController extends Controller
 {
@@ -195,6 +196,7 @@ class SellerPackageController extends Controller
     public function purchase_payment_done($payment_data, $payment)
     {
         $seller = Auth::user()->shop;
+      
         $seller->seller_package_id = Session::get('payment_data')['seller_package_id'];
         $seller_package = SellerPackage::findOrFail(Session::get('payment_data')['seller_package_id']);
         $seller->product_upload_limit = $seller_package->product_upload_limit;
