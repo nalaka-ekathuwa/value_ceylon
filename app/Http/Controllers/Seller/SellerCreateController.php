@@ -25,9 +25,9 @@ class SellerCreateController extends Controller
     public function stepOne()
     {
         if (Auth::check() && Auth::user()->user_type == 'seller') {
-                flash(translate('This user already a seller'))->error();
-                return back();
-            
+            flash(translate('This user already a seller'))->error();
+            return back();
+
         } else {
             $countries = Country::all();
             $currencies = Currency::where('status', 1)->get();
@@ -46,15 +46,14 @@ class SellerCreateController extends Controller
 
         $validated_data = $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email|unique:users|max:255',
-            'mobile_number'      => 'required|max:255',
-            'nic_no'    => 'nullable|string',
-            'country'   => 'required|string',
-            'state'    => 'nullable|string',
-            'city'    => 'nullable|string',
-            'currency'    => 'required|integer',
-            'language'    => 'required|integer',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users|max:255',
+            'mobile_number' => 'required|max:255',
+            'nic_no' => 'nullable|string',
+            'country' => 'required|string',
+            'state' => 'nullable|string',
+            'city' => 'nullable|string',
+            'currency' => 'required|integer',
         ]);
 
         $user = new User;
@@ -68,7 +67,7 @@ class SellerCreateController extends Controller
         $user->state = $request->state;
         $user->city = $request->city;
         $user->currency = $request->currency;
-        $user->language = $request->language;
+        $user->language = 1;
         $user->user_type = "seller";
         $user->password = Hash::make(bin2hex(random_bytes(4)));
         $user->has_seller_account = 1;
@@ -110,20 +109,20 @@ class SellerCreateController extends Controller
         }
 
         $validated = $request->validate([
-            'seller_type'      => 'required',
-            'business_name'    => 'required|string|max:255',
-            'business_address'      => 'required',
-            'business_description'    => 'nullable|string|max:5000',
-            'type_of_registration'    => 'required|string|max:255',
-            'br_number'    => 'nullable|string|max:255',
-            'company_website'    => 'nullable|string|max:255',
-            'br_registration_date'    => 'nullable|date',
-            'number_of_employees'    => 'nullable|integer',
-            'your_designation'      => 'required',
-            'manufacturing_capacity'      => 'nullable',
-            'slmc_reg_no'      => 'required',
-            'licence_exp_date'      => 'required',
-            'pharmacist_name'      => 'nullable',
+            'seller_type' => 'required',
+            'business_name' => 'required|string|max:255',
+            'business_address' => 'required',
+            'business_description' => 'nullable|string|max:5000',
+            'type_of_registration' => 'required|string|max:255',
+            'br_number' => 'nullable|string|max:255',
+            'company_website' => 'nullable|string|max:255',
+            'br_registration_date' => 'nullable|date',
+            'number_of_employees' => 'nullable|integer',
+            'your_designation' => 'nullable',
+            'manufacturing_capacity' => 'nullable',
+            'nmra_reg_no' => 'required',
+            'licence_exp_date' => 'required',
+            'pharmacist_name' => 'nullable',
         ]);
 
         $user->seller_account_complete_level = 2;
@@ -147,7 +146,7 @@ class SellerCreateController extends Controller
             $shop->meta_description = $request->business_description;
             $shop->phone = $request->phone;
             $shop->address = $request->business_address;
-            $shop->slmc_reg_no = $request->slmc_reg_no;
+            $shop->nmra_reg_no = $request->nmra_reg_no;
             $shop->licence_exp_date = $request->licence_exp_date;
             $shop->pharmacist_name = $request->pharmacist_name;
             $shop->slug = preg_replace('/\s+/', '-', str_replace("/", " ", $request->shop_name));
@@ -162,8 +161,8 @@ class SellerCreateController extends Controller
     {
 
         $categories = Category::where('level', "0")->get();
-        
-        return view('frontend.seller_form_step_3',[
+
+        return view('frontend.seller_form_step_3', [
             'categories' => $categories
         ]);
     }
@@ -176,8 +175,8 @@ class SellerCreateController extends Controller
         }
 
         $validated = $request->validate([
-            'product_category'    => 'required|string|max:255',
-            'password'      => 'required|string|min:6|confirmed',
+            'product_category' => 'required|string|max:255',
+            'password' => 'required|string|min:6|confirmed',
             'certificates' => 'nullable',
         ]);
 
@@ -193,9 +192,9 @@ class SellerCreateController extends Controller
             foreach ($files as $file) {
                 $originalFilename = $file->getClientOriginalName();
                 $filename = uniqid() . '.' . $file->getClientOriginalExtension(); // Generate unique filename
-    
+
                 $file->storeAs('shop_files', $filename); // Save file in 'shop_files' directory
-    
+
                 ShopFile::create([
                     'original_name' => $originalFilename,
                     'filename' => $filename,
@@ -204,10 +203,10 @@ class SellerCreateController extends Controller
             }
 
             // dd(ShopFile::all());
-        
+
         }
         return redirect()->route("seller.create-step-4");
-        
+
     }
 
     public function stepFour()

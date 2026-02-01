@@ -130,10 +130,12 @@
 
                                 <div class="form-group">
                                     <label>{{ translate('Country or region') }} <span class="text-primary">*</span></label>
-                                    <input type="text"
-                                        class="form-control rounded-0{{ $errors->has('country') ? ' is-invalid' : '' }}"
-                                        value="{{ old('country') }}" placeholder="{{ translate('Country or region') }}"
-                                        name="country" required>
+                                    <select class="form-control rounded-0 {{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" required>
+                                        <option value="">{{ translate('Select Country') }}</option>
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->name }}" @if(old('country') == $country->name || (old('country') == null && $country->name == 'Sri Lanka')) selected @endif>{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
                                     @error('country')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -176,26 +178,26 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
-                                    <label>{{ translate('Language') }} <span class="text-primary">*</span></label>
-                                    <select name="language" id="language"
-                                        class="form-control {{ $errors->has('currency') ? ' is-invalid' : '' }}">
-                                        <option value="">Select language</option>
-                                        @forelse ($languages as $language)
-                                            <option value="{{ $language->id }}" {{ $language->id == 1 ? 'selected' : '' }}>
-                                                {{ $language->name }}
-                                            </option>
-                                        @empty
-                                            <option value=""></option>
-                                        @endforelse
-                                    </select>
+                                <!-- <div class="form-group">
+                                            <label>{{ translate('Language') }} <span class="text-primary">*</span></label>
+                                            <select name="language" id="language"
+                                                class="form-control {{ $errors->has('currency') ? ' is-invalid' : '' }}">
+                                                <option value="">Select language</option>
+                                                @forelse ($languages as $language)
+                                                    <option value="{{ $language->id }}" {{ $language->id == 1 ? 'selected' : '' }}>
+                                                        {{ $language->name }}
+                                                    </option>
+                                                @empty
+                                                    <option value=""></option>
+                                                @endforelse
+                                            </select>
 
-                                    @error('language')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                                            @error('language')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div> -->
 
                             </div>
                         </div>
