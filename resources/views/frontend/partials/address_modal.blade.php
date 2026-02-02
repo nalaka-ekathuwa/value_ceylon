@@ -46,7 +46,9 @@
                             </div>
                             <div class="col-md-10">
                                 <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="state_id" required>
-
+                                    @foreach ($states as $key => $state)
+                                        <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -58,7 +60,9 @@
                             </div>
                             <div class="col-md-10">
                                 <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="city_id" required>
-
+                                    @foreach (get_active_cities() as $key => $city)
+                                        <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

@@ -319,16 +319,17 @@
                         <span class="d-flex align-items-center nav-user-info ml-3">
                             <!-- Image -->
                             <!-- <span
-                                    class="size-40px rounded-circle overflow-hidden border d-flex align-items-center justify-content-center nav-user-img">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="19.902" height="20.012"
-                                        viewBox="0 0 19.902 20.012">
-                                        <path id="fe2df171891038b33e9624c27e96e367"
-                                            d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1.006,1.006,0,1,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1,10,10,0,0,0-6.25-8.19ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"
-                                            transform="translate(-2.064 -1.995)" fill="#91919b" />
-                                    </svg>
-                                </span> -->
+                                                                class="size-40px rounded-circle overflow-hidden border d-flex align-items-center justify-content-center nav-user-img">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="19.902" height="20.012"
+                                                                    viewBox="0 0 19.902 20.012">
+                                                                    <path id="fe2df171891038b33e9624c27e96e367"
+                                                                        d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1.006,1.006,0,1,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1,10,10,0,0,0-6.25-8.19ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"
+                                                                        transform="translate(-2.064 -1.995)" fill="#91919b" />
+                                                                </svg>
+                                                            </span> -->
                             <a href="{{ route('user.login') }}"
-                                class="text-white bg-primary pl-3 pr-3 fs-12 d-inline-block border-right  border-width-2 p-2 ml-3 shadow-sm rounded">{{ translate('Login') }}</a>
+                                class="text-black pl-3 pr-3 fs-12 d-inline-block border-right  border-width-2 p-2 ml-3 mr-1 shadow-sm rounded"
+                                style="background-color: #e2e6fd !important; color: #000 !important; font-weight: 500;">{{ translate('Login') }}</a>
                             <a href="{{ route('user.registration') }}"
                                 class="text-white bg-primary pl-3 pr-3 fs-12 d-inline-block p-2 shadow-sm rounded">{{ translate('Registration') }}</a>
                         </span>
@@ -782,7 +783,7 @@
                     <li class="mr-0">
                         <a href="{{ route('dashboard') }}"
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                {{ areActiveRoutes(['dashboard'], ' active') }}">
+                                                                                                                                                        {{ areActiveRoutes(['dashboard'], ' active') }}">
                             <img src="{{ static_asset('assets/img/icons/view-profile.png') }}" alt=""
                                 class="img-fluid image-icon">
                             {{ translate('My Account') }}
@@ -793,7 +794,7 @@
                     <li class="mr-0">
                         <a href="{{ route('all-notifications') }}"
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                {{ areActiveRoutes(['all-notifications'], ' active') }}">
+                                                                                                                                                        {{ areActiveRoutes(['all-notifications'], ' active') }}">
                             <img src="{{ static_asset('assets/img/icons/my-inquiries.png') }}" alt=""
                                 class="img-fluid image-icon">
                             {{ translate('Notifications') }}
@@ -802,7 +803,7 @@
                     <li class="mr-0">
                         <a href="{{ route('wishlists.index') }}"
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                {{ areActiveRoutes(['wishlists.index'], ' active') }}">
+                                                                                                                                                        {{ areActiveRoutes(['wishlists.index'], ' active') }}">
                             <img src="{{ static_asset('assets/img/icons/wishlist.png') }}" alt="" class="img-fluid image-icon">
                             {{ translate('Wishlist') }}
                         </a>
