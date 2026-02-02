@@ -40,18 +40,18 @@ class AddressController extends Controller
     {
         $address = new Address;
         if ($request->has('customer_id')) {
-            $address->user_id = $request->customer_id;
+            $address->user_id   = $request->customer_id;
         } else {
-            $address->user_id = Auth::user()->id;
+            $address->user_id   = Auth::user()->id;
         }
-        $address->address = $request->address;
-        $address->country_id = $request->country_id;
-        $address->state_id = $request->state_id;
-        $address->city_id = $request->city_id;
-        $address->longitude = $request->longitude;
-        $address->latitude = $request->latitude;
-        $address->postal_code = $request->postal_code;
-        $address->phone = $request->phone;
+        $address->address       = $request->address;
+        $address->country_id    = $request->country_id;
+        $address->state_id      = $request->state_id;
+        $address->city_id       = $request->city_id;
+        $address->longitude     = $request->longitude;
+        $address->latitude      = $request->latitude;
+        $address->postal_code   = $request->postal_code;
+        $address->phone         = $request->phone;
         $address->save();
 
         flash(translate('Address info Stored successfully'))->success();
@@ -79,13 +79,9 @@ class AddressController extends Controller
     {
         $data['address_data'] = Address::findOrFail($id);
         $data['states'] = State::where('status', 1)->where('country_id', $data['address_data']->country_id)->get();
-        if ($data['address_data']->state_id) {
-            $data['cities'] = City::where('status', 1)->where('state_id', $data['address_data']->state_id)->get();
-        } else {
-            $data['cities'] = City::where('status', 1)->where('country_id', $data['address_data']->country_id)->get();
-        }
+        $data['cities'] = City::where('status', 1)->where('state_id', $data['address_data']->state_id)->get();
 
-        $returnHTML = view('frontend.' . get_setting('homepage_select') . '.partials.address_edit_modal', $data)->render();
+        $returnHTML = view('frontend.'.get_setting('homepage_select').'.partials.address_edit_modal', $data)->render();
         return response()->json(array('data' => $data, 'html' => $returnHTML));
         //        return ;
     }
@@ -101,14 +97,14 @@ class AddressController extends Controller
     {
         $address = Address::findOrFail($id);
 
-        $address->address = $request->address;
-        $address->country_id = $request->country_id;
-        $address->state_id = $request->state_id;
-        $address->city_id = $request->city_id;
-        $address->longitude = $request->longitude;
-        $address->latitude = $request->latitude;
-        $address->postal_code = $request->postal_code;
-        $address->phone = $request->phone;
+        $address->address       = $request->address;
+        $address->country_id    = $request->country_id;
+        $address->state_id      = $request->state_id;
+        $address->city_id       = $request->city_id;
+        $address->longitude     = $request->longitude;
+        $address->latitude      = $request->latitude;
+        $address->postal_code   = $request->postal_code;
+        $address->phone         = $request->phone;
 
         $address->save();
 
@@ -147,15 +143,7 @@ class AddressController extends Controller
 
     public function getCities(Request $request)
     {
-        if ($request->has('state_id')) {
-            $cities = City::where('status', 1)->where('state_id', $request->state_id)->get();
-        } elseif ($request->has('country_id')) {
-            $cities = City::where('status', 1)->whereHas('state', function ($q) use ($request) {
-                $q->where('country_id', $request->country_id);
-            })->get();
-        } else {
-            $cities = City::where('status', 1)->get();
-        }
+        $cities = City::where('status', 1)->where('state_id', $request->state_id)->get();
         $html = '<option value="">' . translate("Select City") . '</option>';
 
         foreach ($cities as $row) {

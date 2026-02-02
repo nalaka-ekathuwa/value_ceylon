@@ -123,15 +123,6 @@ if (!function_exists('get_active_countries')) {
     }
 }
 
-// get all cities
-if (!function_exists('get_active_cities')) {
-    function get_active_cities()
-    {
-        $city_query = City::query();
-        return $city_query->get();
-    }
-}
-
 //filter products based on vendor activation system
 if (!function_exists('filter_products')) {
     function filter_products($products)

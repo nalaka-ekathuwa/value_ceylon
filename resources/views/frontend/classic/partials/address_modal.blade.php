@@ -30,13 +30,24 @@
                             <div class="col-md-10">
                                 <div class="mb-3">
                                     <select class="form-control aiz-selectpicker rounded-0" data-live-search="true" data-placeholder="{{ translate('Select your country') }}" name="country_id" required>
+                                        <option value="">{{ translate('Select your country') }}</option>
                                         @foreach (get_active_countries() as $key => $country)
-                                            @if($country->name == 'Sri Lanka')
-                                                <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
-                                            @endif
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- State -->
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>{{ translate('State')}}</label>
+                            </div>
+                            <div class="col-md-10">
+                                <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="state_id" required>
+
+                                </select>
                             </div>
                         </div>
 
@@ -137,10 +148,6 @@
     <script type="text/javascript">
         function add_new_address(){
             $('#new-address-modal').modal('show');
-            var country_id = $('[name=country_id]').val();
-            if(country_id != null){
-                get_cities(country_id);
-            }
         }
 
         function edit_address(address) {
@@ -175,11 +182,37 @@
         
         $(document).on('change', '[name=country_id]', function() {
             var country_id = $(this).val();
-            get_cities(country_id);
+            get_states(country_id);
         });
 
-        function get_cities(country_id) {
-            $('[name="city_id"]').html("");
+        $(document).on('change', '[name=state_id]', function() {
+            var state_id = $(this).val();
+            get_city(state_id);
+        });
+        
+        function get_states(country_id) {
+            $('[name="state"]').html("");
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{route('get-state')}}",
+                type: 'POST',
+                data: {
+                    country_id  : country_id
+                },
+                success: function (response) {
+                    var obj = JSON.parse(response);
+                    if(obj != '') {
+                        $('[name="state_id"]').html(obj);
+                        AIZ.plugins.bootstrapSelect('refresh');
+                    }
+                }
+            });
+        }
+
+        function get_city(state_id) {
+            $('[name="city"]').html("");
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -187,7 +220,7 @@
                 url: "{{route('get-city')}}",
                 type: 'POST',
                 data: {
-                    country_id: country_id
+                    state_id: state_id
                 },
                 success: function (response) {
                     var obj = JSON.parse(response);
