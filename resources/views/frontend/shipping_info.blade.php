@@ -68,6 +68,7 @@
                                                     <!-- Checkbox -->
                                                     <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
                                                     <!-- Address -->
+                                                     {{ Log::info($address) }}
                                                     <span class="flex-grow-1 pl-3 text-left">
                                                         <div class="row">
                                                             <span class="fs-14 text-secondary col-3">{{ translate('Address') }}</span>
@@ -82,8 +83,8 @@
                                                             <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->city)->name }}</span>
                                                         </div>
                                                         <div class="row">
-                                                            <span class="fs-14 text-secondary col-3">{{ translate('State') }}</span>
-                                                            <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->state)->name }}</span>
+                                                            <span class="fs-14 text-secondary col-3">{{ translate('District') }}</span>
+                                                            <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->district)->name_en }}</span>
                                                         </div>
                                                         <div class="row">
                                                             <span class="fs-14 text-secondary col-3">{{ translate('Country') }}</span>

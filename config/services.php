@@ -37,21 +37,21 @@ return [
     ],
 
     'google' => [
-        'client_id'     => env('GOOGLE_CLIENT_ID'),
+        'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect'      => env('APP_URL').'/social-login/google/callback',
+        'redirect' => env('APP_URL') . '/social-login/google/callback',
     ],
 
     'facebook' => [
-        'client_id'     => env('FACEBOOK_CLIENT_ID'),
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        'redirect'      => env('APP_URL').'/social-login/facebook/callback',
+        'redirect' => env('APP_URL') . '/social-login/facebook/callback',
     ],
 
     'twitter' => [
-        'client_id'     => env('TWITTER_CLIENT_ID'),
+        'client_id' => env('TWITTER_CLIENT_ID'),
         'client_secret' => env('TWITTER_CLIENT_SECRET'),
-        'redirect'      => env('APP_URL').'/social-login/twitter/callback',
+        'redirect' => env('APP_URL') . '/social-login/twitter/callback',
     ],
 
     'paytm-wallet' => [
@@ -61,6 +61,12 @@ return [
         'merchant_website' => env('PAYTM_MERCHANT_WEBSITE'),
         'channel' => env('PAYTM_CHANNEL'),
         'industry_type' => env('PAYTM_INDUSTRY_TYPE'),
+    ],
+
+    'payhere' => [
+        'merchant_id' => env('PAYHERE_MERCHANT_ID'),
+        'secret' => env('PAYHERE_SECRET'),
+        'currency' => env('PAYHERE_CURRENCY'),
     ],
 
 ];

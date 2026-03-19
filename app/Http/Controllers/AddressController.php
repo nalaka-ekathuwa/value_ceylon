@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Models\Address;
 use App\Models\City;
 use App\Models\State;
+use App\Models\District;
 use Auth;
 
 class AddressController extends Controller
@@ -40,18 +42,18 @@ class AddressController extends Controller
     {
         $address = new Address;
         if ($request->has('customer_id')) {
-            $address->user_id   = $request->customer_id;
+            $address->user_id = $request->customer_id;
         } else {
-            $address->user_id   = Auth::user()->id;
+            $address->user_id = Auth::user()->id;
         }
-        $address->address       = $request->address;
-        $address->country_id    = $request->country_id;
-        $address->state_id      = $request->state_id;
-        $address->city_id       = $request->city_id;
-        $address->longitude     = $request->longitude;
-        $address->latitude      = $request->latitude;
-        $address->postal_code   = $request->postal_code;
-        $address->phone         = $request->phone;
+        $address->address = $request->address;
+        $address->country_id = $request->country_id;
+        $address->district_id = $request->district_id;
+        $address->city_id = $request->city_id;
+        $address->longitude = $request->longitude;
+        $address->latitude = $request->latitude;
+        $address->postal_code = $request->postal_code;
+        $address->phone = $request->phone;
         $address->save();
 
         flash(translate('Address info Stored successfully'))->success();
@@ -73,15 +75,15 @@ class AddressController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($id)
     {
         $data['address_data'] = Address::findOrFail($id);
-        $data['states'] = State::where('status', 1)->where('country_id', $data['address_data']->country_id)->get();
-        $data['cities'] = City::where('status', 1)->where('state_id', $data['address_data']->state_id)->get();
+        //$data['districts'] = District::where('status', 1)->where('country_id', $data['address_data']->country_id)->get();
+        $data['cities'] = City::where('status', 1)->where('district_id', $data['address_data']->district_id)->get();
 
-        $returnHTML = view('frontend.'.get_setting('homepage_select').'.partials.address_edit_modal', $data)->render();
+        $returnHTML = view('frontend.' . get_setting('homepage_select') . '.partials.address_edit_modal', $data)->render();
         return response()->json(array('data' => $data, 'html' => $returnHTML));
         //        return ;
     }
@@ -97,14 +99,14 @@ class AddressController extends Controller
     {
         $address = Address::findOrFail($id);
 
-        $address->address       = $request->address;
-        $address->country_id    = $request->country_id;
-        $address->state_id      = $request->state_id;
-        $address->city_id       = $request->city_id;
-        $address->longitude     = $request->longitude;
-        $address->latitude      = $request->latitude;
-        $address->postal_code   = $request->postal_code;
-        $address->phone         = $request->phone;
+        $address->address = $request->address;
+        $address->country_id = $request->country_id;
+        $address->state_id = $request->state_id;
+        $address->city_id = $request->city_id;
+        $address->longitude = $request->longitude;
+        $address->latitude = $request->latitude;
+        $address->postal_code = $request->postal_code;
+        $address->phone = $request->phone;
 
         $address->save();
 
@@ -143,11 +145,11 @@ class AddressController extends Controller
 
     public function getCities(Request $request)
     {
-        $cities = City::where('status', 1)->where('state_id', $request->state_id)->get();
+        $cities = City::where('status', 1)->where('district_id', $request->district_id)->get();
         $html = '<option value="">' . translate("Select City") . '</option>';
 
         foreach ($cities as $row) {
-            $html .= '<option value="' . $row->id . '">' . $row->getTranslation('name') . '</option>';
+            $html .= '<option value="' . $row->id . '" data-postcode="' . $row->postcode . '">' . $row->getTranslation('name') . '</option>';
         }
 
         echo json_encode($html);

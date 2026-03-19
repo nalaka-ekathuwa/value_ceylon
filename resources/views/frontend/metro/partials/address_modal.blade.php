@@ -151,6 +151,7 @@
         }
 
         function edit_address(address) {
+            
             var url = '{{ route("addresses.edit", ":id") }}';
             url = url.replace(':id', address);
             

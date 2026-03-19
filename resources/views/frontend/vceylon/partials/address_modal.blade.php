@@ -42,11 +42,14 @@
                         <!-- State -->
                         <div class="row">
                             <div class="col-md-2">
-                                <label>{{ translate('State')}}</label>
+                                <label>{{ translate('District')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="state_id" required>
-
+                                <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="district_id" required>
+                                    <option value="">{{ translate('Select your district') }}</option>
+                                    @foreach (get_active_districts() as $key => $district)
+                                        <option value="{{ $district->id }}">{{ $district->name_en }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -151,6 +154,7 @@
         }
 
         function edit_address(address) {
+            console.log(address);
             var url = '{{ route("addresses.edit", ":id") }}';
             url = url.replace(':id', address);
             
@@ -185,33 +189,39 @@
             get_states(country_id);
         });
 
-        $(document).on('change', '[name=state_id]', function() {
-            var state_id = $(this).val();
-            get_city(state_id);
+        $(document).on('change', '[name=district_id]', function() {
+            var district_id = $(this).val();
+            get_city(district_id);
+        });
+
+        $(document).on('change', '[name=city_id]', function() {
+            var city_id = $(this).val();
+            var postal_code = $(this).find('option:selected').data('postcode');
+            $('[name="postal_code"]').val(postal_code);
         });
         
-        function get_states(country_id) {
-            $('[name="state"]').html("");
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{route('get-state')}}",
-                type: 'POST',
-                data: {
-                    country_id  : country_id
-                },
-                success: function (response) {
-                    var obj = JSON.parse(response);
-                    if(obj != '') {
-                        $('[name="state_id"]').html(obj);
-                        AIZ.plugins.bootstrapSelect('refresh');
-                    }
-                }
-            });
-        }
+        // function get_states(country_id) {
+        //     $('[name="state"]').html("");
+        //     $.ajax({
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         url: "{{route('get-state')}}",
+        //         type: 'POST',
+        //         data: {
+        //             country_id  : country_id
+        //         },
+        //         success: function (response) {
+        //             var obj = JSON.parse(response);
+        //             if(obj != '') {
+        //                 $('[name="state_id"]').html(obj);
+        //                 AIZ.plugins.bootstrapSelect('refresh');
+        //             }
+        //         }
+        //     });
+        // }
 
-        function get_city(state_id) {
+        function get_city(district_id) {
             $('[name="city"]').html("");
             $.ajax({
                 headers: {
@@ -220,7 +230,7 @@
                 url: "{{route('get-city')}}",
                 type: 'POST',
                 data: {
-                    state_id: state_id
+                    district_id: district_id
                 },
                 success: function (response) {
                     var obj = JSON.parse(response);

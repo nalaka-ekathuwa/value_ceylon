@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-md-10">
                                 <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="state_id" required>
-
+                                    
                                 </select>
                             </div>
                         </div>
@@ -151,6 +151,7 @@
         }
 
         function edit_address(address) {
+            
             var url = '{{ route("addresses.edit", ":id") }}';
             url = url.replace(':id', address);
             

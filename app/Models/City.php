@@ -26,4 +26,9 @@ class City extends Model
     {
         return $this->belongsTo(State::class);
     }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
 }
