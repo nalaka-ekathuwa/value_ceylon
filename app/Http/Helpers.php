@@ -1202,7 +1202,7 @@ if (!function_exists('my_asset')) {
             return Storage::disk(config('filesystems.default'))->url($path);
         }
 
-        return app('url')->asset('' . $path, $secure); //removed 'public/' to fix missing image issue
+        return app('url')->asset('' . $path, $secure); //removed 'public/' to fix missing image issue. (live server need /public)
     }
 }
 
@@ -1216,7 +1216,7 @@ if (!function_exists('static_asset')) {
      */
     function static_asset($path, $secure = null)
     {
-        return app('url')->asset('' . $path, $secure); //removed 'public/' to fix missing image issue
+        return app('url')->asset('' . $path, $secure); //removed 'public/' to fix missing image issue (live server need /public)
     }
 }
 
