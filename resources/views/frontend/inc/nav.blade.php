@@ -172,7 +172,7 @@
     </div>
 </div>
 
-<header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 bg-white">
+<header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 bg-white shadow-sm">
     <!-- Search Bar -->
     <div class="position-relative logo-bar-area border-bottom border-md-nonea z-1025">
         <div class="container">
@@ -223,9 +223,9 @@
                                 </div>
                                 <div class="search-input-box">
                                     <input type="text"
-                                        class="border border-soft-light form-control fs-14 hov-popup-shadow" id="search"
+                                        class="border border-soft-light form-control fs-14 hov-popup-shadow rounded-pill px-4" id="search"
                                         name="keyword" @isset($query) value="{{ $query }}" @endisset
-                                        placeholder="{{ translate('I am shopping for...') }}" autocomplete="off">
+                                        placeholder="{{ translate('I am shopping for...') }}" autocomplete="off" style="box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
 
                                     <svg id="Group_723" data-name="Group 723" xmlns="http://www.w3.org/2000/svg"
                                         width="20.001" height="20" viewBox="0 0 20.001 20">
@@ -319,19 +319,22 @@
                         <span class="d-flex align-items-center nav-user-info ml-3">
                             <!-- Image -->
                             <!-- <span
-                                                class="size-40px rounded-circle overflow-hidden border d-flex align-items-center justify-content-center nav-user-img">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="19.902" height="20.012"
-                                                    viewBox="0 0 19.902 20.012">
-                                                    <path id="fe2df171891038b33e9624c27e96e367"
-                                                        d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1.006,1.006,0,1,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1,10,10,0,0,0-6.25-8.19ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"
-                                                        transform="translate(-2.064 -1.995)" fill="#91919b" />
-                                                </svg>
-                                            </span> -->
+                                                    class="size-40px rounded-circle overflow-hidden border d-flex align-items-center justify-content-center nav-user-img">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="19.902" height="20.012"
+                                                        viewBox="0 0 19.902 20.012">
+                                                        <path id="fe2df171891038b33e9624c27e96e367"
+                                                            d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1.006,1.006,0,1,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1,10,10,0,0,0-6.25-8.19ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"
+                                                            transform="translate(-2.064 -1.995)" fill="#91919b" />
+                                                    </svg>
+                                                </span> -->
                             <a href="{{ route('user.login') }}"
-                                class="pl-3 pr-3 fs-12 d-inline-block border-right  border-width-2 p-2 ml-3 mr-1 shadow-sm rounded"
-                                style="background-color: #e2e6fd; color: #000 !important;">{{ translate('Login') }}</a>
+                                class="px-4 fs-12 d-inline-block border border-width-2 py-2 ml-3 mr-2 shadow-sm rounded-pill font-weight-bold"
+                                style="background-color: transparent; border-color: #1b6ca8 !important; color: #1b6ca8 !important; transition: all 0.3s;"
+                                onmouseover="this.style.backgroundColor='#1b6ca8'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#1b6ca8';">{{ translate('Login') }}</a>
                             <a href="{{ route('user.registration') }}"
-                                class="text-white pl-3 pr-3 fs-12 d-inline-block p-2 shadow-sm rounded" style="background: #1b6ca8;">{{ translate('Registration') }}</a>
+                                class="text-white px-4 fs-12 d-inline-block py-2 shadow-sm rounded-pill font-weight-bold"
+                                style="background: #1b6ca8; border: 2px solid #1b6ca8; transition: all 0.3s;"
+                                onmouseover="this.style.opacity='0.85';" onmouseout="this.style.opacity='1';">{{ translate('Registration') }}</a>
                         </span>
                     @endauth
                 </div>
@@ -542,11 +545,11 @@
             <div class="d-flex h-100">
                 <!-- Categoty Menu Button -->
                 <div class="d-none d-xl-block all-category has-transition bg-black-10" id="category-menu-bar">
-                    <div class="px-3 h-100"
-                        style="padding-top: 12px;padding-bottom: 12px; width:270px; cursor: pointer; ">
+                    <div class="px-3 h-100 d-flex flex-column justify-content-center"
+                        style="width:270px; cursor: pointer; ">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <span class="fw-700 fs-16 text-dark mr-3">{{ translate('All Categories') }}</span>
+                                <span class="fw-700 fs-14 text-dark text-uppercase mr-3">{{ translate('All Categories') }}</span>
                                 {{-- <a href="{{ route('categories.all') }}" class="text-reset">
                                     <span class="d-none d-lg-inline-block text-white hov-opacity-80">({{ translate('See
                                         All') }})</span>
@@ -567,48 +570,52 @@
                 @endphp
                 <div class="ml-xl-4 w-100 overflow-hidden">
                     <div class="d-flex align-items-center justify-content-center justify-content-xl-between h-100">
-                        <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
-                            <li class="list-inline-item mr-0 animate-underline-white">
+                        <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light d-flex align-items-center">
+                            <li class="list-inline-item mr-0 animate-underline-white d-flex align-items-center">
                                 <a href="{{ url('/') }}"
-                                    class="fs-15 px-3 py-3 d-inline-block fw-700 text-dark  header_menu_links hov-bg-black-10">
+                                    class="fs-14 px-3 py-3 d-flex align-items-center fw-700 text-dark text-uppercase header_menu_links hov-bg-black-10">
                                     <img src="{{ static_asset('assets/img/icons/home.png') }}" alt=""
-                                        class="img-fluid image-icon">
+                                        class="img-fluid image-icon mr-2">
                                     <span>Home</span>
                                 </a>
+                                <div class="opacity-20 mx-1" style="width: 2px; height: 16px; background-color: #000; border-radius: 2px;"></div>
                             </li>
 
-                            <li class="list-inline-item mr-0 animate-underline-white">
+                            <li class="list-inline-item mr-0 animate-underline-white d-flex align-items-center">
                                 <a href="{{ url('/brands') }}"
-                                    class="fs-15 px-3 py-3 d-inline-block fw-700 text-dark  header_menu_links hov-bg-black-10">
+                                    class="fs-14 px-3 py-3 d-flex align-items-center fw-700 text-dark text-uppercase header_menu_links hov-bg-black-10">
                                     <img src="{{ static_asset('assets/img/icons/brands.png') }}" alt=""
-                                        class="img-fluid image-icon">
+                                        class="img-fluid image-icon mr-2">
                                     <span>Brands</span>
                                 </a>
+                                <div class="opacity-20 mx-1" style="width: 2px; height: 16px; background-color: #000; border-radius: 2px;"></div>
                             </li>
 
-                            <li class="list-inline-item mr-0 animate-underline-white">
+                            <li class="list-inline-item mr-0 animate-underline-white d-flex align-items-center">
                                 <a href="{{ route('customer.request-for-quotation') }}"
-                                    class="fs-15 px-3 py-3 d-inline-block fw-700 text-dark  header_menu_links hov-bg-black-10">
+                                    class="fs-14 px-3 py-3 d-flex align-items-center fw-700 text-dark text-uppercase header_menu_links hov-bg-black-10">
                                     <img src="{{ static_asset('assets/img/icons/post.png') }}" alt=""
-                                        class="img-fluid image-icon">
+                                        class="img-fluid image-icon mr-2">
                                     <span>Post your RFQ</span>
                                 </a>
+                                <div class="opacity-20 mx-1" style="width: 2px; height: 16px; background-color: #000; border-radius: 2px;"></div>
                             </li>
 
-                            <li class="list-inline-item mr-0 animate-underline-white">
+                            <li class="list-inline-item mr-0 animate-underline-white d-flex align-items-center">
                                 <a href="{{ url('/sellers') }}"
-                                    class="fs-15 px-3 py-3 d-inline-block fw-700 text-dark  header_menu_links hov-bg-black-10">
+                                    class="fs-14 px-3 py-3 d-flex align-items-center fw-700 text-dark text-uppercase header_menu_links hov-bg-black-10">
                                     <img src="{{ static_asset('assets/img/icons/sellers.png') }}" alt=""
-                                        class="img-fluid image-icon">
+                                        class="img-fluid image-icon mr-2">
                                     <span>Sellers</span>
                                 </a>
+                                <div class="opacity-20 mx-1" style="width: 2px; height: 16px; background-color: #000; border-radius: 2px;"></div>
                             </li>
 
-                            <li class="list-inline-item mr-0 animate-underline-white">
+                            <li class="list-inline-item mr-0 animate-underline-white d-flex align-items-center">
                                 <a href="{{ url('/blog') }}"
-                                    class="fs-15 px-3 py-3 d-inline-block fw-700 text-dark  header_menu_links hov-bg-black-10">
+                                    class="fs-14 px-3 py-3 d-flex align-items-center fw-700 text-dark text-uppercase header_menu_links hov-bg-black-10">
                                     <img src="{{ static_asset('assets/img/icons/blogs.png') }}" alt=""
-                                        class="img-fluid image-icon">
+                                        class="img-fluid image-icon mr-2">
                                     <span>Blogs</span>
                                 </a>
                             </li>
@@ -617,8 +624,9 @@
 
                         </ul>
                         <a href="{{ route('customer.upload-presctiption') }}"
-                            class="fs-15 px-4 py-2 d-flex align-items-center fw-700 text-white header_menu_links shadow-sm rounded ml-3"
-                            style="text-decoration: none; background-color: #1b6ca8;">
+                            class="fs-14 px-4 py-2 d-flex align-items-center fw-700 text-uppercase text-white header_menu_links shadow-sm rounded ml-3"
+                            style="text-decoration: none; background-color: #1b6ca8; transition: opacity 0.3s;"
+                            onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             <img src="{{ static_asset('assets/img/icons/prescription.png') }}" alt=""
                                 class="img-fluid image-icon mr-2" style="filter: brightness(0) invert(1);">
                             <span>Upload Prescription</span>
@@ -783,7 +791,7 @@
                     <li class="mr-0">
                         <a href="{{ route('dashboard') }}"
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                                        {{ areActiveRoutes(['dashboard'], ' active') }}">
+                                                                                                                                {{ areActiveRoutes(['dashboard'], ' active') }}">
                             <img src="{{ static_asset('assets/img/icons/view-profile.png') }}" alt=""
                                 class="img-fluid image-icon">
                             {{ translate('My Account') }}
@@ -794,7 +802,7 @@
                     <li class="mr-0">
                         <a href="{{ route('all-notifications') }}"
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                                        {{ areActiveRoutes(['all-notifications'], ' active') }}">
+                                                                                                                                {{ areActiveRoutes(['all-notifications'], ' active') }}">
                             <img src="{{ static_asset('assets/img/icons/my-inquiries.png') }}" alt=""
                                 class="img-fluid image-icon">
                             {{ translate('Notifications') }}
@@ -803,7 +811,7 @@
                     <li class="mr-0">
                         <a href="{{ route('wishlists.index') }}"
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                                        {{ areActiveRoutes(['wishlists.index'], ' active') }}">
+                                                                                                                                {{ areActiveRoutes(['wishlists.index'], ' active') }}">
                             <img src="{{ static_asset('assets/img/icons/wishlist.png') }}" alt="" class="img-fluid image-icon">
                             {{ translate('Wishlist') }}
                         </a>
