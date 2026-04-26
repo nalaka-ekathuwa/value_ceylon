@@ -35,6 +35,7 @@ use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\AdvertisingController;
+use App\Http\Controllers\ProductBannerController;
 use App\Http\Controllers\PickupPointController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\ConversationController;
@@ -308,6 +309,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     // Advertising
     Route::resource('advertising', AdvertisingController::class );
     Route::get('advertising/{advertising}/delete', [AdvertisingController::class, 'delete'] )->name('advertising.delete');
+
+    // Home Product Banners
+    Route::get('/product-banners', [ProductBannerController::class, 'index'])->name('product-banners.index');
+    Route::get('/product-banners/create', [ProductBannerController::class, 'create'])->name('product-banners.create');
+    Route::post('/product-banners/store', [ProductBannerController::class, 'store'])->name('product-banners.store');
+    Route::get('/product-banners/{id}/delete', [ProductBannerController::class, 'delete'])->name('product-banners.delete');
+    Route::get('/product-banners/search-products', [ProductBannerController::class, 'searchProducts'])->name('product-banners.search-products');
     
 
     //Subscribers

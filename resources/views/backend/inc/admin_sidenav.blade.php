@@ -519,7 +519,11 @@
                                 <span class="aiz-side-nav-text">{{ translate('Create a banner') }}</span>
                             </a>
                         </li>
-
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('product-banners.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['product-banners.index', 'product-banners.create']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Home Product Banners') }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
