@@ -50,6 +50,7 @@ use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\BusinessSettingsController;
 use App\Http\Controllers\ProductBulkUploadController;
 use App\Http\Controllers\SellerWithdrawRequestController;
+use App\Http\Controllers\Admin\AdminAdController;
 
 /*
   |--------------------------------------------------------------------------
@@ -515,6 +516,21 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::resource('rfq', RFQController::class);
         Route::get('rfq/{rfq}/delete', [RFQController::class,'delete'])->name('rfq.delete');
 
+        // ── Seller Ads Management ────────────────────────────────────────────
+        Route::controller(AdminAdController::class)->group(function () {
+            // Slot Pricing
+            Route::get('/ad-pricing', 'pricingIndex')->name('ad_pricing.index');
+            Route::post('/ad-pricing/store', 'pricingStore')->name('ad_pricing.store');
+            Route::get('/ad-pricing/{id}/delete', 'pricingDestroy')->name('ad_pricing.destroy');
+
+            // All Ads
+            Route::get('/seller-ads', 'adsIndex')->name('seller_ads.index');
+            Route::get('/seller-ads/{id}/approve', 'approve')->name('seller_ads.approve');
+            Route::post('/seller-ads/{id}/reject', 'reject')->name('seller_ads.reject');
+
+            // Revenue
+            Route::get('/ads-revenue', 'revenue')->name('ads_revenue.index');
+        });
     });
     
 

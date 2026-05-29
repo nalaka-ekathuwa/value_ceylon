@@ -524,6 +524,22 @@
                                 <span class="aiz-side-nav-text">{{ translate('Home Product Banners') }}</span>
                             </a>
                         </li>
+                        {{-- Seller Ads --}}
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.seller_ads.index') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Seller Ads') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.ad_pricing.index') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Ad Slot Pricing') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.ads_revenue.index') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Ad Revenue') }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

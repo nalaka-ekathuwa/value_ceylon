@@ -8,6 +8,7 @@ use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\SellerCreateController;
 use App\Http\Controllers\Seller\DigitalProductController;
 use App\Http\Controllers\Seller\ProductBulkUploadController;
+use App\Http\Controllers\Seller\SellerAdController;
 
 //Upload
 Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user', 'prevent-back-history'], 'as' => 'seller.'], function () {
@@ -186,6 +187,22 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
         Route::get('/rfqs/{rfq}/replies/{reply}/edit', 'edit')->name('rfqs.replies.edit');
         Route::patch('/rfqs/{rfq}/replies/{reply}', 'update')->name('rfqs.replies.update');
         
+    });
+
+    // ── Seller Ads ──────────────────────────────────────────────────────────
+    Route::controller(SellerAdController::class)->group(function () {
+        Route::get('/ads', 'index')->name('ads.index');
+        Route::get('/ads/create', 'create')->name('ads.create');
+        Route::post('/ads/store', 'store')->name('ads.store');
+        Route::get('/ads/{id}', 'show')->name('ads.show');
+        Route::get('/ads/{id}/payment', 'payment')->name('ads.payment');
+        Route::post('/ads/{id}/payment', 'processPayment')->name('ads.payment.process');
+        Route::get('/ads/{id}/delete', 'destroy')->name('ads.destroy');
+        Route::get('/ads-payment-history', 'paymentHistory')->name('ads.payment_history');
+
+        // AJAX helpers
+        Route::post('/ads/get-positions', 'getPositions')->name('ads.get_positions');
+        Route::post('/ads/calculate-price', 'calculatePrice')->name('ads.calculate_price');
     });
     
 });
