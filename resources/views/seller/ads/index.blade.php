@@ -39,7 +39,7 @@
                 @foreach($ads as $key => $ad)
                 <tr>
                     <td>{{ $ads->firstItem() + $key }}</td>
-                    <td><span class="badge badge-soft-info">{{ ucfirst($ad->placement) }}</span></td>
+                    <td><span class="badge badge-inline badge-soft-info">{{ ucfirst($ad->placement) }}</span></td>
                     <td>{{ $ad->position_label }}</td>
                     <td>{{ strtoupper($ad->ad_type) }}</td>
                     <td>

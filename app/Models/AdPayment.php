@@ -28,6 +28,6 @@ class AdPayment extends Model
         ];
         $color = $map[$this->status] ?? 'secondary';
         $label = ucfirst($this->status);
-        return "<span class=\"badge badge-{$color}\">{$label}</span>";
+        return "<span class=\"badge badge-inline badge-soft-{$color}\">{$label}</span>";
     }
 }

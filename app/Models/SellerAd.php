@@ -66,7 +66,7 @@ class SellerAd extends Model
         ];
         $color = $map[$this->status] ?? 'secondary';
         $label = ucwords(str_replace('_', ' ', $this->status));
-        return "<span class=\"badge badge-{$color}\">{$label}</span>";
+        return "<span class=\"badge badge-inline badge-soft-{$color}\">{$label}</span>";
     }
 
     public function getPositionLabelAttribute(): string

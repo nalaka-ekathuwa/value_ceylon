@@ -53,7 +53,7 @@
                         <strong>{{ optional($ad->seller)->name }}</strong><br>
                         <small class="text-muted">{{ optional($ad->seller)->email }}</small>
                     </td>
-                    <td><span class="badge badge-soft-info">{{ ucfirst($ad->placement) }}</span></td>
+                    <td><span class="badge badge-inline badge-soft-info">{{ ucfirst($ad->placement) }}</span></td>
                     <td>{{ $ad->position_label }}</td>
                     <td>
                         <small>{{ $ad->start_date->format('d M Y') }}<br>→ {{ $ad->end_date->format('d M Y') }}</small>
@@ -63,7 +63,7 @@
                         @if($ad->payment)
                             {!! $ad->payment->status_badge !!}
                         @else
-                            <span class="badge badge-secondary">None</span>
+                            <span class="badge badge-inline badge-soft-secondary">{{ translate('None') }}</span>
                         @endif
                     </td>
                     <td>{!! $ad->status_badge !!}</td>

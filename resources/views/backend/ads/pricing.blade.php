@@ -83,9 +83,9 @@
                     <tbody>
                         @foreach($pricings as $p)
                         <tr>
-                            <td><span class="badge badge-soft-info">{{ ucfirst($p->placement) }}</span></td>
+                            <td><span class="badge badge-inline badge-soft-info">{{ ucfirst($p->placement) }}</span></td>
                             <td>{{ $p->label }}</td>
-                            <td><span class="badge badge-secondary">{{ $p->total_slots }}</span></td>
+                            <td><span class="badge badge-inline badge-soft-secondary px-2">{{ $p->total_slots }}</span></td>
                             <td>{{ single_price($p->price_per_day) }}</td>
                             <td>
                                 <a href="{{ route('admin.ad_pricing.destroy', $p->id) }}" class="btn btn-sm btn-soft-danger btn-icon btn-circle confirm-delete" data-href="{{ route('admin.ad_pricing.destroy', $p->id) }}" title="{{ translate('Delete') }}">
