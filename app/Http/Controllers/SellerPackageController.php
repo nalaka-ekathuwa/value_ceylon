@@ -123,12 +123,22 @@ class SellerPackageController extends Controller
         $seller_package->product_upload_limit = $request->product_upload_limit;
         $seller_package->duration = $request->duration;
         $seller_package->logo = $request->logo;
+        $seller_package->product_search_result_ranking = $request->product_search_result_ranking;
+        $seller_package->product_show_cases = $request->product_show_cases;
+        $seller_package->transaction_fee_percentage = $request->transaction_fee_percentage;
+        $seller_package->respond_to_rfq = $request->respond_to_rfq == 1 ? 1 : 0;
+        $seller_package->onsite_promotions = $request->onsite_promotions == 1 ? 1 : 0;
+        $seller_package->curated_marketing = $request->curated_marketing == 1 ? 1 : 0;
+        $seller_package->post_purchase_emails = $request->post_purchase_emails == 1 ? 1 : 0;
+        $seller_package->personalized_service = $request->personalized_service == 1 ? 1 : 0;
+        $seller_package->brand_building = $request->brand_building == 1 ? 1 : 0;
+        $seller_package->chat_support = $request->chat_support == 1 ? 1 : 0;
         if ($seller_package->save()) {
 
             $seller_package_translation = SellerPackageTranslation::firstOrNew(['lang' => $request->lang, 'seller_package_id' => $seller_package->id]);
             $seller_package_translation->name = $request->name;
             $seller_package_translation->save();
-            flash(translate('Package has been inserted successfully'))->success();
+            flash(translate('Package has been updated successfully'))->success();
             return redirect()->route('seller_packages.index');
         } else {
             flash(translate('Something went wrong'))->error();

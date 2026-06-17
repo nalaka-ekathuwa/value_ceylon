@@ -32,6 +32,21 @@
                         <th>{{ translate('Position') }}</th>
                         <td>{{ $ad->position_label }}</td>
                     </tr>
+                    @if($ad->placement === 'category' && $ad->category_id)
+                    <tr>
+                        <th>{{ translate('Target Category') }}</th>
+                        <td>
+                            @php
+                                $ad_category = \App\Models\Category::find($ad->category_id);
+                                $ad_subcategory = $ad->subcategory_id ? \App\Models\Category::find($ad->subcategory_id) : null;
+                            @endphp
+                            {{ $ad_category ? $ad_category->getTranslation('name') : '' }}
+                            @if($ad_subcategory)
+                                <span class="text-muted mx-1">&gt;</span> {{ $ad_subcategory->getTranslation('name') }}
+                            @endif
+                        </td>
+                    </tr>
+                    @endif
                     <tr>
                         <th>{{ translate('Ad Type') }}</th>
                         <td>{{ strtoupper($ad->ad_type) }}</td>

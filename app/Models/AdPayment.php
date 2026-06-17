@@ -11,6 +11,7 @@ class AdPayment extends Model
         'amount',
         'payment_method',
         'transaction_id',
+        'payment_slip',
         'status',
     ];
 

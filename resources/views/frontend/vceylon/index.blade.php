@@ -29,27 +29,67 @@
         <div class="p-0">
             <!-- Sliders -->
             <div class="home-slider slider-full">
-                @if (get_setting('home_slider_images') != null)
+                @php
+                    $premium_slider_pricing = \App\Models\AdSlotPricing::where('placement', 'home')->where('position', 'premium_hero_slider')->first();
+                    $premium_slider_slots = $premium_slider_pricing ? $premium_slider_pricing->total_slots : 4;
+                    $active_seller_sliders = \App\Models\SellerAd::where('placement', 'home')
+                        ->where('position', 'premium_hero_slider')
+                        ->where('status', 'active')
+                        ->where('start_date', '<=', \Carbon\Carbon::today())
+                        ->where('end_date', '>=', \Carbon\Carbon::today())
+                        ->with('seller.shop', 'product')
+                        ->latest()
+                        ->limit($premium_slider_slots)
+                        ->get();
+                @endphp
+                @if (get_setting('home_slider_images') != null || count($active_seller_sliders) > 0)
                     <div class="aiz-carousel dots-inside-bottom mobile-img-auto-height" data-autoplay="true"
                         data-infinite="true">
                         @php
                             $decoded_slider_images = json_decode(get_setting('home_slider_images'), true);
                             $sliders = get_slider_images($decoded_slider_images);
                         @endphp
-                        @foreach ($sliders as $key => $slider)
+
+                        {{-- Active Seller Ads --}}
+                        @foreach ($active_seller_sliders as $seller_ad)
+                            @php
+                                $ad_link = 'javascript:void(0);';
+                                if ($seller_ad->product_id && $seller_ad->product) {
+                                    $ad_link = route('product', $seller_ad->product->slug);
+                                } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
+                                    $ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
+                                }
+                            @endphp
                             <div class="carousel-box">
-                                <a href="{{ json_decode(get_setting('home_slider_links'), true)[$key] }}">
+                                <a href="{{ $ad_link }}">
                                     <!-- Image -->
                                     <div
                                         class="d-block mw-100 img-fit overflow-hidden h-180px h-md-320px h-lg-460px h-xl-553px overflow-hidden">
                                         <img class="img-fit h-100 m-auto has-transition ls-is-cached lazyloaded"
-                                            src="{{ $slider ? my_asset($slider->file_name) : static_asset('assets/img/placeholder.jpg') }}"
-                                            alt="{{ env('APP_NAME') }} promo"
+                                            src="{{ uploaded_asset($seller_ad->media) }}" alt="{{ env('APP_NAME') }} promo"
                                             onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
                                     </div>
                                 </a>
                             </div>
                         @endforeach
+
+                        {{-- Default Admin Sliders --}}
+                        @if ($sliders != null)
+                            @foreach ($sliders as $key => $slider)
+                                <div class="carousel-box">
+                                    <a href="{{ json_decode(get_setting('home_slider_links'), true)[$key] ?? '#' }}">
+                                        <!-- Image -->
+                                        <div
+                                            class="d-block mw-100 img-fit overflow-hidden h-180px h-md-320px h-lg-460px h-xl-553px overflow-hidden">
+                                            <img class="img-fit h-100 m-auto has-transition ls-is-cached lazyloaded"
+                                                src="{{ $slider ? my_asset($slider->file_name) : static_asset('assets/img/placeholder.jpg') }}"
+                                                alt="{{ env('APP_NAME') }} promo"
+                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 @endif
             </div>
@@ -63,8 +103,8 @@
         $flash_deal_bg_full_width = get_setting('flash_deal_bg_full_width') == 1 ? true : false;
         $flash_deal_banner_menu_text =
             get_setting('flash_deal_banner_menu_text') == 'dark' || get_setting('flash_deal_banner_menu_text') == null
-                ? 'text-dark'
-                : 'text-white';
+            ? 'text-dark'
+            : 'text-white';
 
     @endphp
     @if ($flash_deal != null)
@@ -78,8 +118,7 @@
                     <!-- Title -->
                     <h3 class="fs-16 fs-md-20 fw-700 mb-2 mb-sm-0">
                         <span class="d-inline-block {{ $flash_deal_banner_menu_text }}">{{ translate('Flash Sale') }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"
-                            class="ml-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24" class="ml-3">
                             <path id="Path_28795" data-name="Path 28795"
                                 d="M30.953,13.695a.474.474,0,0,0-.424-.25h-4.9l3.917-7.81a.423.423,0,0,0-.028-.428.477.477,0,0,0-.4-.207H21.588a.473.473,0,0,0-.429.263L15.041,18.151a.423.423,0,0,0,.034.423.478.478,0,0,0,.4.2h4.593l-2.229,9.683a.438.438,0,0,0,.259.5.489.489,0,0,0,.571-.127L30.9,14.164a.425.425,0,0,0,.054-.469Z"
                                 transform="translate(-15 -5)" fill="#fcc201" />
@@ -120,14 +159,13 @@
                     <div class="col-xxl-8 col-lg-7 col-6">
                         <div class="pl-3 pr-lg-3 pl-xl-2rem pr-xl-2rem">
                             <!-- Top Section from lg device -->
-                            <div
-                                class="d-none d-lg-flex flex-wrap mb-2 mb-md-3 align-items-baseline justify-content-between">
+                            <div class="d-none d-lg-flex flex-wrap mb-2 mb-md-3 align-items-baseline justify-content-between">
                                 <!-- Title -->
                                 <h3 class="fs-16 fs-md-20 fw-700 mb-2">
                                     <span
                                         class="d-inline-block {{ $flash_deal_banner_menu_text }}">{{ translate('Flash Sale') }}</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24"
-                                        viewBox="0 0 16 24" class="ml-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24"
+                                        class="ml-3">
                                         <path id="Path_28795" data-name="Path 28795"
                                             d="M30.953,13.695a.474.474,0,0,0-.424-.25h-4.9l3.917-7.81a.423.423,0,0,0-.028-.428.477.477,0,0,0-.4-.207H21.588a.473.473,0,0,0-.429.263L15.041,18.151a.423.423,0,0,0,.034.423.478.478,0,0,0,.4.2h4.593l-2.229,9.683a.438.438,0,0,0,.259.5.489.489,0,0,0,.571-.127L30.9,14.164a.425.425,0,0,0,.054-.469Z"
                                             transform="translate(-15 -5)" fill="#fcc201" />
@@ -177,8 +215,7 @@
                                                     @endphp
                                                     <div
                                                         class="h-100px h-md-200px h-lg-auto flash-deal-item position-relative text-center border-bottom @if ($i != 4) border-right @endif has-transition hov-shadow-out z-1">
-                                                        <a href="{{ $product_url }}"
-                                                            class="d-block py-md-2 overflow-hidden hov-scale-img"
+                                                        <a href="{{ $product_url }}" class="d-block py-md-2 overflow-hidden hov-scale-img"
                                                             title="{{ $flash_deal_product->product->getTranslation('name') }}">
                                                             <!-- Image -->
                                                             <img src="{{ get_image($flash_deal_product->product->thumbnail) }}"
@@ -277,7 +314,7 @@
                             }
                             $product_url = route('product', $product->slug);
                         @endphp
-                        <a href="{{ $product_url }}" >
+                        <a href="{{ $product_url }}">
                             <div class="">
                                 <img src="{{ uploaded_asset($product_banner->banner) }}" alt="" class="img-fluid">
                             </div>
@@ -289,37 +326,72 @@
     @endif
 
     <!-- RFQ section -->
+    @php
+        $mid_page_pricing = \App\Models\AdSlotPricing::where('placement', 'home')->where('position', 'mid_page_carousel')->first();
+        $mid_page_slots = $mid_page_pricing ? $mid_page_pricing->total_slots : 4;
+        $active_mid_page_ads = \App\Models\SellerAd::where('placement', 'home')
+            ->where('position', 'mid_page_carousel')
+            ->where('status', 'active')
+            ->where('start_date', '<=', \Carbon\Carbon::today())
+            ->where('end_date', '>=', \Carbon\Carbon::today())
+            ->with('seller.shop', 'product')
+            ->latest()
+            ->limit($mid_page_slots)
+            ->get();
+    @endphp
     <section class="rfq">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    
-                    
+
+
 
                     <div class="rfq-banner my-5">
 
                         <div class="homepage-rfq-slider">
                             <div>
                                 <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
-                                    <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner" class="img-fluid">
-        
-                                </a>
-                            </div>
-                            <div>
-                                <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
-                                    <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner" class="img-fluid">
-        
-                                </a>
-                            </div>
-                            <div>
-                                <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
-                                    <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner" class="img-fluid">
-        
-                                </a>
-                            </div>
-                          </div>
+                                    <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
+                                        class="img-fluid">
 
-                        
+                                </a>
+                            </div>
+
+                            @foreach ($active_mid_page_ads as $seller_ad)
+                                @php
+                                    $ad_link = 'javascript:void(0);';
+                                    if ($seller_ad->product_id && $seller_ad->product) {
+                                        $ad_link = route('product', $seller_ad->product->slug);
+                                    } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
+                                        $ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
+                                    }
+                                @endphp
+                                <div>
+                                    <a href="{{ $ad_link }}" target="_blank">
+                                        <img src="{{ uploaded_asset($seller_ad->media) }}" alt="rfq banner" class="img-fluid"
+                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                    </a>
+                                </div>
+                            @endforeach
+
+
+                            <!-- <div>
+                                            <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
+                                                <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
+                                                    class="img-fluid">
+
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
+                                                <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
+                                                    class="img-fluid">
+
+                                            </a>
+                                        </div> -->
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -332,13 +404,45 @@
             <div class="row">
                 <div class="col-lg-2">
                     @php
-                        $rect_banners = get_advertising_banner(1, 1);
+                        $sidebar_spotlight_pricing = \App\Models\AdSlotPricing::where('placement', 'home')->where('position', 'sidebar_spotlight')->first();
+                        $sidebar_spotlight_slots = $sidebar_spotlight_pricing ? $sidebar_spotlight_pricing->total_slots : 1;
+                        $active_sidebar_spotlight_ads = \App\Models\SellerAd::where('placement', 'home')
+                            ->where('position', 'sidebar_spotlight')
+                            ->where('status', 'active')
+                            ->where('start_date', '<=', \Carbon\Carbon::today())
+                            ->where('end_date', '>=', \Carbon\Carbon::today())
+                            ->with('seller.shop', 'product')
+                            ->latest()
+                            ->limit($sidebar_spotlight_slots)
+                            ->get();
                     @endphp
 
                     <div class="my-5">
-                        @foreach ($rect_banners as $rect_banner)
-                            <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid">
-                        @endforeach
+                        @if (count($active_sidebar_spotlight_ads) > 0)
+                            @foreach ($active_sidebar_spotlight_ads as $seller_ad)
+                                @php
+                                    $ad_link = 'javascript:void(0);';
+                                    if ($seller_ad->product_id && $seller_ad->product) {
+                                        $ad_link = route('product', $seller_ad->product->slug);
+                                    } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
+                                        $ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
+                                    }
+                                @endphp
+                                <a href="{{ $ad_link }}" class="d-block mb-3">
+                                    <img src="{{ uploaded_asset($seller_ad->media) }}" alt="" class="img-fluid"
+                                        style="width: 242px; height: 560px; object-fit: cover; max-width: 100%;"
+                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                </a>
+                            @endforeach
+                        @else
+                            @php
+                                $rect_banners = get_advertising_banner(1, 1);
+                            @endphp
+                            @foreach ($rect_banners as $rect_banner)
+                                <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid"
+                                    style="width: 242px; height: 560px; object-fit: cover; max-width: 100%;">
+                            @endforeach
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-10">
@@ -354,21 +458,64 @@
     <section class="home-banners">
         <div class="container">
             @php
-                $rect_banners = get_advertising_banner(3, 3);
+                $featured_ad_blocks_pricing = \App\Models\AdSlotPricing::where('placement', 'home')->where('position', 'featured_ad_blocks')->first();
+                $featured_ad_blocks_slots = $featured_ad_blocks_pricing ? $featured_ad_blocks_pricing->total_slots : 3;
+                $active_featured_ad_blocks = \App\Models\SellerAd::where('placement', 'home')
+                    ->where('position', 'featured_ad_blocks')
+                    ->where('status', 'active')
+                    ->where('start_date', '<=', \Carbon\Carbon::today())
+                    ->where('end_date', '>=', \Carbon\Carbon::today())
+                    ->with('seller.shop', 'product')
+                    ->latest()
+                    ->limit($featured_ad_blocks_slots)
+                    ->get();
             @endphp
 
-          
+
             <div class="row">
-                @foreach ($rect_banners as $rect_banner)
-                    <div class="col-md-4">
-                        <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid">
+                @php
+                    $total_display_slots = 3;
+                    $shown_slots = 0;
+                @endphp
+
+                {{-- Display active ads --}}
+                @foreach ($active_featured_ad_blocks as $seller_ad)
+                    @php
+                        $ad_link = 'javascript:void(0);';
+                        if ($seller_ad->product_id && $seller_ad->product) {
+                            $ad_link = route('product', $seller_ad->product->slug);
+                        } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
+                            $ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
+                        }
+                        $shown_slots++;
+                    @endphp
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ $ad_link }}">
+                            <img src="{{ uploaded_asset($seller_ad->media) }}" alt="" class="img-fluid"
+                                style="width: 512px; height: 512px; object-fit: cover; max-width: 100%;"
+                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                        </a>
                     </div>
                 @endforeach
+
+                {{-- Fill remaining slots with default banners --}}
+                @if ($shown_slots < $total_display_slots)
+                    @php
+                        $remaining_count = $total_display_slots - $shown_slots;
+                        $default_banners = get_advertising_banner(3, $remaining_count);
+                    @endphp
+                    @foreach ($default_banners as $rect_banner)
+                        <div class="col-md-4 mb-3">
+                            <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid"
+                                style="width: 512px; height: 512px; object-fit: cover; max-width: 100%;">
+                        </div>
+                    @endforeach
+                @endif
             </div>
-        
+
 
             @php
-                $rect_banners = get_advertising_banner(2,1 );
+                $rect_banners = get_advertising_banner(2, 1);
             @endphp
 
             <div class="my-5">
@@ -398,42 +545,61 @@
     <section class="home-banners">
         <div class="container">
             @php
-                $rect_banners = get_advertising_banner(2,2 );
+                $bottom_showcase_pricing = \App\Models\AdSlotPricing::where('placement', 'home')->where('position', 'bottom_showcase_slider')->first();
+                $bottom_showcase_slots = $bottom_showcase_pricing ? $bottom_showcase_pricing->total_slots : 4;
+                $active_bottom_showcase_ads = \App\Models\SellerAd::where('placement', 'home')
+                    ->where('position', 'bottom_showcase_slider')
+                    ->where('status', 'active')
+                    ->where('start_date', '<=', \Carbon\Carbon::today())
+                    ->where('end_date', '>=', \Carbon\Carbon::today())
+                    ->with('seller.shop', 'product')
+                    ->latest()
+                    ->limit($bottom_showcase_slots)
+                    ->get();
             @endphp
-{{-- 
-            <div class="my-5">
-                <div class="row">
-                    <div class="col-md-12">
-                        
-                        @foreach ($rect_banners as $rect_banner)
-                            <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid">
-                        @endforeach
-                    </div>
-                </div>
-            </div> --}}
 
             <div class="mb-5">
                 <div class="row">
                     <div class="col-md-12">
 
                         <div class="my-5">
-
                             <div class="homepage-ad-slider-2">
+
+                                {{-- Active Seller Ads --}}
+                                @foreach ($active_bottom_showcase_ads as $seller_ad)
+                                    @php
+                                        $ad_link = 'javascript:void(0);';
+                                        if ($seller_ad->product_id && $seller_ad->product) {
+                                            $ad_link = route('product', $seller_ad->product->slug);
+                                        } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
+                                            $ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
+                                        }
+                                    @endphp
+                                    <div>
+                                        <a href="{{ $ad_link }}" target="_blank">
+                                            <img src="{{ uploaded_asset($seller_ad->media) }}" alt="showcase banner"
+                                                class="img-fluid" style="width: 100%; max-height: 630px; object-fit: cover;"
+                                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                        </a>
+                                    </div>
+                                @endforeach
+                                {{-- Default Banners --}}
                                 <div>
                                     <a href="#" target="_blank">
-                                        <img src="{{ static_asset("assets/img/banner/b2b-marketplace.jpg") }}" alt="rfq banner" class="img-fluid">
-            
+                                        <img src="{{ static_asset("assets/img/banner/b2b-marketplace.jpg") }}"
+                                            alt="rfq banner" class="img-fluid"
+                                            style="width: 100%; max-height: 630px; object-fit: cover;">
                                     </a>
                                 </div>
                                 <div>
                                     <a href="#" target="_blank">
-                                        <img src="{{ static_asset("assets/img/banner/sample.jpg") }}" alt="rfq banner" class="img-fluid">
-            
+                                        <img src="{{ static_asset("assets/img/banner/sample.jpg") }}" alt="rfq banner"
+                                            class="img-fluid" style="width: 100%; max-height: 630px; object-fit: cover;">
                                     </a>
                                 </div>
-                              </div>
+                            </div>
                         </div>
-                                               
+
                     </div>
                 </div>
             </div>
@@ -455,19 +621,16 @@
                         @if (count($best_selers) > 0)
                             <section class="mb-2 mb-md-3 mt-2 mt-md-3">
                                 <div class="">
-                                   
-                                    
+
+
                                     <!-- Sellers Section -->
-                                    <div class="aiz-carousel arrow-x-0 arrow-inactive-none" data-items="3"
-                                        data-xxl-items="3" data-xl-items="3" data-lg-items="3.4"
-                                        data-md-items="2.5" data-sm-items="2" data-xs-items="1.4"
-                                        data-arrows="true" data-dots="false">
+                                    <div class="aiz-carousel arrow-x-0 arrow-inactive-none" data-items="3" data-xxl-items="3"
+                                        data-xl-items="3" data-lg-items="3.4" data-md-items="2.5" data-sm-items="2"
+                                        data-xs-items="1.4" data-arrows="true" data-dots="false">
                                         @foreach ($best_selers as $key => $seller)
                                             @if ($seller->user != null)
-                                                <div
-                                                    class="carousel-box h-100 position-relative text-center  has-transition ">
-                                                    <div class="position-relative px-3"
-                                                        style="padding-top: 2rem; padding-bottom:2rem;">
+                                                <div class="carousel-box h-100 position-relative text-center  has-transition ">
+                                                    <div class="position-relative px-3" style="padding-top: 2rem; padding-bottom:2rem;">
                                                         <!-- Shop logo & Verification Status -->
                                                         <div class="mx-auto size-100px size-md-120px">
                                                             <a href="{{ route('shop.visit', $seller->slug) }}"
@@ -475,18 +638,15 @@
                                                                 tabindex="0"
                                                                 style="border: 1px solid #e5e5e5; border-radius: 50%; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.06);">
                                                                 <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
-                                                                    data-src="{{ uploaded_asset($seller->logo) }}"
-                                                                    alt="{{ $seller->name }}"
+                                                                    data-src="{{ uploaded_asset($seller->logo) }}" alt="{{ $seller->name }}"
                                                                     class="img-fit lazyload has-transition"
                                                                     onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
                                                             </a>
                                                         </div>
                                                         <!-- Shop name -->
-                                                        <h2
-                                                            class="fs-14 fw-700 text-dark text-truncate-2 h-40px mt-3 mt-md-4 mb-0 mb-md-3">
+                                                        <h2 class="fs-14 fw-700 text-dark text-truncate-2 h-40px mt-3 mt-md-4 mb-0 mb-md-3">
                                                             <a href="{{ route('shop.visit', $seller->slug) }}"
-                                                                class="text-reset hov-text-primary"
-                                                                tabindex="0">{{ $seller->name }}</a>
+                                                                class="text-reset hov-text-primary" tabindex="0">{{ $seller->name }}</a>
                                                         </h2>
 
                                                     </div>

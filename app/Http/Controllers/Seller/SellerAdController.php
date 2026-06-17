@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Models\AdPayment;
 use App\Models\AdSlotPricing;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\SellerAd;
 use Carbon\Carbon;
@@ -38,8 +39,9 @@ class SellerAdController extends Controller
             ->where('published', 1)
             ->orderBy('name')
             ->get(['id', 'name']);
+        $categories = Category::where('parent_id', 0)->orderBy('name')->get();
 
-        return view('seller.ads.create', compact('pricings', 'placements', 'products'));
+        return view('seller.ads.create', compact('pricings', 'placements', 'products', 'categories'));
     }
 
     // ─────────────────────────────────────────────────────────
@@ -55,6 +57,8 @@ class SellerAdController extends Controller
             'start_date' => 'required|date|after_or_equal:today',
             'end_date'   => 'required|date|after:start_date',
             'product_id' => 'nullable|integer',
+            'category_id' => 'required_if:placement,category|nullable|integer|exists:categories,id',
+            'subcategory_id' => 'nullable|integer|exists:categories,id',
         ]);
 
         // Get pricing
@@ -67,7 +71,10 @@ class SellerAdController extends Controller
             $request->placement,
             $request->position,
             $request->start_date,
-            $request->end_date
+            $request->end_date,
+            null,
+            $request->category_id ?: null,
+            $request->subcategory_id ?: null
         );
 
         if ($occupied >= $pricing->total_slots) {
@@ -86,6 +93,8 @@ class SellerAdController extends Controller
             'ad_type'       => $request->ad_type,
             'media'         => $request->media,
             'product_id'    => $request->product_id ?: null,
+            'category_id'   => $request->placement === 'category' ? $request->category_id : null,
+            'subcategory_id'=> $request->placement === 'category' ? $request->subcategory_id : null,
             'start_date'    => $request->start_date,
             'end_date'      => $request->end_date,
             'duration_days' => $days,
@@ -120,17 +129,44 @@ class SellerAdController extends Controller
         $ad = SellerAd::where('seller_id', Auth::id())->findOrFail($id);
 
         $request->validate([
-            'payment_method' => 'required|string',
+            'payment_method' => 'required|string|in:bank_transfer,card',
+            'payment_slip'   => 'required_if:payment_method,bank_transfer|nullable|string',
         ]);
 
-        // Create payment record
+        if ($request->payment_method === 'card') {
+            $order_id = 'AD-' . $ad->id . '-' . rand(100000, 999999);
+            $user = Auth::user();
+            $first_name = $user->name;
+            $last_name = '';
+            $phone = $user->phone ?: '123456789';
+            $email = $user->email;
+            $address = $user->address ?: 'Value Ceylon Seller';
+            $city = $user->city ?: 'Colombo';
+            $position_label = $ad->position_label;
+
+            return \App\Utility\PayhereUtility::create_ads_form(
+                $ad->id,
+                $order_id,
+                $ad->price,
+                $first_name,
+                $last_name,
+                $phone,
+                $email,
+                $address,
+                $city,
+                $position_label
+            );
+        }
+
+        // Create payment record for Bank Transfer
         $payment = AdPayment::updateOrCreate(
             ['ad_id' => $ad->id],
             [
                 'amount'         => $ad->price,
-                'payment_method' => $request->payment_method,
-                'transaction_id' => 'TXN-' . strtoupper(uniqid()),
-                'status'         => 'paid',
+                'payment_method' => 'bank_transfer',
+                'transaction_id' => 'AD-' . $ad->id,
+                'payment_slip'   => $request->payment_slip,
+                'status'         => 'pending',
             ]
         );
 
@@ -175,19 +211,54 @@ class SellerAdController extends Controller
     public function getPositions(Request $request)
     {
         $placement = $request->placement;
-        $pricings  = AdSlotPricing::where('placement', $placement)->get();
+        $startDate = $request->start_date;
+        $endDate   = $request->end_date;
+        $categoryId = $request->category_id;
+        $subcategoryId = $request->subcategory_id;
 
-        if ($pricings->isEmpty()) {
-            // Return defaults from model if no DB entries yet
-            $defaults = AdSlotPricing::positionsFor($placement);
-            $pricings = collect($defaults)->map(function ($slots, $position) use ($placement) {
-                return (object)[
-                    'placement'     => $placement,
-                    'position'      => $position,
-                    'total_slots'   => $slots,
-                    'price_per_day' => 0,
-                    'label'         => ucwords(str_replace('_', ' ', $position)),
-                ];
+        $defaults = AdSlotPricing::positionsFor($placement);
+
+        // Auto-seed database configurations if any defined position is missing
+        foreach ($defaults as $position => $slots) {
+            AdSlotPricing::firstOrCreate(
+                ['placement' => $placement, 'position' => $position],
+                [
+                    'total_slots' => $slots,
+                    'price_per_day' => 500.00 // Default fallback price of 500 LKR
+                ]
+            );
+        }
+
+        // Define the exact order requested
+        $order = [
+            'home' => [
+                'premium_hero_slider',
+                'mid_page_carousel',
+                'sidebar_spotlight',
+                'featured_ad_blocks',
+                'bottom_showcase_slider',
+            ],
+            'category' => [
+                'category_top',
+                'category_sidebar',
+            ],
+        ];
+
+        $pricings = AdSlotPricing::where('placement', $placement)->get();
+
+        $pricings->each(function ($pricing) use ($startDate, $endDate, $categoryId, $subcategoryId) {
+            $pricing->remaining_slots = $pricing->getRemainingSlotsCount(
+                $startDate ?: null,
+                $endDate ?: null,
+                $categoryId ?: null,
+                $subcategoryId ?: null
+            );
+        });
+
+        if (isset($order[$placement])) {
+            $pricings = $pricings->sortBy(function ($pricing) use ($order, $placement) {
+                $pos = array_search($pricing->position, $order[$placement]);
+                return $pos !== false ? $pos : 999;
             })->values();
         }
 
@@ -229,5 +300,23 @@ class SellerAdController extends Controller
         })->with('ad')->orderByDesc('created_at')->paginate(15);
 
         return view('seller.ads.payment_history', compact('payments'));
+    }
+
+    // ─────────────────────────────────────────────────────────
+    //  AJAX: Get subcategories for a category
+    // ─────────────────────────────────────────────────────────
+    public function getSubcategories(Request $request)
+    {
+        $categoryId = $request->category_id;
+        $subcategories = Category::where('parent_id', $categoryId)->get();
+
+        $data = $subcategories->map(function ($sub) {
+            return [
+                'id' => $sub->id,
+                'name' => $sub->getTranslation('name'),
+            ];
+        });
+
+        return response()->json($data);
     }
 }

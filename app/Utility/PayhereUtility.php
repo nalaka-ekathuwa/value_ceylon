@@ -45,6 +45,12 @@ class PayhereUtility
         return view('frontend.payhere.seller_package_form', compact('user_id', 'package_id', 'order_id', 'amount', 'first_name', 'last_name', 'phone', 'email', 'address', 'city', 'hash_value'));
     }
 
+    public static function create_ads_form($ad_id, $order_id, $amount, $first_name, $last_name, $phone, $email, $address, $city, $position_label)
+    {
+        $hash_value = static::getHash($order_id, $amount);
+        return view('frontend.payhere.ads_form', compact('ad_id', 'order_id', 'amount', 'first_name', 'last_name', 'phone', 'email', 'address', 'city', 'position_label', 'hash_value'));
+    }
+
     public static function getHash($order_id, $payhere_amount)
     {
         $merchant_id = config('services.payhere.merchant_id');

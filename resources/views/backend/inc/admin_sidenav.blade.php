@@ -531,8 +531,18 @@
                             </a>
                         </li>
                         <li class="aiz-side-nav-item">
-                            <a href="{{ route('admin.ad_pricing.index') }}" class="aiz-side-nav-link">
+                            <a href="{{ route('admin.ad_pricing.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['admin.ad_pricing.index']) }}">
                                 <span class="aiz-side-nav-text">{{ translate('Ad Slot Pricing') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.ad_pricing.categories') }}" class="aiz-side-nav-link {{ areActiveRoutes(['admin.ad_pricing.categories']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Category Availability') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.ad_pricing.subcategories') }}" class="aiz-side-nav-link {{ areActiveRoutes(['admin.ad_pricing.subcategories']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Subcategory Availability') }}</span>
                             </a>
                         </li>
                         <li class="aiz-side-nav-item">

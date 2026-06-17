@@ -66,9 +66,7 @@
                         @php
                             $methods = [
                                 ['key' => 'bank_transfer', 'label' => 'Bank Transfer', 'icon' => 'las la-university'],
-                                ['key' => 'wallet',        'label' => 'Wallet Balance', 'icon' => 'las la-wallet'],
                                 ['key' => 'card',          'label' => 'Credit / Debit Card', 'icon' => 'las la-credit-card'],
-                                ['key' => 'cash',          'label' => 'Cash on Delivery', 'icon' => 'las la-money-bill'],
                             ];
                         @endphp
                         @foreach($methods as $method)
@@ -80,6 +78,35 @@
                             </label>
                         </div>
                         @endforeach
+                    </div>
+
+                    <div id="bank-transfer-info" class="card border border-info rounded bg-soft-info p-3 mb-4 d-none">
+                        <h6 class="font-weight-bold text-info mb-2"><i class="las la-university mr-1"></i> {{ translate('Bank Transfer Instructions') }}</h6>
+                        <p class="small text-dark mb-3">
+                            {{ translate('Please make the payment of ') }} <strong class="text-primary">{{ single_price($ad->price) }}</strong> {{ translate(' to the following bank account and upload the payment slip/receipt below.') }}
+                        </p>
+                        <ul class="list-unstyled small pl-0 text-dark mb-3">
+                            <li><strong>{{ translate('Bank Name:') }}</strong> Commercial Bank</li>
+                            <li><strong>{{ translate('Account Name:') }}</strong> Value Ceylon (Pvt) Ltd</li>
+                            <li><strong>{{ translate('Account Number:') }}</strong> 1000234567</li>
+                            <li><strong>{{ translate('Branch:') }}</strong> Colombo 03</li>
+                        </ul>
+                        <div class="alert alert-warning py-2 mb-3 small border-0 shadow-none">
+                            <i class="las la-exclamation-circle mr-1"></i>
+                            <strong>{{ translate('Important Reference:') }}</strong> {{ translate('Please use the Order Reference') }} <span class="badge badge-inline font-weight-bold px-2 py-1 fs-14 mx-1" style="color: #5c3bd1 !important; background-color: rgba(92, 59, 209, 0.15) !important; border: 1px solid rgba(92, 59, 209, 0.3);">AD-{{ $ad->id }}</span> {{ translate('as your payment reference number on bank portal.') }}
+                        </div>
+                        <div class="form-group mb-0">
+                            <label class="form-label font-weight-bold text-dark">{{ translate('Upload Payment Slip') }} <span class="text-danger">*</span></label>
+                            <div class="input-group" data-toggle="aizuploader" data-type="image">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text bg-soft-secondary font-weight-medium rounded-0">{{ translate('Browse')}}</div>
+                                </div>
+                                <div class="form-control file-amount">{{ translate('Choose image') }}</div>
+                                <input type="hidden" name="payment_slip" id="payment_slip_input" class="selected-files">
+                            </div>
+                            <div class="file-preview box sm"></div>
+                            <small class="text-muted">{{ translate('Please upload a screenshot or image of the transaction receipt (JPG, PNG, WebP).') }}</small>
+                        </div>
                     </div>
 
                     <div class="alert alert-warning small">
@@ -104,7 +131,7 @@
 @section('script')
 <script>
 $(function () {
-    // Highlight selected payment method
+    // Highlight selected payment method & toggle bank transfer info
     $('.payment-radio').on('change', function () {
         $('.payment-method-card').css({ background: '', borderColor: '', color: '' });
         if ($(this).is(':checked')) {
@@ -113,6 +140,26 @@ $(function () {
                 borderColor: '#5c3bd1',
                 color: '#5c3bd1'
             });
+
+            if ($(this).val() === 'bank_transfer') {
+                $('#bank-transfer-info').removeClass('d-none');
+                $('#payment_slip_input').attr('required', 'required');
+            } else {
+                $('#bank-transfer-info').addClass('d-none');
+                $('#payment_slip_input').removeAttr('required');
+            }
+        }
+    });
+
+    // Form validation before submit
+    $('form').on('submit', function (e) {
+        if ($('#pm_bank_transfer').is(':checked')) {
+            var slip = $('#payment_slip_input').val();
+            if (!slip) {
+                e.preventDefault();
+                AIZ.plugins.notify('danger', '{{ translate("Please upload the payment slip.") }}');
+                return false;
+            }
         }
     });
 });

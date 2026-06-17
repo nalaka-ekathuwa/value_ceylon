@@ -14,6 +14,8 @@ class SellerAd extends Model
         'ad_type',
         'media',
         'product_id',
+        'category_id',
+        'subcategory_id',
         'start_date',
         'end_date',
         'duration_days',
@@ -41,6 +43,16 @@ class SellerAd extends Model
     public function payment()
     {
         return $this->hasOne(AdPayment::class, 'ad_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Category::class, 'subcategory_id');
     }
 
     // Scopes
@@ -74,10 +86,29 @@ class SellerAd extends Model
         return ucwords(str_replace('_', ' ', $this->position));
     }
 
+    public function getDaysRemainingAttribute(): ?int
+    {
+        if ($this->status !== 'active') {
+            return null;
+        }
+
+        $today = Carbon::today();
+        
+        if ($today->gt($this->end_date)) {
+            return 0;
+        }
+
+        if ($today->lt($this->start_date)) {
+            return $this->duration_days;
+        }
+
+        return $today->diffInDays($this->end_date) + 1;
+    }
+
     /**
      * Count active ads occupying a given slot on given dates.
      */
-    public static function occupiedSlots(string $placement, string $position, string $start, string $end, ?int $excludeId = null): int
+    public static function occupiedSlots(string $placement, string $position, string $start, string $end, ?int $excludeId = null, ?int $category_id = null, ?int $subcategory_id = null): int
     {
         $query = self::where('placement', $placement)
             ->where('position', $position)
@@ -89,6 +120,17 @@ class SellerAd extends Model
                       $q2->where('start_date', '<=', $start)->where('end_date', '>=', $end);
                   });
             });
+
+        if ($placement === 'category') {
+            $query->where('category_id', $category_id);
+            if ($subcategory_id) {
+                $query->where('subcategory_id', $subcategory_id);
+            } else {
+                $query->where(function ($q) {
+                    $q->whereNull('subcategory_id')->orWhere('subcategory_id', 0);
+                });
+            }
+        }
 
         if ($excludeId) {
             $query->where('id', '!=', $excludeId);

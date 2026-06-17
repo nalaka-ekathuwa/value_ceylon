@@ -203,6 +203,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Seller', 'prefix' => 'seller'
         // AJAX helpers
         Route::post('/ads/get-positions', 'getPositions')->name('ads.get_positions');
         Route::post('/ads/calculate-price', 'calculatePrice')->name('ads.calculate_price');
+        Route::post('/ads/get-subcategories', 'getSubcategories')->name('ads.get_subcategories');
     });
     
 });

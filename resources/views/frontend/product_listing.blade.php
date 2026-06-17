@@ -226,6 +226,53 @@
                                         </div>
                                     </div>
                                 @endif
+
+                            </div>
+                            <div class="category-sidebar-ads">
+                                <!-- Category Sidebar Ad -->
+                                @php
+                                    $current_date = date('Y-m-d');
+                                    $active_sidebar_ad = null;
+                                    if (isset($category)) {
+                                        if ($category->parent_id != 0) {
+                                            $active_sidebar_ad = \App\Models\SellerAd::where('placement', 'category')
+                                                ->where('position', 'category_sidebar')
+                                                ->where('status', 'active')
+                                                ->where('category_id', $category->parent_id)
+                                                ->where('subcategory_id', $category->id)
+                                                ->whereDate('start_date', '<=', $current_date)
+                                                ->whereDate('end_date', '>=', $current_date)
+                                                ->first();
+                                        } else {
+                                            $active_sidebar_ad = \App\Models\SellerAd::where('placement', 'category')
+                                                ->where('position', 'category_sidebar')
+                                                ->where('status', 'active')
+                                                ->where('category_id', $category->id)
+                                                ->where(function($q) {
+                                                    $q->whereNull('subcategory_id')->orWhere('subcategory_id', 0);
+                                                })
+                                                ->whereDate('start_date', '<=', $current_date)
+                                                ->whereDate('end_date', '>=', $current_date)
+                                                ->first();
+                                        }
+                                    }
+                                @endphp
+
+                                @if ($active_sidebar_ad)
+                                    @php
+                                        $sidebar_ad_link = 'javascript:void(0);';
+                                        if ($active_sidebar_ad->product_id && $active_sidebar_ad->product) {
+                                            $sidebar_ad_link = route('product', $active_sidebar_ad->product->slug);
+                                        } elseif ($active_sidebar_ad->seller && $active_sidebar_ad->seller->shop) {
+                                            $sidebar_ad_link = route('shop.visit', $active_sidebar_ad->seller->shop->slug);
+                                        }
+                                    @endphp
+                                    <div class="border mb-3 p-2 text-center bg-white">
+                                        <a href="{{ $sidebar_ad_link }}">
+                                            <img src="{{ uploaded_asset($active_sidebar_ad->media) }}" alt="" class="img-fluid" onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -235,11 +282,63 @@
 
                      
                   
-                        <!-- Category Banner -->
-                        @if(get_starting_category_banner_image($category))
-                        <div class="category-banner mb-3">
-                            <img src="{{ my_asset(get_starting_category_banner_image($category)) }}" alt="" class="img-fluid">
-                        </div>
+                        <!-- Category Banner / Seller Ad Slider -->
+                        @php
+                            $active_top_ads = collect();
+                            $default_banner = null;
+                            if (isset($category)) {
+                                $default_banner = get_starting_category_banner_image($category);
+                                
+                                $today = date('Y-m-d');
+                                $ad_query = \App\Models\SellerAd::where('placement', 'category')
+                                    ->where('position', 'category_top')
+                                    ->where('status', 'active')
+                                    ->whereDate('start_date', '<=', $today)
+                                    ->whereDate('end_date', '>=', $today);
+
+                                if ($category->parent_id != 0) {
+                                    $ad_query->where('category_id', $category->parent_id)
+                                          ->where('subcategory_id', $category->id);
+                                } else {
+                                    $ad_query->where('category_id', $category->id)
+                                          ->where(function($q) {
+                                              $q->whereNull('subcategory_id')->orWhere('subcategory_id', 0);
+                                          });
+                                }
+                                $active_top_ads = $ad_query->get();
+                            }
+                        @endphp
+
+                        @if ($default_banner || count($active_top_ads) > 0)
+                            <div class="aiz-carousel dots-inside-bottom mobile-img-auto-height mb-3" data-autoplay="true" data-infinite="true" data-items="1">
+                                
+                                {{-- Slide 1: Default Category Banner --}}
+                                @if ($default_banner)
+                                    <div class="carousel-box">
+                                        <div class="d-block w-100">
+                                            <img src="{{ my_asset($default_banner) }}" alt="" class="img-fluid w-100">
+                                        </div>
+                                    </div>
+                                @endif
+
+                                {{-- Slides 2..N: Active Seller Ads --}}
+                                @foreach ($active_top_ads as $ad)
+                                    @php
+                                        $ad_link = 'javascript:void(0);';
+                                        if ($ad->product_id && $ad->product) {
+                                            $ad_link = route('product', $ad->product->slug);
+                                        } elseif ($ad->seller && $ad->seller->shop) {
+                                            $ad_link = route('shop.visit', $ad->seller->shop->slug);
+                                        }
+                                    @endphp
+                                    <div class="carousel-box">
+                                        <a href="{{ $ad_link }}" class="d-block w-100">
+                                            <img src="{{ uploaded_asset($ad->media) }}" alt="" class="img-fluid w-100" onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                        </a>
+                                    </div>
+                                @endforeach
+
+                            </div>
                         @endif
                         
                         

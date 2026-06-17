@@ -520,13 +520,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::controller(AdminAdController::class)->group(function () {
             // Slot Pricing
             Route::get('/ad-pricing', 'pricingIndex')->name('ad_pricing.index');
+            Route::get('/ad-pricing/categories', 'categoryAvailability')->name('ad_pricing.categories');
+            Route::get('/ad-pricing/subcategories', 'subcategoryAvailability')->name('ad_pricing.subcategories');
             Route::post('/ad-pricing/store', 'pricingStore')->name('ad_pricing.store');
             Route::get('/ad-pricing/{id}/delete', 'pricingDestroy')->name('ad_pricing.destroy');
+            Route::post('/ad-pricing/{id}/update-slots', 'updateSlots')->name('ad_pricing.update_slots');
 
             // All Ads
             Route::get('/seller-ads', 'adsIndex')->name('seller_ads.index');
             Route::get('/seller-ads/{id}/approve', 'approve')->name('seller_ads.approve');
             Route::post('/seller-ads/{id}/reject', 'reject')->name('seller_ads.reject');
+            Route::post('/seller-ads/details', 'adDetails')->name('seller_ads.details');
+            Route::post('/seller-ads/{id}/update-status', 'updateStatus')->name('seller_ads.update_status');
 
             // Revenue
             Route::get('/ads-revenue', 'revenue')->name('ads_revenue.index');
