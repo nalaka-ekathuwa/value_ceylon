@@ -38,10 +38,9 @@
                         <tbody>
                             @foreach ($banners as $banner)
                                 @php
-                                    $productFromSku = null;
-                                    if (is_numeric($banner->meta)) {
-                                        $stock = \App\Models\ProductStock::where('sku', $banner->meta)->first();
-                                        $productFromSku = $stock ? $stock->product : null;
+                                    $productFromSku = get_product_by_sku($banner->meta);
+                                    if (!$productFromSku && is_numeric($banner->meta)) {
+                                        $productFromSku = \App\Models\Product::find($banner->meta);
                                     }
                                 @endphp
                                 <tr>

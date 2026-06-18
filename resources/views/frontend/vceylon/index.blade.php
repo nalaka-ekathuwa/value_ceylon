@@ -294,7 +294,18 @@
 
     <!-- Frontend Product banners -->
     @php
-        $product_banners = get_home_product_banner('home-product-banner', 5);
+        $all_banners = get_home_product_banner('home-product-banner', 100);
+        $valid_banners = [];
+        foreach ($all_banners as $banner) {
+            if (is_numeric($banner->meta)) {
+                $product = get_product_by_sku($banner->meta) ?? \App\Models\Product::find($banner->meta);
+                if ($product) {
+                    $banner->product = $product;
+                    $valid_banners[] = $banner;
+                }
+            }
+        }
+        $product_banners = collect($valid_banners)->shuffle()->take(5);
     @endphp
 
     @if (count($product_banners) > 0)
@@ -303,16 +314,7 @@
                 <div class="row" id="new-banner-products-slider">
                     @foreach ($product_banners as $product_banner)
                         @php
-                            if (!is_numeric($product_banner->meta)) {
-                                continue;
-                            }
-                            $product_sku = $product_banner->meta;
-                            $product = get_product_by_sku($product_sku);
-
-                            if (!$product) {
-                                continue;
-                            }
-                            $product_url = route('product', $product->slug);
+                            $product_url = route('product', $product_banner->product->slug);
                         @endphp
                         <a href="{{ $product_url }}">
                             <div class="">

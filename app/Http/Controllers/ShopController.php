@@ -145,7 +145,7 @@ class ShopController extends Controller
             $shop->meta_description = $request->business_description;
             $shop->phone = $request->phone;
             $shop->address = $request->business_address;
-            $shop->slug = preg_replace('/\s+/', '-', str_replace("/", " ", $request->shop_name));
+            $shop->slug = preg_replace('/\s+/', '-', str_replace("/", " ", $request->business_name));
             $shop->save();
 
             auth()->login($user, false);

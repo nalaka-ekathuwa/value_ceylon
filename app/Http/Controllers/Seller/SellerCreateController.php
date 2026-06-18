@@ -149,7 +149,7 @@ class SellerCreateController extends Controller
             $shop->nmra_reg_no = $request->nmra_reg_no;
             $shop->licence_exp_date = $request->licence_exp_date;
             $shop->pharmacist_name = $request->pharmacist_name;
-            $shop->slug = preg_replace('/\s+/', '-', str_replace("/", " ", $request->shop_name));
+            $shop->slug = preg_replace('/\s+/', '-', str_replace("/", " ", $request->business_name));
             $shop->save();
         }
 

@@ -2496,7 +2496,7 @@ if (!function_exists('get_starting_category_banner_image')) {
 if (!function_exists('get_product_by_sku')) {
     function get_product_by_sku($sku)
     {
-        $productStock = ProductStock::where('sku', $sku)->first();
+        $productStock = ProductStock::where('sku', $sku)->whereHas('product')->first();
         return $productStock ? $productStock->product : null;
     }
 }
