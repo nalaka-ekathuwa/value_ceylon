@@ -53,16 +53,53 @@
     <meta property="product:price:currency"
         content="{{ get_system_default_currency()->code }}" />
     <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}">
+    
+    <!-- GLightbox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 @endsection
 
 @section('content')
-    <section class="mb-4 pt-3">
+    <style>
+        /* ── Modern Product Page Styles ── */
+        .product-detail-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,.07);
+            padding: 28px;
+        }
+        .product-gallery-wrap {
+            position: sticky;
+            top: 80px;
+        }
+        .product-detail-card .aiz-carousel.product-gallery {
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f8f8f8;
+        }
+        .product-detail-card .product-gallery-thumb img {
+            border-radius: 6px;
+            border: 2px solid transparent;
+            transition: border-color .2s;
+        }
+        .product-detail-card .product-gallery-thumb .slick-current img {
+            border-color: var(--primary);
+        }
+        /* Breadcrumb / section gap */
+        .product-page-section {
+            padding-top: 20px;
+            padding-bottom: 32px;
+        }
+    </style>
+
+    <section class="product-page-section mb-4">
         <div class="container">
-            <div class="bg-white py-3">
+            <div class="product-detail-card">
                 <div class="row">
                     <!-- Product Image Gallery -->
-                    <div class="col-xl-5 col-lg-6 mb-4">
-                        @include('frontend.product_details.image_gallery')
+                    <div class="col-xl-5 col-lg-6 mb-4 mb-lg-0">
+                        <div class="product-gallery-wrap">
+                            @include('frontend.product_details.image_gallery')
+                        </div>
                     </div>
 
                     <!-- Product Details -->
@@ -229,9 +266,30 @@
 @endsection
 
 @section('script')
+    <!-- GLightbox JS -->
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             getVariantPrice();
+
+            if (typeof GLightbox !== 'undefined') {
+                const lightbox = GLightbox({
+                    selector: '.glightbox',
+                    touchNavigation: true,
+                    loop: true,
+                    zoomable: true,
+                    openEffect: 'zoom',
+                    closeEffect: 'zoom'
+                });
+
+                $(document).on('click', '.img-zoom', function(e) {
+                    var $anchor = $(this).find('a.glightbox')[0];
+                    if ($anchor && e.target !== $anchor) {
+                        e.preventDefault();
+                        $anchor.click();
+                    }
+                });
+            }
         });
 
         function CopyToClipboard(e) {

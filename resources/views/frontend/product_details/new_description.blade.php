@@ -1,396 +1,481 @@
-<div class="product-details bg-white mb-4 border p-3 p-sm-4">
+<div class="product-details bg-white mb-4 rounded-lg shadow-sm border p-4" style="border-radius: 12px;">
+    <style>
+        /* ── Modern Product Tabs & Spec Tables ── */
+        .product-details .aiz-nav-tabs .nav-link {
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #6c757d;
+            padding: 10px 16px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .product-details .aiz-nav-tabs .nav-link.active {
+            color: var(--primary, #e62e04);
+            border-bottom-color: var(--primary, #e62e04);
+            background: transparent;
+        }
+        .product-details .aiz-nav-tabs .nav-link:hover {
+            color: var(--primary, #e62e04);
+        }
+        .section-subheading {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-top: 24px;
+            margin-bottom: 14px;
+            padding-left: 10px;
+            border-left: 3px solid var(--primary, #e62e04);
+        }
+        .modern-spec-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+        .modern-spec-table td {
+            padding: 12px 18px;
+            border-bottom: 1px solid #f1f3f5;
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        .modern-spec-table tr:last-child td {
+            border-bottom: none;
+        }
+        .modern-spec-table tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+        .modern-spec-table td.spec-label {
+            width: 25%;
+            font-weight: 600;
+            color: #495057;
+            background-color: #f8f9fa;
+        }
+        .modern-spec-table td.spec-val {
+            color: #212529;
+        }
+        .modern-spec-table p {
+            margin-bottom: 0;
+        }
+        .faq-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #f1f5f9;
+            color: #334155;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+            margin: 4px 6px 4px 0;
+        }
+        .faq-badge:hover {
+            background: var(--primary, #e62e04);
+            color: #ffffff;
+            border-color: var(--primary, #e62e04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            transform: translateY(-1px);
+        }
+    </style>
+
     <!-- Tabs -->
-    <div class="nav aiz-nav-tabs">
+    <div class="nav aiz-nav-tabs border-bottom mb-4">
         <a href="#tab_default_1" data-toggle="tab"
-            class="mr-5 pb-2 fs-16 fw-700 text-reset active show">{{ translate('Product Details') }}</a>
+            class="mr-4 pb-3 fs-15 fw-700 text-reset active show">
+            <i class="las la-file-alt mr-1"></i> {{ translate('Product Details') }}
+        </a>
 
         <a href="#tab_default_2" data-toggle="tab"
-            class="mr-5 pb-2 fs-16 fw-700 text-reset">{{ translate('Company Profile') }}</a>
+            class="mr-4 pb-3 fs-15 fw-700 text-reset">
+            <i class="las la-building mr-1"></i> {{ translate('Company Profile') }}
+        </a>
 
         <a href="#tab_default_3" data-toggle="tab"
-            class="mr-5 pb-2 fs-16 fw-700 text-reset">{{ translate('Contact Supplier') }}</a>
-
+            class="pb-3 fs-15 fw-700 text-reset">
+            <i class="las la-envelope mr-1"></i> {{ translate('Contact Supplier') }}
+        </a>
     </div>
 
     <!-- Description -->
-    <div class="tab-content pt-0">
-        <!-- Description -->
+    <div class="tab-content pt-2">
+        <!-- Description Tab -->
         <div class="tab-pane fade active show" id="tab_default_1">
-            <div class="py-5">
-                <h5 class="mb-3">Product Infomation</h5>
+            <div>
+                <h5 class="section-subheading">{{ translate('Product Information') }}</h5>
 
-                <table class="table table-stripe">
+                <table class="modern-spec-table">
                     <tbody>
-
                         <tr>
-                            <td style="width:20%"><strong>Product Name</strong></td>
-                            <td>
-                                <p>{{ $detailedProduct->getTranslation('name') }}</p>
+                            <td class="spec-label">{{ translate('Product Name') }}</td>
+                            <td class="spec-val">
+                                <strong>{{ $detailedProduct->getTranslation('name') }}</strong>
                             </td>
                         </tr>
 
                         @if ($detailedProduct->video_link != null || $detailedProduct->pdf != null)
                             <tr>
-                                <td><strong>Introductory Video / Attachments</strong></td>
-                                <td>
-                                    <div class="embed-responsive embed-responsive-16by9">
-                                        @if ($detailedProduct->video_provider == 'youtube' && isset(explode('=', $detailedProduct->video_link)[1]))
-                                            <iframe class="embed-responsive-item"
-                                                src="https://www.youtube.com/embed/{{ get_url_params($detailedProduct->video_link, 'v') }}"></iframe>
-                                        @elseif ($detailedProduct->video_provider == 'dailymotion' && isset(explode('video/', $detailedProduct->video_link)[1]))
-                                            <iframe class="embed-responsive-item"
-                                                src="https://www.dailymotion.com/embed/video/{{ explode('video/', $detailedProduct->video_link)[1] }}"></iframe>
-                                        @elseif ($detailedProduct->video_provider == 'vimeo' && isset(explode('vimeo.com/', $detailedProduct->video_link)[1]))
-                                            <iframe
-                                                src="https://player.vimeo.com/video/{{ explode('vimeo.com/', $detailedProduct->video_link)[1] }}"
-                                                width="500" height="281" frameborder="0" webkitallowfullscreen
-                                                mozallowfullscreen allowfullscreen></iframe>
-                                        @endif
-                                    </div>
+                                <td class="spec-label">{{ translate('Introductory Video / Attachments') }}</td>
+                                <td class="spec-val">
+                                    @if($detailedProduct->video_link != null)
+                                        <div class="embed-responsive embed-responsive-16by9 rounded overflow-hidden shadow-sm mb-3">
+                                            @if ($detailedProduct->video_provider == 'youtube' && isset(explode('=', $detailedProduct->video_link)[1]))
+                                                <iframe class="embed-responsive-item"
+                                                    src="https://www.youtube.com/embed/{{ get_url_params($detailedProduct->video_link, 'v') }}"></iframe>
+                                            @elseif ($detailedProduct->video_provider == 'dailymotion' && isset(explode('video/', $detailedProduct->video_link)[1]))
+                                                <iframe class="embed-responsive-item"
+                                                    src="https://www.dailymotion.com/embed/video/{{ explode('video/', $detailedProduct->video_link)[1] }}"></iframe>
+                                            @elseif ($detailedProduct->video_provider == 'vimeo' && isset(explode('vimeo.com/', $detailedProduct->video_link)[1]))
+                                                <iframe
+                                                    src="https://player.vimeo.com/video/{{ explode('vimeo.com/', $detailedProduct->video_link)[1] }}"
+                                                    width="500" height="281" frameborder="0" webkitallowfullscreen
+                                                    mozallowfullscreen allowfullscreen></iframe>
+                                            @endif
+                                        </div>
+                                    @endif
 
                                     @if ($detailedProduct->pdf != null)
-                                        <div class="py-5 text-center ">
-                                            <a href="{{ uploaded_asset($detailedProduct->pdf) }}"
-                                                class="btn btn-primary">{{ translate('Download Product PDF') }}</a>
+                                        <div class="my-2">
+                                            <a href="{{ uploaded_asset($detailedProduct->pdf) }}" target="_blank"
+                                                class="btn btn-sm btn-outline-primary rounded-pill fw-600">
+                                                <i class="las la-file-pdf mr-1"></i> {{ translate('Download Product PDF') }}
+                                            </a>
                                         </div>
                                     @endif
                                 </td>
                             </tr>
+                        @endif
 
+                        @if($detailedProduct->manufacturer)
+                        <tr>
+                            <td class="spec-label">{{ translate('Manufacturer / Supplier') }}</td>
+                            <td class="spec-val">{{ $detailedProduct->manufacturer }}</td>
+                        </tr>
+                        @endif
+
+                        @if($detailedProduct->city)
+                        <tr>
+                            <td class="spec-label">{{ translate('City') }}</td>
+                            <td class="spec-val">{{ $detailedProduct->city }}</td>
+                        </tr>
+                        @endif
+
+                        @if($detailedProduct->country)
+                        <tr>
+                            <td class="spec-label">{{ translate('Country') }}</td>
+                            <td class="spec-val">{{ $detailedProduct->country }}</td>
+                        </tr>
+                        @endif
+
+                        @if($detailedProduct->website)
+                        <tr>
+                            <td class="spec-label">{{ translate('Website') }}</td>
+                            <td class="spec-val">
+                                <a href="{{ Str::startsWith($detailedProduct->website, 'http') ? $detailedProduct->website : 'https://' . $detailedProduct->website }}" target="_blank" class="text-primary fw-600">
+                                    {{ $detailedProduct->website }} <i class="las la-external-link-alt fs-12 ml-1"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        @endif
+
+                        @if($detailedProduct->email)
+                        <tr>
+                            <td class="spec-label">{{ translate('Email') }}</td>
+                            <td class="spec-val">{{ $detailedProduct->email }}</td>
+                        </tr>
+                        @endif
+
+                        @if(isset($detailedProduct->stocks[0]) && $detailedProduct->stocks[0]->sku)
+                        <tr>
+                            <td class="spec-label">{{ translate('SKU') }}</td>
+                            <td class="spec-val"><code>{{ $detailedProduct->stocks[0]->sku }}</code></td>
+                        </tr>
                         @endif
 
                         <tr>
-                            <td><strong>Manufacturer / Supplier</strong></td>
-                            <td>
-                                <p>{{ $detailedProduct->manufacturer }}</p>
+                            <td class="spec-label">{{ translate('Unit Price') }}</td>
+                            <td class="spec-val">
+                                <span class="fw-700 text-dark">${{ number_format($detailedProduct->unit_price, 2) }}</span>
                             </td>
                         </tr>
 
                         <tr>
-                            <td><strong>City</strong></td>
-                            <td>
-                                <p>{{ $detailedProduct->city }}</p>
+                            <td class="spec-label">{{ translate('Price / Discount') }}</td>
+                            <td class="spec-val">
+                                <span class="text-primary fw-700">${{ number_format($detailedProduct->unit_price - $detailedProduct->discount, 2) }}</span>
+                                @if ($detailedProduct->discount != 0)
+                                    <span class="badge badge-inline badge-success ml-2">${{ number_format($detailedProduct->discount, 2) }} OFF</span>
+                                @else
+                                    <span class="text-muted fs-12 ml-2">({{ translate('No Discounts') }})</span>
+                                @endif
                             </td>
                         </tr>
-
-                        <tr>
-                            <td><strong>Country</strong></td>
-                            <td>
-                                <p>{{ $detailedProduct->country }}</p>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Website</strong></td>
-                            <td>
-                                <p>{{ $detailedProduct->website }}</p>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Email</strong></td>
-                            <td>
-                                <p>{{ $detailedProduct->email }}</p>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>SKU</strong></td>
-                            <td>
-                                <p>{{ $detailedProduct->stocks[0]->sku }}</p>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Unit Price</strong></td>
-                            <td> <del>${{ $detailedProduct->unit_price }}</del></td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Price / Discount</strong></td>
-                            <td>
-                                <p>${{ $detailedProduct->unit_price - $detailedProduct->discount }} /
-                                    @if ($detailedProduct->discount != 0)
-                                        ${{ $detailedProduct->discount }} OFF
-                                    @else
-                                        No Discounts
-                                    @endif
-                                </p>
-                            </td>
-                        </tr>
-
-
-
                     </tbody>
                 </table>
 
-                <h5 class="mb-3">Product Description</h5>
+                <h5 class="section-subheading">{{ translate('Product Description & Specifications') }}</h5>
+                <div class="p-3 bg-light rounded border mb-4">
+                    {!! $detailedProduct->description !!}
+                </div>
 
-                <table class="table table-stripe">
+                <h5 class="section-subheading">{{ translate('Shipping Information') }}</h5>
+                <table class="modern-spec-table">
                     <tbody>
-
+                        @if($detailedProduct->weight_per_unit)
                         <tr>
-                            <td style="width:20%"><strong>Product Specification / Special Features</strong></td>
-                            <td> {!! $detailedProduct->description !!}</td>
+                            <td class="spec-label">{{ translate('Weight per Unit') }}</td>
+                            <td class="spec-val">{{ $detailedProduct->weight_per_unit }} kg</td>
                         </tr>
+                        @endif
 
-                    </tbody>
-                </table>
-
-                <h5 class="mb-3">Shipping Information</h5>
-
-                <table class="table table-stripe">
-                    <tbody>
-
+                        @if($detailedProduct->carton_dimensions)
                         <tr>
-                            <td style="width:20%"><strong>Weight per Unit</strong></td>
-                            <td> {{ $detailedProduct->weight_per_unit }}kg</td>
+                            <td class="spec-label">{{ translate('Export Carton Dimensions / Weight') }}</td>
+                            <td class="spec-val">{{ $detailedProduct->carton_dimensions }}</td>
                         </tr>
+                        @endif
 
+                        @if($detailedProduct->est_shipping_days)
                         <tr>
-                            <td><strong>Export carton dimensions / Weight</strong></td>
-                            <td> {{ $detailedProduct->carton_dimensions }}</td>
+                            <td class="spec-label">{{ translate('Lead Time') }}</td>
+                            <td class="spec-val"><i class="las la-shipping-fast text-primary mr-1"></i> {{ $detailedProduct->est_shipping_days }} {{ translate('Days') }}</td>
                         </tr>
+                        @endif
 
                         <tr>
-                            <td><strong>Lead Time</strong></td>
-                            <td> {{ $detailedProduct->est_shipping_days }} Days</td>
-                        </tr>
-
-
-                        <tr>
-                            <td><strong>Shipping Method / Terms</strong></td>
-                            <td>
-                                <p>
+                            <td class="spec-label">{{ translate('Shipping Method / Terms') }}</td>
+                            <td class="spec-val">
+                                <span class="badge badge-inline badge-info mb-1">
                                     @if ($detailedProduct->shipping_type == 'free')
-                                        Free shipping
+                                        {{ translate('Free shipping') }}
                                     @elseif($detailedProduct->shipping_type == 'flat_rate')
-                                        Flat Rate
+                                        {{ translate('Flat Rate') }}
                                     @else
-                                        Product Quantity Mulitiply
+                                        {{ translate('Quantity Multiplied') }}
                                     @endif
-                                </p>
-
-                                <p>{{ $detailedProduct->shipping_terms }}</p>
+                                </span>
+                                @if($detailedProduct->shipping_terms)
+                                    <div class="fs-13 text-muted mt-1">{{ $detailedProduct->shipping_terms }}</div>
+                                @endif
                             </td>
                         </tr>
 
                         <tr>
-                            <td><strong>Shipping Cost</strong></td>
-                            <td> ${{ $detailedProduct->shipping_cost }}</td>
+                            <td class="spec-label">{{ translate('Shipping Cost') }}</td>
+                            <td class="spec-val">
+                                @if($detailedProduct->shipping_cost > 0)
+                                    ${{ number_format($detailedProduct->shipping_cost, 2) }}
+                                @else
+                                    <span class="text-success font-weight-bold">{{ translate('Free') }}</span>
+                                @endif
+                            </td>
                         </tr>
-
                     </tbody>
                 </table>
 
-
-                <h5 class="mb-3">Payment Options</h5>
-
-                <table class="table table-stripe">
+                <h5 class="section-subheading">{{ translate('Payment Options') }}</h5>
+                <table class="modern-spec-table">
                     <tbody>
-
                         <tr>
-                            <td style="width:20%"><strong>Payment Methods</strong></td>
-                            <td> Online Payments </td>
+                            <td class="spec-label">{{ translate('Payment Methods') }}</td>
+                            <td class="spec-val">
+                                <span class="badge badge-inline badge-secondary"><i class="las la-credit-card mr-1"></i> {{ translate('Online Payments') }}</span>
+                            </td>
                         </tr>
-
                     </tbody>
                 </table>
 
             </div>
         </div>
 
-        <!-- Company Profile -->
+        <!-- Company Profile Tab -->
         <div class="tab-pane fade" id="tab_default_2">
-            <div class="py-5">
-
-                <table class="table table-stripe">
+            <div class="py-3">
+                <table class="modern-spec-table">
                     <tbody>
-
                         <tr>
-                            <td style="width:20%"><strong>Company Name</strong></td>
-                            <td>
+                            <td class="spec-label">{{ translate('Company Name') }}</td>
+                            <td class="spec-val">
                                 @if ($detailedProduct->user && $detailedProduct->user->shop)
-                                    <p>{{ $detailedProduct->user->shop->name }} <a
-                                            href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}"
-                                            class="btn btn-primary btn-xs">Go to shop home page</a> </p>
+                                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                        <span class="fs-15 fw-700">{{ $detailedProduct->user->shop->name }}</span>
+                                        <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}"
+                                            class="btn btn-xs btn-outline-primary rounded-pill shadow-none">{{ translate('Visit Store') }} <i class="las la-angle-right ml-1"></i></a>
+                                    </div>
                                 @endif
                                 @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1 && $detailedProduct->user && $detailedProduct->user->shop)
-                                    <p class="float-none">
+                                    <div class="d-flex align-items-center mt-3">
                                         <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}"
-                                            class="avatar avatar-lg mr-2 overflow-hidden border float-left float-lg-none float-xl-left">
-                                            <img class="lazyload"
+                                            class="avatar avatar-md mr-3 flex-shrink-0 overflow-hidden border shadow-sm rounded-circle">
+                                            <img class="lazyload img-fit rounded-circle"
                                                 src="{{ uploaded_asset($detailedProduct->user->shop->logo) }}"
                                                 data-src="{{ uploaded_asset($detailedProduct->user->shop->logo) }}"
                                                 onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
                                         </a>
-                                    </p>
-
-                                    <p class="d-block mt-3">{{$detailedProduct->user->shop->meta_description}}</p>
+                                        <div class="text-muted fs-13">{{ $detailedProduct->user->shop->meta_description }}</div>
+                                    </div>
                                 @endif
-
-
                             </td>
                         </tr>
 
-
                         <tr>
-                            <td style="width:20%"><strong>Business type</strong></td>
-                            <td> Online </td>
+                            <td class="spec-label">{{ translate('Business Type') }}</td>
+                            <td class="spec-val">{{ translate('Online') }}</td>
                         </tr>
 
+                        @if(optional($detailedProduct->user)->type_of_registration)
                         <tr>
-                            <td style="width:20%"><strong>Legal Status</strong></td>
-                            <td> {{ optional($detailedProduct->user)->type_of_registration }} </td>
+                            <td class="spec-label">{{ translate('Legal Status') }}</td>
+                            <td class="spec-val">{{ optional($detailedProduct->user)->type_of_registration }}</td>
                         </tr>
+                        @endif
 
+                        @if(optional($detailedProduct->user)->company_address)
                         <tr>
-                            <td style="width:20%"><strong>Company Address</strong></td>
-                            <td> {{ optional($detailedProduct->user)->company_address }} </td>
+                            <td class="spec-label">{{ translate('Company Address') }}</td>
+                            <td class="spec-val"><i class="las la-map-marker mr-1 text-muted"></i>{{ optional($detailedProduct->user)->company_address }}</td>
                         </tr>
+                        @endif
 
+                        @if(optional($detailedProduct->user)->br_registration_date)
                         <tr>
-                            <td style="width:20%"><strong>Year Established</strong></td>
-                            <td> {{ optional($detailedProduct->user)->br_registration_date }} </td>
+                            <td class="spec-label">{{ translate('Year Established') }}</td>
+                            <td class="spec-val">{{ optional($detailedProduct->user)->br_registration_date }}</td>
                         </tr>
+                        @endif
 
+                        @if(optional($detailedProduct->user)->number_of_employees)
                         <tr>
-                            <td style="width:20%"><strong>Number of employees</strong></td>
-                            <td> {{ optional($detailedProduct->user)->number_of_employees }} </td>
+                            <td class="spec-label">{{ translate('Employees') }}</td>
+                            <td class="spec-val">{{ optional($detailedProduct->user)->number_of_employees }}</td>
                         </tr>
+                        @endif
 
+                        @if(optional($detailedProduct->user)->manufacturing_capacity)
                         <tr>
-                            <td style="width:20%"><strong>Manufacturing capacity</strong></td>
-                            <td> {{ optional($detailedProduct->user)->manufacturing_capacity }} </td>
+                            <td class="spec-label">{{ translate('Manufacturing Capacity') }}</td>
+                            <td class="spec-val">{{ optional($detailedProduct->user)->manufacturing_capacity }}</td>
                         </tr>
+                        @endif
 
+                        @if(optional($detailedProduct->user)->your_designation)
                         <tr>
-                            <td style="width:20%"><strong>Trading Capacity</strong></td>
-                            <td> 0 </td>
+                            <td class="spec-label">{{ translate('Creator Designation') }}</td>
+                            <td class="spec-val">{{ optional($detailedProduct->user)->your_designation }}</td>
                         </tr>
+                        @endif
 
+                        @if(optional($detailedProduct->user)->br_number)
                         <tr>
-                            <td style="width:20%"><strong>Our Products and Brand</strong></td>
-                            <td> Products - 0 / Brands - 0 </td>
+                            <td class="spec-label">{{ translate('Business Registration') }}</td>
+                            <td class="spec-val"><code>{{ optional($detailedProduct->user)->br_number }}</code></td>
                         </tr>
+                        @endif
 
+                        @if(optional($detailedProduct->user)->company_website)
                         <tr>
-                            <td style="width:20%"><strong>Creator designation</strong></td>
-                            <td> {{ optional($detailedProduct->user)->your_designation }} </td>
+                            <td class="spec-label">{{ translate('Website') }}</td>
+                            <td class="spec-val">
+                                <a href="{{ Str::startsWith(optional($detailedProduct->user)->company_website, 'http') ? optional($detailedProduct->user)->company_website : 'https://' . optional($detailedProduct->user)->company_website }}" target="_blank" class="text-primary font-weight-bold">
+                                    {{ optional($detailedProduct->user)->company_website }} <i class="las la-external-link-alt fs-12 ml-1"></i>
+                                </a>
+                            </td>
                         </tr>
-
-
-                        <tr>
-                            <td style="width:20%"><strong>Business Registration</strong></td>
-                            <td> {{ optional($detailedProduct->user)->br_number }} </td>
-                        </tr>
+                        @endif
 
                         <tr>
-                            <td style="width:20%"><strong>Business Registration Date</strong></td>
-                            <td> {{ optional($detailedProduct->user)->br_registration_date }} </td>
-                        </tr>
-
-                        <tr>
-                            <td style="width:20%"><strong>Website</strong></td>
-                            <td> {{ optional($detailedProduct->user)->company_website }} </td>
-                        </tr>
-
-                        <tr>
-                            <td style="width:20%"><strong>Company Certification / Accridation</strong></td>
-                            <td> </td>
-                        </tr>
-
-                        <tr>
-                            <td style="width:20%"><strong>Main Export Markets</strong></td>
-                            <td> </td>
-                        </tr>
-
-                        <tr>
-                            <td style="width:20%"><strong>Reviews</strong></td>
-                            <td>
+                            <td class="spec-label">{{ translate('Reviews & Ratings') }}</td>
+                            <td class="spec-val">
                                 @include('frontend.product_details.review_section')
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Download -->
+        <!-- Contact Supplier Tab -->
         <div class="tab-pane fade" id="tab_default_3">
-            <div class="py-5">
-                <form action="" method="post">
-
-                    <div class="row">
-                        <label for="" class="col-md-3">
-                            Supplier Email *
+            <div class="py-3">
+                <form action="" method="post" class="p-3 bg-light rounded border mb-4">
+                    @csrf
+                    <div class="form-group row align-items-center">
+                        <label class="col-md-3 col-form-label font-weight-bold text-dark">
+                            {{ translate('Supplier Email') }} <span class="text-danger">*</span>
                         </label>
-                        <div class="form-group col-md-9">
-                            <input type="email" class="form-control" name="to_mail"
-                                value="{{ optional($detailedProduct->user)->email }}" disabled>
+                        <div class="col-md-9">
+                            <input type="email" class="form-control rounded-pill bg-white" name="to_mail"
+                                value="{{ optional($detailedProduct->user)->email }}" readonly disabled>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <label for="" class="col-md-3">
-                            Buyer Email *
+                    <div class="form-group row align-items-center">
+                        <label class="col-md-3 col-form-label font-weight-bold text-dark">
+                            {{ translate('Buyer Email') }} <span class="text-danger">*</span>
                         </label>
-                        <div class="form-group col-md-9">
-                            <input type="email" class="form-control" name="from_mail" value="">
+                        <div class="col-md-9">
+                            <input type="email" class="form-control rounded-pill" name="from_mail" value="" placeholder="{{ translate('Enter your email') }}" required>
                         </div>
                     </div>
 
-
-                    <div class="row">
-                        <label for="" class="col-md-3">
-                            Message *
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label font-weight-bold text-dark pt-2">
+                            {{ translate('Message') }} <span class="text-danger">*</span>
                         </label>
-                        <div class="form-group col-md-9">
-                            <textarea class="form-control" name="message" id="target-textbox" cols="30"
-                                rows="10"></textarea>
+                        <div class="col-md-9">
+                            <textarea class="form-control rounded-lg" name="message" id="target-textbox" rows="5" placeholder="{{ translate('Type your message or click any quick question below...') }}" required></textarea>
                         </div>
                     </div>
 
-
-                    <div class="row">
-                        <label for="" class="col-md-3">
-                            Attachments
+                    <div class="form-group row align-items-center">
+                        <label class="col-md-3 col-form-label font-weight-bold text-dark">
+                            {{ translate('Attachments') }}
                         </label>
-                        <div class="form-group col-md-9">
-                            <input type="file" class="form-control" name="attachments[]">
+                        <div class="col-md-9">
+                            <input type="file" class="form-control-file" name="attachments[]">
                         </div>
                     </div>
 
-                    <div class="text-right">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                    <div class="text-right mt-4">
+                        <button class="btn btn-primary rounded-pill px-4 shadow-sm" type="submit">
+                            <i class="las la-paper-plane mr-1"></i> {{ translate('Send Enquiry') }}
+                        </button>
                     </div>
-
                 </form>
 
-
-                <h5>Frequently Asked Questions . Click to include them in your enquiry details.</h5>
-                <p class="clickable-text">What is the best price you can offer?</p>
-                <p class="clickable-text">What is the shipping cost?</p>
-                <p class="clickable-text">Do you support customization?</p>
-                <p class="clickable-text">How long does a custom order take?</p>
-                <p class="clickable-text">How long will it take to ship to my country?</p>
-                <p class="clickable-text">What is the MOQ for this product?</p>
-                <p class="clickable-text">Do you have a new catalogue?</p>
-                <p class="clickable-text">Can I get a sample first?</p>
-                <p class="clickable-text">Can I add my own logo?</p>
+                <div class="mt-4 p-3 bg-white rounded border">
+                    <h6 class="fw-700 text-dark mb-2">
+                        <i class="las la-question-circle text-primary mr-1"></i> {{ translate('Quick Questions (Click to add to message)') }}
+                    </h6>
+                    <div class="d-flex flex-wrap mt-2">
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> What is the best price you can offer?</span>
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> What is the shipping cost?</span>
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> Do you support customization?</span>
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> How long does a custom order take?</span>
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> How long will it take to ship to my country?</span>
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> What is the MOQ for this product?</span>
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> Do you have a new catalogue?</span>
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> Can I get a sample first?</span>
+                        <span class="faq-badge"><i class="las la-plus-circle mr-1"></i> Can I add my own logo?</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-
     document.addEventListener("DOMContentLoaded", function () {
-        document.querySelector('.clickable-text').click(function () {
-            var textToAppend = document.querySelector(this).text();
-            document.querySelector('#target-textarea').val(document.querySelector('#target-textarea').val() + ' ' + textToAppend);
-        });
+        if (typeof $ !== 'undefined') {
+            $('.faq-badge').on('click', function () {
+                var textToAppend = $(this).text().trim();
+                var $textbox = $('#target-textbox');
+                var currentVal = $textbox.val();
+                $textbox.val(currentVal ? currentVal + "\n" + textToAppend : textToAppend);
+            });
+        }
     });
-
 </script>

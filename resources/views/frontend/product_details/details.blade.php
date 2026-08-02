@@ -1,134 +1,187 @@
-<div class="text-left">
+<div class="text-left product-info-panel">
+    <style>
+        /* ── Product Info Panel ── */
+        .product-info-panel .product-title {
+            font-size: 2.1rem;
+            font-weight: 700;
+            line-height: 1.25;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+        .product-info-panel .product-rating-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .product-info-panel .product-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+        .product-info-panel .meta-label {
+            color: #888;
+            font-weight: 500;
+            min-width: 70px;
+        }
+        .product-info-panel .meta-value {
+            font-weight: 600;
+            color: #333;
+        }
+        .product-info-panel .modern-divider {
+            border: none;
+            border-top: 1px solid #f0f0f0;
+            margin: 16px 0;
+        }
+        .product-info-panel .price-block {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            border: 1px solid #eef0f3;
+        }
+        .product-info-panel .price-main {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .product-info-panel .price-old {
+            font-size: 1rem;
+            color: #aaa;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+        .product-info-panel .discount-badge {
+            background: #ff4d4f;
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 50px;
+            margin-left: 10px;
+        }
+        .product-info-panel .btn-add-cart {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            transition: transform .15s, box-shadow .15s;
+        }
+        .product-info-panel .btn-add-cart:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.15);
+        }
+        .product-info-panel .qty-control {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+        .product-info-panel .qty-control .btn {
+            border-radius: 0;
+        }
+        .product-info-panel .qty-control input {
+            border: none;
+        }
+        .product-info-panel .ship-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f0faf4;
+            color: #28a745;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 50px;
+            border: 1px solid #c3e6cb;
+        }
+        .product-info-panel .wishlist-compare-row {
+            display: flex;
+            gap: 16px;
+            font-size: 0.88rem;
+            margin-bottom: 12px;
+        }
+        .product-info-panel .wishlist-compare-row a {
+            color: #666;
+            transition: color .2s;
+        }
+        .product-info-panel .wishlist-compare-row a:hover {
+            color: var(--primary);
+        }
+    </style>
+
     <!-- Product Name -->
-    <h2 class="mb-4 fs-16 fw-700 text-dark">
+    <h1 class="product-title">
         {{ $detailedProduct->getTranslation('name') }}
-    </h2>
+    </h1>
 
-    <div class="row align-items-center mb-3">
-        <!-- Review -->
+    <!-- Rating & badges row -->
+    <div class="product-rating-row">
         @if ($detailedProduct->auction_product != 1)
-            <div class="col-12">
-                @php
-                    $total = 0;
-                    $total += $detailedProduct->reviews->count();
-                @endphp
-                <span class="rating rating-mr-1">
-                    {{ renderStarRating($detailedProduct->rating) }}
-                </span>
-                <span class="ml-1 opacity-50 fs-14">({{ $total }}
-                    {{ translate('reviews') }})</span>
-            </div>
+            @php
+                $total = 0;
+                $total += $detailedProduct->reviews->count();
+            @endphp
+            <span class="rating rating-mr-1">
+                {{ renderStarRating($detailedProduct->rating) }}
+            </span>
+            <span class="opacity-50 fs-14">({{ $total }} {{ translate('reviews') }})</span>
         @endif
-        <!-- Estimate Shipping Time -->
         @if ($detailedProduct->est_shipping_days)
-            <div class="col-auto fs-14 mt-1">
-                <small class="mr-1 opacity-50 fs-14">{{ translate('Estimate Shipping Time') }}:</small>
-                <span class="fw-500">{{ $detailedProduct->est_shipping_days }} {{ translate('Days') }}</span>
-            </div>
+            <span class="ship-badge">
+                <i class="las la-shipping-fast"></i>
+                {{ $detailedProduct->est_shipping_days }} {{ translate('Days') }}
+            </span>
         @endif
-        <!-- In stock -->
         @if ($detailedProduct->digital == 1)
-            <div class="col-12 mt-1">
-                <span class="badge badge-md badge-inline badge-pill badge-success">{{ translate('In stock') }}</span>
-            </div>
+            <span class="badge badge-pill badge-success" style="font-size:.8rem;">{{ translate('In stock') }}</span>
         @endif
     </div>
-    <div class="row align-items-center">
+    <!-- Wishlist / inquiry row -->
+    <div class="wishlist-compare-row mb-2">
+        @if ($detailedProduct->auction_product != 1)
+            <a href="javascript:void(0)" onclick="addToWishList({{ $detailedProduct->id }})">
+                <i class="la la-heart-o"></i> {{ translate('Add to Wishlist') }}
+            </a>
+        @endif
         @if(get_setting('product_query_activation') == 1)
-            <!-- Ask about this product -->
-            <div class="col-xl-3 col-lg-4 col-md-3 col-sm-4 mb-3">
-                <a href="javascript:void();" onclick="goToView('product_query')" class="text-primary fs-14 fw-600 d-flex">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
-                        <g id="Group_25571" data-name="Group 25571" transform="translate(-975 -411)">
-                            <g id="Path_32843" data-name="Path 32843" transform="translate(975 411)" fill="#fff">
-                                <path
-                                    d="M 16 31 C 11.9933500289917 31 8.226519584655762 29.43972969055176 5.393400192260742 26.60659980773926 C 2.560270071029663 23.77347946166992 1 20.00665092468262 1 16 C 1 11.9933500289917 2.560270071029663 8.226519584655762 5.393400192260742 5.393400192260742 C 8.226519584655762 2.560270071029663 11.9933500289917 1 16 1 C 20.00665092468262 1 23.77347946166992 2.560270071029663 26.60659980773926 5.393400192260742 C 29.43972969055176 8.226519584655762 31 11.9933500289917 31 16 C 31 20.00665092468262 29.43972969055176 23.77347946166992 26.60659980773926 26.60659980773926 C 23.77347946166992 29.43972969055176 20.00665092468262 31 16 31 Z"
-                                    stroke="none" />
-                                <path
-                                    d="M 16 2 C 12.26045989990234 2 8.744749069213867 3.456249237060547 6.100500106811523 6.100500106811523 C 3.456249237060547 8.744749069213867 2 12.26045989990234 2 16 C 2 19.73954010009766 3.456249237060547 23.2552490234375 6.100500106811523 25.89949989318848 C 8.744749069213867 28.54375076293945 12.26045989990234 30 16 30 C 19.73954010009766 30 23.2552490234375 28.54375076293945 25.89949989318848 25.89949989318848 C 28.54375076293945 23.2552490234375 30 19.73954010009766 30 16 C 30 12.26045989990234 28.54375076293945 8.744749069213867 25.89949989318848 6.100500106811523 C 23.2552490234375 3.456249237060547 19.73954010009766 2 16 2 M 16 0 C 24.8365592956543 0 32 7.163440704345703 32 16 C 32 24.8365592956543 24.8365592956543 32 16 32 C 7.163440704345703 32 0 24.8365592956543 0 16 C 0 7.163440704345703 7.163440704345703 0 16 0 Z"
-                                    stroke="none" fill="{{ get_setting('secondary_base_color', '#ffc519') }}" />
-                            </g>
-                            <path id="Path_32842" data-name="Path 32842"
-                                d="M28.738,30.935a1.185,1.185,0,0,1-1.185-1.185,3.964,3.964,0,0,1,.942-2.613c.089-.095.213-.207.361-.344.735-.658,2.252-2.032,2.252-3.555a2.228,2.228,0,0,0-2.37-2.37,2.228,2.228,0,0,0-2.37,2.37,1.185,1.185,0,1,1-2.37,0,4.592,4.592,0,0,1,4.74-4.74,4.592,4.592,0,0,1,4.74,4.74c0,2.577-2.044,4.432-3.028,5.333l-.284.255a1.89,1.89,0,0,0-.243.948A1.185,1.185,0,0,1,28.738,30.935Zm0,3.561a1.185,1.185,0,0,1-.835-2.026,1.226,1.226,0,0,1,1.671,0,1.061,1.061,0,0,1,.148.184,1.345,1.345,0,0,1,.113.2,1.41,1.41,0,0,1,.065.225,1.138,1.138,0,0,1,0,.462,1.338,1.338,0,0,1-.065.219,1.185,1.185,0,0,1-.113.207,1.06,1.06,0,0,1-.148.184A1.185,1.185,0,0,1,28.738,34.5Z"
-                                transform="translate(962.004 400.504)" fill="{{ get_setting('secondary_base_color', '#ffc519') }}" />
-                        </g>
-                    </svg>
-                    <span class="ml-2 text-primary animate-underline-blue">{{ translate('Product Inquiry') }}</span>
-                </a>
-            </div>
+            <a href="javascript:void();" onclick="goToView('product_query')" class="text-primary fw-600 d-flex align-items-center">
+                <i class="la la-question-circle mr-1"></i>
+                <span class="animate-underline-blue">{{ translate('Product Inquiry') }}</span>
+            </a>
         @endif
-        <div class="col mb-3">
-            @if ($detailedProduct->auction_product != 1)
-                <div class="d-flex">
-                    <!-- Add to wishlist button -->
-                    <a href="javascript:void(0)" onclick="addToWishList({{ $detailedProduct->id }})"
-                        class="mr-3 fs-14 text-dark opacity-60 has-transitiuon hov-opacity-100">
-                        <i class="la la-heart-o mr-1"></i>
-                        {{ translate('Add to Wishlist') }}
-                    </a>
-                    <!-- Add to compare button -->
-                    {{-- <a href="javascript:void(0)" onclick="addToCompare({{ $detailedProduct->id }})"
-                        class="fs-14 text-dark opacity-60 has-transitiuon hov-opacity-100">
-                        <i class="las la-sync mr-1"></i>
-                        {{ translate('Add to Compare') }}
-                    </a> --}}
-                </div>
-            @endif
-        </div>
     </div>
 
 
-    <!-- Brand Logo & Name -->
-    @if ($detailedProduct->brand != null)
-        <div class="d-flex flex-wrap align-items-center mb-3">
-            <span class="text-secondary fs-14 fw-400 mr-4 w-50px">{{ translate('Brand') }}</span><br>
-            <a href="{{ route('products.brand', $detailedProduct->brand->slug) }}"
-                class="text-reset hov-text-primary fs-14 fw-700">{{ $detailedProduct->brand->name }}</a>
-        </div>
-    @endif
-
-    <!-- Seller Info -->
-    <div class="d-flex flex-wrap align-items-center">
-        <div class="d-flex align-items-center mr-4">
-            <!-- Shop Name -->
+    <!-- Brand + Seller meta -->
+    <div class="mt-2 mb-2">
+        @if ($detailedProduct->brand != null)
+            <div class="product-meta-row">
+                <span class="meta-label">{{ translate('Brand') }}</span>
+                <a href="{{ route('products.brand', $detailedProduct->brand->slug) }}"
+                    class="meta-value hov-text-primary">{{ $detailedProduct->brand->name }}</a>
+            </div>
+        @endif
+        <div class="product-meta-row">
+            <span class="meta-label">{{ translate('Sold by') }}</span>
             @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1)
-                <span class="text-secondary fs-14 fw-400 mr-4 w-50px">{{ translate('Sold by') }}</span>
                 <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}"
-                    class="text-reset hov-text-primary fs-14 fw-700">{{ $detailedProduct->user->shop->name }}</a>
+                    class="meta-value hov-text-primary">{{ $detailedProduct->user->shop->name }}</a>
             @else
-                <p class="mb-0 fs-14 fw-700">{{ translate('Inhouse product') }}</p>
+                <span class="meta-value">{{ translate('Inhouse product') }}</span>
+            @endif
+            @if (get_setting('conversation_system') == 1)
+                <button class="btn btn-sm btn-outline-secondary ml-3 px-3"
+                    style="border-radius:50px;font-size:.8rem;"
+                    onclick="show_chat_modal()">
+                    <i class="la la-comment-o mr-1"></i>{{ translate('Message Seller') }}
+                </button>
             @endif
         </div>
-        <!-- Messase to seller -->
-        @if (get_setting('conversation_system') == 1)
-            <div class="">
-                <button class="btn btn-sm btn-soft-secondary-base btn-outline-secondary-base hov-svg-white hov-text-white rounded-4"
-                    onclick="show_chat_modal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-                        class="mr-2 has-transition">
-                        <g id="Group_23918" data-name="Group 23918" transform="translate(1053.151 256.688)">
-                            <path id="Path_3012" data-name="Path 3012"
-                                d="M134.849,88.312h-8a2,2,0,0,0-2,2v5a2,2,0,0,0,2,2v3l2.4-3h5.6a2,2,0,0,0,2-2v-5a2,2,0,0,0-2-2m1,7a1,1,0,0,1-1,1h-8a1,1,0,0,1-1-1v-5a1,1,0,0,1,1-1h8a1,1,0,0,1,1,1Z"
-                                transform="translate(-1178 -341)" fill="{{ get_setting('secondary_base_color', '#ffc519') }}" />
-                            <path id="Path_3013" data-name="Path 3013"
-                                d="M134.849,81.312h8a1,1,0,0,1,1,1v5a1,1,0,0,1-1,1h-.5a.5.5,0,0,0,0,1h.5a2,2,0,0,0,2-2v-5a2,2,0,0,0-2-2h-8a2,2,0,0,0-2,2v.5a.5.5,0,0,0,1,0v-.5a1,1,0,0,1,1-1"
-                                transform="translate(-1182 -337)" fill="{{ get_setting('secondary_base_color', '#ffc519') }}" />
-                            <path id="Path_3014" data-name="Path 3014"
-                                d="M131.349,93.312h5a.5.5,0,0,1,0,1h-5a.5.5,0,0,1,0-1"
-                                transform="translate(-1181 -343.5)" fill="{{ get_setting('secondary_base_color', '#ffc519') }}" />
-                            <path id="Path_3015" data-name="Path 3015"
-                                d="M131.349,99.312h5a.5.5,0,1,1,0,1h-5a.5.5,0,1,1,0-1"
-                                transform="translate(-1181 -346.5)" fill="{{ get_setting('secondary_base_color', '#ffc519') }}" />
-                        </g>
-                    </svg>
-
-                    {{ translate('Message Seller') }}
-                </button>
-            </div>
-        @endif
     </div>
 
-    <hr>
+    <hr class="modern-divider">
 
     <!-- For auction product -->
     @if ($detailedProduct->auction_product)
@@ -214,104 +267,63 @@
         @else
             <!-- Without Wholesale -->
             @if (home_price($detailedProduct) != home_discounted_price($detailedProduct))
-                <div class="row no-gutters mb-3">
-                    <div class="col-sm-2">
-                        <div class="text-secondary fs-14 fw-400">{{ translate('Price') }}</div>
-                    </div>
-                    <div class="col-sm-10">
-                        <div class="d-flex align-items-center">
-                            <!-- Discount Price -->
-                            <strong class="fs-16 fw-700 text-primary">
-                                {{ home_discounted_price($detailedProduct) }}
-                            </strong>
-                            <!-- Home Price -->
-                            <del class="fs-14 opacity-60 ml-2">
-                                {{ home_price($detailedProduct) }}
-                            </del>
-                            <!-- Unit -->
-                            @if ($detailedProduct->unit != null)
-                                <span class="opacity-70 ml-1">/{{ $detailedProduct->getTranslation('unit') }}</span>
-                            @endif
-                            <!-- Discount percentage -->
-                            @if (discount_in_percentage($detailedProduct) > 0)
-                                <span class="bg-primary ml-2 fs-11 fw-700 text-white w-35px text-center p-1"
-                                    style="padding-top:2px;padding-bottom:2px;">-{{ discount_in_percentage($detailedProduct) }}%</span>
-                            @endif
-                            <!-- Club Point -->
-                            @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
-                                <div class="ml-2 bg-secondary-base d-flex justify-content-center align-items-center px-3 py-1"
-                                    style="width: fit-content;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                        viewBox="0 0 12 12">
-                                        <g id="Group_23922" data-name="Group 23922" transform="translate(-973 -633)">
-                                            <circle id="Ellipse_39" data-name="Ellipse 39" cx="6"
-                                                cy="6" r="6" transform="translate(973 633)"
-                                                fill="#fff" />
-                                            <g id="Group_23920" data-name="Group 23920"
-                                                transform="translate(973 633)">
-                                                <path id="Path_28698" data-name="Path 28698"
-                                                    d="M7.667,3H4.333L3,5,6,9,9,5Z" transform="translate(0 0)"
-                                                    fill="#f3af3d" />
-                                                <path id="Path_28699" data-name="Path 28699"
-                                                    d="M5.33,3h-1L3,5,6,9,4.331,5Z" transform="translate(0 0)"
-                                                    fill="#f3af3d" opacity="0.5" />
-                                                <path id="Path_28700" data-name="Path 28700"
-                                                    d="M12.666,3h1L15,5,12,9l1.664-4Z" transform="translate(-5.995 0)"
-                                                    fill="#f3af3d" />
-                                            </g>
+                <!-- Price block with discount -->
+                <div class="price-block">
+                    <div class="d-flex align-items-center flex-wrap" style="gap:8px;">
+                        <span class="price-main">
+                            {{ home_discounted_price($detailedProduct) }}
+                        </span>
+                        <span class="price-old">{{ home_price($detailedProduct) }}</span>
+                        @if ($detailedProduct->unit != null)
+                            <span class="opacity-70" style="font-size:.85rem;">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                        @endif
+                        @if (discount_in_percentage($detailedProduct) > 0)
+                            <span class="discount-badge">-{{ discount_in_percentage($detailedProduct) }}%</span>
+                        @endif
+                        @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
+                            <div class="ml-2 bg-secondary-base d-flex justify-content-center align-items-center px-3 py-1"
+                                style="width: fit-content; border-radius:50px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+                                    <g id="Group_23922a" transform="translate(-973 -633)">
+                                        <circle cx="6" cy="6" r="6" transform="translate(973 633)" fill="#fff" />
+                                        <g transform="translate(973 633)">
+                                            <path d="M7.667,3H4.333L3,5,6,9,9,5Z" fill="#f3af3d" />
+                                            <path d="M5.33,3h-1L3,5,6,9,4.331,5Z" fill="#f3af3d" opacity="0.5" />
+                                            <path d="M12.666,3h1L15,5,12,9l1.664-4Z" transform="translate(-5.995 0)" fill="#f3af3d" />
                                         </g>
-                                    </svg>
-                                    <small class="fs-11 fw-500 text-white ml-2">{{ translate('Club Point') }}:
-                                        {{ $detailedProduct->earn_point }}</small>
-                                </div>
-                            @endif
-                        </div>
+                                    </g>
+                                </svg>
+                                <small class="fs-11 fw-500 text-white ml-2">{{ translate('Club Point') }}: {{ $detailedProduct->earn_point }}</small>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @else
-                <div class="row no-gutters mb-3">
-                    <div class="col-sm-2">
-                        <div class="text-secondary fs-14 fw-400">{{ translate('Price') }}</div>
-                    </div>
-                    <div class="col-sm-10">
-                        <div class="d-flex align-items-center">
-                            <!-- Discount Price -->
-                            <strong class="fs-16 fw-700 text-primary">
-                                {{ home_discounted_price($detailedProduct) }}
-                            </strong>
-                            <!-- Unit -->
-                            @if ($detailedProduct->unit != null)
-                                <span class="opacity-70">/{{ $detailedProduct->getTranslation('unit') }}</span>
-                            @endif
-                            <!-- Club Point -->
-                            @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
-                                <div class="ml-2 bg-secondary-base d-flex justify-content-center align-items-center px-3 py-1"
-                                    style="width: fit-content;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                        viewBox="0 0 12 12">
-                                        <g id="Group_23922" data-name="Group 23922" transform="translate(-973 -633)">
-                                            <circle id="Ellipse_39" data-name="Ellipse 39" cx="6"
-                                                cy="6" r="6" transform="translate(973 633)"
-                                                fill="#fff" />
-                                            <g id="Group_23920" data-name="Group 23920"
-                                                transform="translate(973 633)">
-                                                <path id="Path_28698" data-name="Path 28698"
-                                                    d="M7.667,3H4.333L3,5,6,9,9,5Z" transform="translate(0 0)"
-                                                    fill="#f3af3d" />
-                                                <path id="Path_28699" data-name="Path 28699"
-                                                    d="M5.33,3h-1L3,5,6,9,4.331,5Z" transform="translate(0 0)"
-                                                    fill="#f3af3d" opacity="0.5" />
-                                                <path id="Path_28700" data-name="Path 28700"
-                                                    d="M12.666,3h1L15,5,12,9l1.664-4Z" transform="translate(-5.995 0)"
-                                                    fill="#f3af3d" />
-                                            </g>
+                <!-- Price block without discount -->
+                <div class="price-block">
+                    <div class="d-flex align-items-center flex-wrap" style="gap:8px;">
+                        <span class="price-main">
+                            {{ home_discounted_price($detailedProduct) }}
+                        </span>
+                        @if ($detailedProduct->unit != null)
+                            <span class="opacity-70" style="font-size:.85rem;">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                        @endif
+                        @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
+                            <div class="ml-2 bg-secondary-base d-flex justify-content-center align-items-center px-3 py-1"
+                                style="width: fit-content; border-radius:50px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+                                    <g id="Group_23922b" transform="translate(-973 -633)">
+                                        <circle cx="6" cy="6" r="6" transform="translate(973 633)" fill="#fff" />
+                                        <g transform="translate(973 633)">
+                                            <path d="M7.667,3H4.333L3,5,6,9,9,5Z" fill="#f3af3d" />
+                                            <path d="M5.33,3h-1L3,5,6,9,4.331,5Z" fill="#f3af3d" opacity="0.5" />
+                                            <path d="M12.666,3h1L15,5,12,9l1.664-4Z" transform="translate(-5.995 0)" fill="#f3af3d" />
                                         </g>
-                                    </svg>
-                                    <small class="fs-11 fw-500 text-white ml-2">{{ translate('Club Point') }}:
-                                        {{ $detailedProduct->earn_point }}</small>
-                                </div>
-                            @endif
-                        </div>
+                                    </g>
+                                </svg>
+                                <small class="fs-11 fw-500 text-white ml-2">{{ translate('Club Point') }}: {{ $detailedProduct->earn_point }}</small>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endif
@@ -385,8 +397,8 @@
                     </div>
                     <div class="col-sm-10">
                         <div class="product-quantity d-flex align-items-center">
-                            <div class="row no-gutters align-items-center aiz-plus-minus mr-3" style="width: 130px;">
-                                <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
+                            <div class="row no-gutters align-items-center aiz-plus-minus qty-control mr-3" style="width: 130px;">
+                                <button class="btn col-auto btn-icon btn-sm btn-light" type="button"
                                     data-type="minus" data-field="quantity" disabled="">
                                     <i class="las la-minus"></i>
                                 </button>
@@ -394,7 +406,7 @@
                                     class="col border-0 text-center flex-grow-1 fs-16 input-number" placeholder="1"
                                     value="{{ $detailedProduct->min_qty }}" min="{{ $detailedProduct->min_qty }}"
                                     max="10" lang="en">
-                                <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
+                                <button class="btn col-auto btn-icon btn-sm btn-light" type="button"
                                     data-type="plus" data-field="quantity">
                                     <i class="las la-plus"></i>
                                 </button>
@@ -464,34 +476,34 @@
         @endif
     @else
         <!-- Add to cart & Buy now Buttons -->
-        <div class="mt-3">
+        <div class="mt-3 d-flex flex-wrap" style="gap:10px;">
             @if ($detailedProduct->digital == 0)
                 @if ($detailedProduct->external_link != null)
-                    <a type="button" class="btn btn-primary buy-now fw-600 add-to-cart px-4 rounded-0"
+                    <a type="button" class="btn btn-primary buy-now fw-600 add-to-cart btn-add-cart px-4"
                         href="{{ $detailedProduct->external_link }}">
                         <i class="la la-share"></i> {{ translate($detailedProduct->external_link_btn) }}
                     </a>
                 @else
                     <button type="button"
-                        class="btn btn-secondary-base mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"
+                        class="btn btn-secondary-base add-to-cart fw-600 min-w-150px text-white btn-add-cart"
                         @if (Auth::check()) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
                         <i class="las la-shopping-bag"></i> {{ translate('Add to cart') }}
                     </button>
-                    <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"
+                    <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px btn-add-cart"
                         @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>
                         <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
                     </button>
                 @endif
-                <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none" disabled>
+                <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none btn-add-cart" disabled>
                     <i class="la la-cart-arrow-down"></i> {{ translate('Out of Stock') }}
                 </button>
             @elseif ($detailedProduct->digital == 1)
                 <button type="button"
-                    class="btn btn-secondary-base mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"
+                    class="btn btn-secondary-base add-to-cart fw-600 min-w-150px text-white btn-add-cart"
                     @if (Auth::check()) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
                     <i class="las la-shopping-bag"></i> {{ translate('Add to cart') }}
                 </button>
-                <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"
+                <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px btn-add-cart"
                     @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>
                     <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
                 </button>
