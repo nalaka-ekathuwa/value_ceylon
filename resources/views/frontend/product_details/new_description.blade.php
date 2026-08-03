@@ -1,21 +1,35 @@
-<div class="product-details bg-white mb-4 rounded-lg shadow-sm border p-4" style="border-radius: 12px;">
+<div class="product-details bg-white mb-4 rounded-lg shadow-sm border p-3 p-md-4" style="border-radius: 12px;">
     <style>
         /* ── Modern Product Tabs & Spec Tables ── */
-        .product-details .aiz-nav-tabs .nav-link {
+        .product-details .aiz-nav-tabs {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .product-details .aiz-nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .product-details .aiz-nav-tabs a {
             border: none;
             border-bottom: 3px solid transparent;
             color: #6c757d;
-            padding: 10px 16px;
+            padding: 10px 14px;
             font-weight: 600;
             transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
-        .product-details .aiz-nav-tabs .nav-link.active {
-            color: var(--primary, #e62e04);
-            border-bottom-color: var(--primary, #e62e04);
+        .product-details .aiz-nav-tabs a.active,
+        .product-details .aiz-nav-tabs a.active.show {
+            color: rgb(27, 108, 168) !important;
+            border-bottom: 3px solid rgb(27, 108, 168) !important;
             background: transparent;
         }
-        .product-details .aiz-nav-tabs .nav-link:hover {
-            color: var(--primary, #e62e04);
+        .product-details .aiz-nav-tabs a:hover {
+            color: rgb(27, 108, 168) !important;
         }
         .section-subheading {
             font-size: 1.05rem;
@@ -24,7 +38,7 @@
             margin-top: 24px;
             margin-bottom: 14px;
             padding-left: 10px;
-            border-left: 3px solid var(--primary, #e62e04);
+            border-left: 3px solid rgb(27, 108, 168);
         }
         .modern-spec-table {
             width: 100%;
@@ -74,28 +88,68 @@
             margin: 4px 6px 4px 0;
         }
         .faq-badge:hover {
-            background: var(--primary, #e62e04);
+            background: rgb(27, 108, 168);
             color: #ffffff;
-            border-color: var(--primary, #e62e04);
+            border-color: rgb(27, 108, 168);
             box-shadow: 0 2px 8px rgba(0,0,0,0.12);
             transform: translateY(-1px);
+        }
+
+        /* ── Tablet & Mobile Responsiveness ── */
+        @media (max-width: 991.98px) {
+            .modern-spec-table td.spec-label {
+                width: 35%;
+            }
+            .section-subheading {
+                font-size: 1rem;
+                margin-top: 18px;
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .product-details {
+                padding: 14px !important;
+                border-radius: 10px !important;
+            }
+            .modern-spec-table td {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+            .modern-spec-table td.spec-label {
+                width: 40%;
+                font-size: 0.82rem;
+            }
+            .modern-spec-table td.spec-val {
+                font-size: 0.85rem;
+            }
+            .faq-badge {
+                font-size: 12px;
+                padding: 6px 12px;
+                max-width: 100%;
+                white-space: normal;
+                line-height: 1.3;
+            }
+            .btn-enquiry-submit {
+                width: 100%;
+            }
         }
     </style>
 
     <!-- Tabs -->
-    <div class="nav aiz-nav-tabs border-bottom mb-4">
+    <div class="nav aiz-nav-tabs border-bottom mb-4 flex-nowrap overflow-auto text-nowrap">
         <a href="#tab_default_1" data-toggle="tab"
-            class="mr-4 pb-3 fs-15 fw-700 text-reset active show">
+            class="mr-3 mr-md-4 pb-3 fs-15 fw-700 text-reset active show flex-shrink-0">
             <i class="las la-file-alt mr-1"></i> {{ translate('Product Details') }}
         </a>
 
         <a href="#tab_default_2" data-toggle="tab"
-            class="mr-4 pb-3 fs-15 fw-700 text-reset">
+            class="mr-3 mr-md-4 pb-3 fs-15 fw-700 text-reset flex-shrink-0">
             <i class="las la-building mr-1"></i> {{ translate('Company Profile') }}
         </a>
 
         <a href="#tab_default_3" data-toggle="tab"
-            class="pb-3 fs-15 fw-700 text-reset">
+            class="pb-3 fs-15 fw-700 text-reset flex-shrink-0">
             <i class="las la-envelope mr-1"></i> {{ translate('Contact Supplier') }}
         </a>
     </div>
@@ -205,7 +259,7 @@
                         <tr>
                             <td class="spec-label">{{ translate('Price / Discount') }}</td>
                             <td class="spec-val">
-                                <span class="text-primary fw-700">${{ number_format($detailedProduct->unit_price - $detailedProduct->discount, 2) }}</span>
+                                <span class="text-dark fw-700">${{ number_format($detailedProduct->unit_price - $detailedProduct->discount, 2) }}</span>
                                 @if ($detailedProduct->discount != 0)
                                     <span class="badge badge-inline badge-success ml-2">${{ number_format($detailedProduct->discount, 2) }} OFF</span>
                                 @else
@@ -440,7 +494,7 @@
                     </div>
 
                     <div class="text-right mt-4">
-                        <button class="btn btn-primary rounded-pill px-4 shadow-sm" type="submit">
+                        <button class="btn btn-primary rounded-pill px-4 shadow-sm btn-enquiry-submit" type="submit">
                             <i class="las la-paper-plane mr-1"></i> {{ translate('Send Enquiry') }}
                         </button>
                     </div>

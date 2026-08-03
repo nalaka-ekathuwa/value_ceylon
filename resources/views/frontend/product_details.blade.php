@@ -62,32 +62,116 @@
     <style>
         /* ── Modern Product Page Styles ── */
         .product-detail-card {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 16px rgba(0,0,0,.07);
-            padding: 28px;
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+            padding: 32px;
         }
-        .product-gallery-wrap {
-            position: sticky;
-            top: 80px;
+
+        .product-info-card {
+            background: #ffffff;
+            border: 1px solid #edf2f7;
+            border-radius: 20px;
+            padding: 28px 32px;
+            height: 100%;
         }
-        .product-detail-card .aiz-carousel.product-gallery {
+
+        .product-detail-card .product-gallery-thumb .carousel-box img {
             border-radius: 10px;
-            overflow: hidden;
-            background: #f8f8f8;
-        }
-        .product-detail-card .product-gallery-thumb img {
-            border-radius: 6px;
-            border: 2px solid transparent;
-            transition: border-color .2s;
+            border: 1px solid #e2e8f0;
+            padding: 2px;
+            transition: all 0.2s;
         }
         .product-detail-card .product-gallery-thumb .slick-current img {
-            border-color: var(--primary);
+            border-color: rgb(27, 108, 168) !important;
+            border-width: 2px !important;
         }
+
         /* Breadcrumb / section gap */
         .product-page-section {
             padding-top: 20px;
             padding-bottom: 32px;
+        }
+
+        /* ── Tablet & Mobile Responsiveness ── */
+        @media (max-width: 991.98px) {
+            .product-detail-card {
+                padding: 20px;
+                border-radius: 18px;
+            }
+            .product-info-card {
+                padding: 20px;
+                border-radius: 16px;
+                margin-top: 20px;
+            }
+            .product-gallery-wrap {
+                position: relative;
+                top: 0;
+            }
+        }
+        @media (max-width: 575.98px) {
+            .product-detail-card {
+                padding: 12px;
+                border-radius: 14px;
+            }
+            .product-info-card {
+                padding: 16px 12px;
+                border-radius: 14px;
+            }
+        /* ── Single Product Page Primary Color Overrides ── */
+        .btn-primary,
+        .bg-primary,
+        .badge-primary,
+        .nav-pills .nav-link.active,
+        .aiz-megabox input:checked + .aiz-megabox-elem {
+            background-color: rgb(27, 108, 168) !important;
+            border-color: rgb(27, 108, 168) !important;
+            color: #ffffff !important;
+        }
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: rgb(22, 90, 140) !important;
+            border-color: rgb(22, 90, 140) !important;
+            color: #ffffff !important;
+        }
+        .btn-outline-primary {
+            color: rgb(27, 108, 168) !important;
+            border-color: rgb(27, 108, 168) !important;
+        }
+        .btn-outline-primary:hover {
+            background-color: rgb(27, 108, 168) !important;
+            border-color: rgb(27, 108, 168) !important;
+            color: #ffffff !important;
+        }
+        a.text-primary,
+        span.text-primary,
+        i.text-primary,
+        .text-primary {
+            color: rgb(27, 108, 168) !important;
+        }
+        a:hover,
+        .hov-text-primary:hover,
+        .hov-border-primary:hover {
+            color: rgb(27, 108, 168) !important;
+            border-color: rgb(27, 108, 168) !important;
+        }
+        .animate-underline-blue::after {
+            background-color: rgb(27, 108, 168) !important;
+        }
+        .aiz-nav-tabs a {
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .aiz-nav-tabs a.active,
+        .aiz-nav-tabs a.active.show,
+        .aiz-nav-tabs .nav-link.active {
+            color: rgb(27, 108, 168) !important;
+            border-bottom: 3px solid rgb(27, 108, 168) !important;
+            background: transparent !important;
+        }
+        .aiz-nav-tabs a:hover {
+            color: rgb(27, 108, 168) !important;
         }
     </style>
 
@@ -104,7 +188,9 @@
 
                     <!-- Product Details -->
                     <div class="col-xl-7 col-lg-6">
-                        @include('frontend.product_details.details')
+                        <div class="product-info-card">
+                            @include('frontend.product_details.details')
+                        </div>
                     </div>
                 </div>
             </div>
@@ -209,9 +295,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-primary fw-600 rounded-0"
+                        <button type="button" class="btn btn-outline-secondary fw-600 rounded-2"
                             data-dismiss="modal">{{ translate('Cancel') }}</button>
-                        <button type="submit" class="btn btn-primary fw-600 rounded-0 w-100px">{{ translate('Send') }}</button>
+                        <button type="submit" class="btn text-white fw-600 rounded-2 w-100px" style="background-color: rgb(27, 108, 168); border-color: rgb(27, 108, 168);">{{ translate('Send') }}</button>
                     </div>
                 </form>
             </div>

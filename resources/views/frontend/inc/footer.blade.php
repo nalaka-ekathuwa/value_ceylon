@@ -192,12 +192,12 @@
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('sell-on-value-ceylon') }}">Sell on valueceylon.com</a>
+                                <a href="{{ route('seller.create-step-1') }}">Sell on valueceylon.com</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Seller Knowledge Base</a>
+                                <a href="{{ route('blog') }}?search=&selected_categories%5B%5D=Seller-Knowledge-base">Seller Knowledge Base</a>
                             </p>
                         </li>
 
@@ -230,7 +230,7 @@
                         </li>
                         <li class="mb-2">
                             <p  class="fs-14  mb-1">
-                                <a href="{{ route('lorem') }}">Buyer Knowledge Base</a>
+                                <a href="{{ route('blog') }}?search=&selected_categories%5B%5D=Buyer-Knowledge-Base">Buyer Knowledge Base</a>
                             </p>
                         </li>
 

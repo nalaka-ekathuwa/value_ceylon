@@ -2,112 +2,449 @@
     <style>
         /* ── Product Info Panel ── */
         .product-info-panel .product-title {
-            font-size: 2.1rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            line-height: 1.25;
-            color: #1a1a2e;
+            line-height: 1.2;
+            color: #000000;
+            letter-spacing: -0.5px;
             margin-bottom: 12px;
         }
         .product-info-panel .product-rating-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 14px;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: #000000;
         }
-        .product-info-panel .product-meta-row {
+        .product-info-panel .rating i {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+        .product-info-panel .rating i.active,
+        .product-info-panel .rating i.half {
+            color: #f59e0b;
+        }
+        .product-info-panel .ship-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e8f5e9;
+            color: #16a34a;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 50px;
+            border: none;
+        }
+        .product-info-panel .wishlist-compare-row {
+            display: flex;
+            gap: 16px;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+        .product-info-panel .wishlist-compare-row a {
+            color: #000000;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .product-info-panel .wishlist-compare-row a:hover {
+            color: rgb(27, 108, 168);
+        }
+        .product-info-panel .product-meta-row-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.95rem;
+            padding: 12px 0;
+            border-top: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+        .product-info-panel .meta-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
         }
         .product-info-panel .meta-label {
-            color: #888;
+            color: #000000;
             font-weight: 500;
-            min-width: 70px;
         }
         .product-info-panel .meta-value {
-            font-weight: 600;
-            color: #333;
+            color: #000000;
+            font-weight: 700;
         }
-        .product-info-panel .modern-divider {
-            border: none;
-            border-top: 1px solid #f0f0f0;
-            margin: 16px 0;
+        .product-info-panel .meta-divider {
+            width: 1px;
+            height: 18px;
+            background: #000000;
+        }
+        .product-info-panel .btn-message-seller {
+            border: 1px solid #000000;
+            border-radius: 50px;
+            padding: 6px 18px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #000000;
+            background: #ffffff;
+            transition: all 0.2s;
+        }
+        .product-info-panel .btn-message-seller:hover {
+            background: rgb(27, 108, 168);
+            border-color: rgb(27, 108, 168);
+            color: #ffffff;
         }
         .product-info-panel .price-block {
-            background: #f9fafb;
-            border-radius: 8px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
-            border: 1px solid #eef0f3;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+            border: 1px solid #f1f5f9;
         }
         .product-info-panel .price-main {
-            font-size: 1.65rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            color: var(--primary);
+            color: #000000;
+        }
+        .product-info-panel .price-unit {
+            color: #000000;
+            font-size: 1.05rem;
+            font-weight: 500;
         }
         .product-info-panel .price-old {
             font-size: 1rem;
-            color: #aaa;
+            color: #888;
             text-decoration: line-through;
             margin-left: 10px;
         }
         .product-info-panel .discount-badge {
             background: #ff4d4f;
             color: #fff;
-            font-size: 0.72rem;
+            font-size: 0.75rem;
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 50px;
             margin-left: 10px;
         }
-        .product-info-panel .btn-add-cart {
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 10px 24px;
+        .product-info-panel .field-label {
+            color: #000000;
             font-size: 0.95rem;
-            transition: transform .15s, box-shadow .15s;
+            font-weight: 600;
         }
-        .product-info-panel .btn-add-cart:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,.15);
+        .product-info-panel .select-dropdown-style .aiz-megabox-elem {
+            background: #ffffff;
+            border: 1px solid #000000 !important;
+            border-radius: 8px !important;
+            color: #000000;
+            font-weight: 500;
+            font-size: 0.95rem;
+            min-width: 180px;
+            box-shadow: none;
         }
-        .product-info-panel .qty-control {
+        .product-info-panel .select-dropdown-style input:checked + .aiz-megabox-elem {
+            border-color: rgb(27, 108, 168) !important;
+            border-width: 2px !important;
+        }
+        .product-info-panel .color-swatches-elem {
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 8px !important;
+            padding: 2px !important;
+            display: inline-flex;
+            transition: all 0.2s ease;
+        }
+        .product-info-panel input:checked + .color-swatches-elem {
+            border: 1px solid rgb(27, 108, 168) !important;
+        }
+        .product-info-panel .color-swatches-elem span {
+            width: 24px !important;
+            height: 24px !important;
+            border-radius: 6px !important;
+        }
+        .product-info-panel .qty-control-modern {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #e0e0e0;
-        }
-        .product-info-panel .qty-control .btn {
-            border-radius: 0;
-        }
-        .product-info-panel .qty-control input {
-            border: none;
-        }
-        .product-info-panel .ship-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            background: #f0faf4;
-            color: #28a745;
-            font-size: 0.82rem;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 50px;
-            border: 1px solid #c3e6cb;
+            padding: 3px;
+            width: 130px;
         }
-        .product-info-panel .wishlist-compare-row {
+        .product-info-panel .qty-control-modern .btn-qty {
+            border: none;
+            background: transparent;
+            color: #000000;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 0;
+            font-weight: 700;
+            transition: background 0.15s;
+        }
+        .product-info-panel .qty-control-modern .btn-qty:hover {
+            background: #e2e8f0;
+        }
+        .product-info-panel .qty-control-modern .input-qty {
+            border: none;
+            background: transparent;
+            width: 45px;
+            text-align: center;
+            font-weight: 700;
+            color: #000000;
+            font-size: 1rem;
+        }
+        .product-info-panel .product-quantity {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .product-info-panel .available-stock-text {
+            color: #000000;
+            font-size: 0.95rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .product-info-panel .price-blue {
+            color: #000000;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .product-info-panel .action-buttons-wrapper {
             display: flex;
             gap: 16px;
-            font-size: 0.88rem;
-            margin-bottom: 12px;
+            margin-top: 20px;
         }
-        .product-info-panel .wishlist-compare-row a {
-            color: #666;
-            transition: color .2s;
+        .product-info-panel .btn-add-to-cart {
+            background: rgb(27, 108, 168);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 10px;
+            padding: 14px 28px;
+            border: none;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s, transform 0.15s;
         }
-        .product-info-panel .wishlist-compare-row a:hover {
-            color: var(--primary);
+        .product-info-panel .btn-add-to-cart:hover {
+            background: rgb(22, 90, 140);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+        .product-info-panel .btn-buy-now {
+            background: #e2e6fd;
+            color: #000000;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 10px;
+            padding: 14px 28px;
+            border: none;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .product-info-panel .btn-buy-now:hover {
+            background: #d4dcfa;
+            color: #000000;
+            transform: translateY(-1px);
+        }
+        .product-info-panel .trust-features-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 24px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .product-info-panel .trust-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        .product-info-panel .trust-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-info-panel .trust-title {
+            font-weight: 700;
+            color: #000000;
+            font-size: 0.9rem;
+            line-height: 1.2;
+        }
+        .product-info-panel .trust-subtitle {
+            color: #000000;
+            font-size: 0.82rem;
+            line-height: 1.2;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+        .product-info-panel .trust-feature-divider {
+            width: 1px;
+            height: 32px;
+            background: #e2e8f0;
+            margin: 0 12px;
+        }
+
+        /* ── Desktop View Font Adjustments (min-width: 992px) ── */
+        @media (min-width: 992px) {
+            .product-info-panel .product-title {
+                font-size: 2.4rem;
+                margin-bottom: 16px;
+            }
+            .product-info-panel .product-rating-row {
+                font-size: 1.05rem;
+                gap: 14px;
+                margin-bottom: 16px;
+            }
+            .product-info-panel .wishlist-compare-row {
+                font-size: 1.05rem;
+                margin-bottom: 20px;
+            }
+            .product-info-panel .product-meta-row-wrapper {
+                font-size: 1.05rem;
+                padding: 14px 0;
+            }
+            .product-info-panel .btn-message-seller {
+                font-size: 0.92rem;
+                padding: 8px 22px;
+            }
+            .product-info-panel .price-block {
+                padding: 20px 28px;
+            }
+            .product-info-panel .price-main {
+                font-size: 1.8rem;
+                color: #000000;
+            }
+            .product-info-panel .price-unit {
+                font-size: 1.15rem;
+            }
+            .product-info-panel .field-label {
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+            .product-info-panel .select-dropdown-style .aiz-megabox-elem {
+                font-size: 1.05rem;
+                padding: 10px 20px !important;
+            }
+            .product-info-panel .qty-control-modern {
+                width: 145px;
+                padding: 4px;
+            }
+            .product-info-panel .qty-control-modern .input-qty {
+                font-size: 1.1rem;
+            }
+            .product-info-panel .available-stock-text {
+                font-size: 1.05rem;
+            }
+            .product-info-panel .price-blue {
+                font-size: 1.2rem;
+                color: #000000;
+            }
+            .product-info-panel .btn-add-to-cart,
+            .product-info-panel .btn-buy-now {
+                font-size: 1.1rem;
+                padding: 16px 32px;
+            }
+            .product-info-panel .trust-title {
+                font-size: 0.95rem;
+            }
+            .product-info-panel .trust-subtitle {
+                font-size: 0.88rem;
+            }
+        }
+
+        /* ── Tablet & Mobile Responsiveness ── */
+        @media (max-width: 991.98px) {
+            .product-info-panel .product-title {
+                font-size: 1.8rem;
+            }
+            .product-info-panel .trust-features-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 16px;
+            }
+            .product-info-panel .trust-feature-divider {
+                width: 100%;
+                height: 1px;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .product-info-panel .product-title {
+                font-size: 1.45rem;
+            }
+            .product-info-panel .product-meta-row-wrapper {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .product-info-panel .btn-message-seller {
+                margin-left: 0 !important;
+                width: 100%;
+                text-align: center;
+                margin-top: 4px;
+            }
+            .product-info-panel .action-buttons-wrapper {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .product-info-panel .btn-add-to-cart,
+            .product-info-panel .btn-buy-now {
+                width: 100%;
+                padding: 12px 18px;
+                font-size: 0.95rem;
+            }
+            .product-info-panel .price-block {
+                padding: 14px 16px;
+                margin-bottom: 16px;
+            }
+            .product-info-panel .price-main {
+                font-size: 1.4rem;
+            }
+            .product-info-panel .field-label {
+                font-size: 0.9rem;
+                margin-bottom: 4px;
+            }
+            .product-info-panel .qty-control-modern {
+                width: 110px;
+                margin-right: 6px !important;
+            }
+            .product-info-panel .available-stock-text {
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+            .product-info-panel .color-swatches-elem {
+                padding: 2px !important;
+                border-radius: 6px !important;
+            }
+            .product-info-panel .color-swatches-elem span {
+                width: 22px !important;
+                height: 22px !important;
+                border-radius: 4px !important;
+            }
+            .product-info-panel .select-dropdown-style .aiz-megabox-elem {
+                min-width: 130px;
+                font-size: 0.88rem;
+                padding: 8px 12px !important;
+            }
         }
     </style>
 
@@ -126,7 +463,7 @@
             <span class="rating rating-mr-1">
                 {{ renderStarRating($detailedProduct->rating) }}
             </span>
-            <span class="opacity-50 fs-14">({{ $total }} {{ translate('reviews') }})</span>
+            <span class="text-dark fw-500 fs-14">({{ $total }} {{ translate('reviews') }})</span>
         @endif
         @if ($detailedProduct->est_shipping_days)
             <span class="ship-badge">
@@ -139,31 +476,31 @@
         @endif
     </div>
     <!-- Wishlist / inquiry row -->
-    <div class="wishlist-compare-row mb-2">
+    <div class="wishlist-compare-row">
         @if ($detailedProduct->auction_product != 1)
-            <a href="javascript:void(0)" onclick="addToWishList({{ $detailedProduct->id }})">
-                <i class="la la-heart-o"></i> {{ translate('Add to Wishlist') }}
+            <a href="javascript:void(0)" onclick="addToWishList({{ $detailedProduct->id }})" class="wishlist-link">
+                <i class="la la-heart-o"></i> {{ translate('Add to wishlist') }}
             </a>
         @endif
         @if(get_setting('product_query_activation') == 1)
-            <a href="javascript:void();" onclick="goToView('product_query')" class="text-primary fw-600 d-flex align-items-center">
+            <a href="javascript:void();" onclick="goToView('product_query')" class="text-primary fw-600 d-flex align-items-center ml-3">
                 <i class="la la-question-circle mr-1"></i>
                 <span class="animate-underline-blue">{{ translate('Product Inquiry') }}</span>
             </a>
         @endif
     </div>
 
-
     <!-- Brand + Seller meta -->
-    <div class="mt-2 mb-2">
+    <div class="product-meta-row-wrapper">
         @if ($detailedProduct->brand != null)
-            <div class="product-meta-row">
+            <div class="meta-item">
                 <span class="meta-label">{{ translate('Brand') }}</span>
                 <a href="{{ route('products.brand', $detailedProduct->brand->slug) }}"
                     class="meta-value hov-text-primary">{{ $detailedProduct->brand->name }}</a>
             </div>
+            <span class="meta-divider"></span>
         @endif
-        <div class="product-meta-row">
+        <div class="meta-item">
             <span class="meta-label">{{ translate('Sold by') }}</span>
             @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1)
                 <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}"
@@ -171,14 +508,13 @@
             @else
                 <span class="meta-value">{{ translate('Inhouse product') }}</span>
             @endif
-            @if (get_setting('conversation_system') == 1)
-                <button class="btn btn-sm btn-outline-secondary ml-3 px-3"
-                    style="border-radius:50px;font-size:.8rem;"
-                    onclick="show_chat_modal()">
-                    <i class="la la-comment-o mr-1"></i>{{ translate('Message Seller') }}
-                </button>
-            @endif
         </div>
+        @if (get_setting('conversation_system') == 1)
+            <button class="btn btn-sm btn-message-seller ml-auto"
+                onclick="show_chat_modal()">
+                <i class="la la-comment-o mr-1"></i>{{ translate('Message Seller') }}
+            </button>
+        @endif
     </div>
 
     <hr class="modern-divider">
@@ -339,22 +675,23 @@
                 <!-- Choice Options -->
                 @if ($detailedProduct->choice_options != null)
                     @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
-                        <div class="row no-gutters mb-3">
-                            <div class="col-sm-2">
-                                <div class="text-secondary fs-14 fw-400 mt-2 ">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-sm-3 col-4">
+                                <div class="field-label">
                                     {{ get_single_attribute_name($choice->attribute_id) }}
                                 </div>
                             </div>
-                            <div class="col-sm-10">
-                                <div class="aiz-radio-inline">
+                            <div class="col-sm-9 col-8">
+                                <div class="aiz-radio-inline select-dropdown-style">
                                     @foreach ($choice->values as $key => $value)
                                         <label class="aiz-megabox pl-0 mr-2 mb-0">
                                             <input type="radio" name="attribute_id_{{ $choice->attribute_id }}"
                                                 value="{{ $value }}"
                                                 @if ($key == 0) checked @endif>
                                             <span
-                                                class="aiz-megabox-elem rounded-0 d-flex align-items-center justify-content-center py-1 px-3">
-                                                {{ $value }}
+                                                class="aiz-megabox-elem rounded-2 d-flex align-items-center justify-content-between py-2 px-3">
+                                                <span>{{ $value }}</span>
+                                                <i class="las la-angle-down ml-2 opacity-60"></i>
                                             </span>
                                         </label>
                                     @endforeach
@@ -366,11 +703,11 @@
 
                 <!-- Color Options -->
                 @if ($detailedProduct->colors != null && count(json_decode($detailedProduct->colors)) > 0)
-                    <div class="row no-gutters mb-3">
-                        <div class="col-sm-2">
-                            <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Color') }}</div>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-sm-3 col-4">
+                            <div class="field-label">{{ translate('Color') }}</div>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-sm-9 col-8">
                             <div class="aiz-radio-inline">
                                 @foreach (json_decode($detailedProduct->colors) as $key => $color)
                                     <label class="aiz-megabox pl-0 mr-2 mb-0" data-toggle="tooltip"
@@ -379,8 +716,8 @@
                                             value="{{ get_single_color_name($color) }}"
                                             @if ($key == 0) checked @endif>
                                         <span
-                                            class="aiz-megabox-elem rounded-0 d-flex align-items-center justify-content-center p-1">
-                                            <span class="size-25px d-inline-block rounded"
+                                            class="aiz-megabox-elem color-swatches-elem rounded-2 p-1">
+                                            <span class="size-25px d-inline-block rounded-1"
                                                 style="background: {{ $color }};"></span>
                                         </span>
                                     </label>
@@ -391,22 +728,22 @@
                 @endif
 
                 <!-- Quantity + Add to cart -->
-                <div class="row no-gutters mb-3">
-                    <div class="col-sm-2">
-                        <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Quantity') }}</div>
+                <div class="row align-items-center mb-3">
+                    <div class="col-sm-3 col-4">
+                        <div class="field-label">{{ translate('Quantity') }}</div>
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-9 col-8">
                         <div class="product-quantity d-flex align-items-center">
-                            <div class="row no-gutters align-items-center aiz-plus-minus qty-control mr-3" style="width: 130px;">
-                                <button class="btn col-auto btn-icon btn-sm btn-light" type="button"
+                            <div class="qty-control-modern mr-3">
+                                <button class="btn btn-qty" type="button"
                                     data-type="minus" data-field="quantity" disabled="">
                                     <i class="las la-minus"></i>
                                 </button>
                                 <input type="number" name="quantity"
-                                    class="col border-0 text-center flex-grow-1 fs-16 input-number" placeholder="1"
+                                    class="input-qty input-number" placeholder="1"
                                     value="{{ $detailedProduct->min_qty }}" min="{{ $detailedProduct->min_qty }}"
                                     max="10" lang="en">
-                                <button class="btn col-auto btn-icon btn-sm btn-light" type="button"
+                                <button class="btn btn-qty" type="button"
                                     data-type="plus" data-field="quantity">
                                     <i class="las la-plus"></i>
                                 </button>
@@ -417,7 +754,7 @@
                                     $qty += $stock->qty;
                                 }
                             @endphp
-                            <div class="avialable-amount opacity-60">
+                            <div class="available-stock-text">
                                 @if ($detailedProduct->stock_visibility_state == 'quantity')
                                     (<span id="available-quantity">{{ $qty }}</span>
                                     {{ translate('available') }})
@@ -434,14 +771,14 @@
             @endif
 
             <!-- Total Price -->
-            <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
-                <div class="col-sm-2">
-                    <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Total Price') }}</div>
+            <div class="row align-items-center mb-4" id="chosen_price_div">
+                <div class="col-sm-3 col-4">
+                    <div class="field-label">{{ translate('Total Price') }}</div>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-9 col-8">
                     <div class="product-price">
-                        <strong id="chosen_price" class="fs-20 fw-700 text-primary">
-
+                        <strong id="chosen_price" class="price-blue">
+                            {{ home_discounted_price($detailedProduct) }}
                         </strong>
                     </div>
                 </div>
@@ -476,22 +813,22 @@
         @endif
     @else
         <!-- Add to cart & Buy now Buttons -->
-        <div class="mt-3 d-flex flex-wrap" style="gap:10px;">
+        <div class="action-buttons-wrapper mb-4">
             @if ($detailedProduct->digital == 0)
                 @if ($detailedProduct->external_link != null)
-                    <a type="button" class="btn btn-primary buy-now fw-600 add-to-cart btn-add-cart px-4"
+                    <a type="button" class="btn btn-buy-now px-4"
                         href="{{ $detailedProduct->external_link }}">
                         <i class="la la-share"></i> {{ translate($detailedProduct->external_link_btn) }}
                     </a>
                 @else
                     <button type="button"
-                        class="btn btn-secondary-base add-to-cart fw-600 min-w-150px text-white btn-add-cart"
+                        class="btn btn-add-to-cart add-to-cart"
                         @if (Auth::check()) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
-                        <i class="las la-shopping-bag"></i> {{ translate('Add to cart') }}
+                        <i class="las la-shopping-bag font-18"></i> {{ translate('Add to cart') }}
                     </button>
-                    <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px btn-add-cart"
+                    <button type="button" class="btn btn-buy-now buy-now"
                         @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>
-                        <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
+                        <i class="las la-bolt font-18"></i> {{ translate('Buy Now') }}
                     </button>
                 @endif
                 <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none btn-add-cart" disabled>
@@ -499,15 +836,56 @@
                 </button>
             @elseif ($detailedProduct->digital == 1)
                 <button type="button"
-                    class="btn btn-secondary-base add-to-cart fw-600 min-w-150px text-white btn-add-cart"
+                    class="btn btn-add-to-cart add-to-cart"
                     @if (Auth::check()) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
-                    <i class="las la-shopping-bag"></i> {{ translate('Add to cart') }}
+                    <i class="las la-shopping-bag font-18"></i> {{ translate('Add to cart') }}
                 </button>
-                <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px btn-add-cart"
+                <button type="button" class="btn btn-buy-now buy-now"
                     @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>
-                    <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
+                    <i class="las la-bolt font-18"></i> {{ translate('Buy Now') }}
                 </button>
             @endif
+        </div>
+
+        <!-- Trust Features Card -->
+        <div class="trust-features-card">
+            <div class="trust-feature-item">
+                <div class="trust-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <div class="trust-content">
+                    <div class="trust-title">{{ translate('Secure Payment') }}</div>
+                    <div class="trust-subtitle">{{ translate('100% protected') }}</div>
+                </div>
+            </div>
+            <div class="trust-feature-divider"></div>
+            <div class="trust-feature-item">
+                <div class="trust-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                    </svg>
+                </div>
+                <div class="trust-content">
+                    <div class="trust-title">{{ translate('Easy Returns') }}</div>
+                    <div class="trust-subtitle">{{ translate('7 days return policy') }}</div>
+                </div>
+            </div>
+            <div class="trust-feature-divider"></div>
+            <div class="trust-feature-item">
+                <div class="trust-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="7"></circle>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                    </svg>
+                </div>
+                <div class="trust-content">
+                    <div class="trust-title">{{ translate('Genuine Products') }}</div>
+                    <div class="trust-subtitle">{{ translate('Quality assured') }}</div>
+                </div>
+            </div>
         </div>
 
         <!-- Promote Link -->
