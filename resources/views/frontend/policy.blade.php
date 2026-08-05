@@ -1,394 +1,343 @@
 @extends('frontend.layouts.app')
 
 @section('content')
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .policy-container {
+            color: #000000;
+            border: 1px solid #e2e8f0;
+        }
+        .policy-container p,
+        .policy-container li,
+        .policy-container span {
+            color: #000000 !important;
+        }
+        .policy-blue-title,
+        .policy-container a {
+            color: rgb(27, 108, 168) !important;
+        }
+
+        /* Separator Links & Navigation Pills */
+        .policy-nav-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .policy-nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            border: 1px solid rgb(27, 108, 168) !important;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            background-color: #ffffff;
+        }
+        .policy-nav-link:hover {
+            background-color: rgb(27, 108, 168);
+            color: #ffffff !important;
+            text-decoration: none;
+        }
+
+        /* Section Borders */
+        .policy-section-border {
+            border-top: 1px solid #dee2e6 !important;
+            padding-top: 25px;
+            margin-top: 35px;
+        }
+        .policy-heading-border {
+            border-bottom: 1px solid #dee2e6 !important;
+            padding-bottom: 8px;
+        }
+    </style>
+
+    <!-- Page Header & Breadcrumb -->
     <section class="pt-4 mb-4">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-
-                    {{-- Start policy --}}
-                    <section id="privacy-policy" class="policy-section">
-                        <h2>Privacy Policy</h2>
-                        <p>
-                            Welcome to ValueCeylonHealth.com ("we", "us", or "our"). This Privacy Policy outlines how we
-                            collect, use, store, and protect your personal information when you use our website (the
-                            "Platform"). We are committed to protecting your privacy and ensuring that your personal
-                            information is handled in a safe and responsible manner, in accordance with applicable data
-                            protection laws and healthcare regulations in Sri Lanka.
-                        </p>
-
-                        <h3>1. Information We Collect</h3>
-                        <h4>A. Information You Provide to Us</h4>
-                        <ul>
-                            <li><strong>Registration Information:</strong> Name, email address, phone number, and login
-                                credentials.</li>
-                            <li><strong>Prescription Data:</strong> Uploads of medical prescriptions and relevant patient
-                                details (with patient consent).</li>
-                            <li><strong>Health Profile Information:</strong> (Optional) Allergies, past purchases, or health
-                                conditions you provide for better recommendations.</li>
-                            <li><strong>Seller Information:</strong> Business name, license number, pharmacy registration,
-                                contact details, products listed, and transaction history.</li>
-                            <li><strong>Order & Payment Data:</strong> Shipping address, billing details, payment method,
-                                and transaction history.</li>
-                            <li><strong>Communication Records:</strong> Emails, messages, or chats between customers and
-                                vendors, or with our support team.</li>
-                        </ul>
-
-                        <h4>B. Information We Collect Automatically</h4>
-                        <ul>
-                            <li>IP address, browser type, time zone, and cookies</li>
-                            <li>Pages viewed, products clicked, referral sources</li>
-                            <li>Site interaction patterns and device specifications</li>
-                        </ul>
-
-                        <h3>2. Use of Personal Information</h3>
-                        <ul>
-                            <li>Process and deliver your orders securely</li>
-                            <li>Authenticate buyers and sellers</li>
-                            <li>Verify and process prescriptions in compliance with health regulations</li>
-                            <li>Enable communication between customers and vendors</li>
-                            <li>Provide a personalized shopping experience, including medicine reminders and recommendations
-                            </li>
-                            <li>Detect and prevent fraud or misuse</li>
-                            <li>Improve our website's performance and customer experience</li>
-                            <li>Conduct marketing and promotional campaigns (with your consent)</li>
-                            <li>Ensure regulatory compliance with the National Medicines Regulatory Authority (NMRA) and
-                                other legal authorities</li>
-                        </ul>
-
-                        <h3>3. Sharing of Information</h3>
-                        <p>We do not sell your personal data. However, we may share your information with trusted parties
-                            under the following circumstances:</p>
-                        <ul>
-                            <li><strong>Licensed Sellers and Pharmacies:</strong> To fulfill your orders, especially
-                                prescription-based.</li>
-                            <li><strong>Healthcare Professionals:</strong> Where applicable, to review prescriptions or
-                                offer support.</li>
-                            <li><strong>Third-Party Service Providers:</strong> For logistics, payment processing,
-                                marketing, analytics, and cloud storage.</li>
-                            <li><strong>Regulatory Bodies:</strong> To comply with the law or in response to legal
-                                processes, including NMRA, courts, and other healthcare regulators.</li>
-                            <li><strong>Marketing Platforms:</strong> To provide relevant ads and offers (only with your
-                                consent).</li>
-                        </ul>
-
-                        <h3>4. Data Protection & Security</h3>
-                        <p>We implement appropriate physical, digital, and administrative safeguards to protect your
-                            personal and health-related information. These include:</p>
-                        <ul>
-                            <li>SSL encryption for all transactions</li>
-                            <li>Access control and authentication protocols</li>
-                            <li>Secure prescription handling by verified pharmacies</li>
-                            <li>Regular security audits and data backup</li>
-                        </ul>
-                        <p>Prescription images and health data are handled with the highest confidentiality and only
-                            accessible by licensed entities for the purpose of dispensing medicine.</p>
-
-                        <h3>5. Cookies and Tracking Technologies</h3>
-                        <p>We may use cookies and other tracking technologies (such as pixels and web beacons) to collect,
-                            store, and track information about your interactions with our website. These technologies help
-                            us analyze site traffic, personalize content, and improve performance.</p>
-                        <p>We use cookies and similar technologies to:</p>
-                        <ul>
-                            <li>Remember login preferences</li>
-                            <li>Track and analyze usage behavior</li>
-                            <li>Personalize product suggestions</li>
-                            <li>Enable social media features and targeted ads</li>
-                        </ul>
-                        <p>You can manage cookie preferences in your browser settings. Disabling cookies may affect site
-                            functionality.</p>
-
-                        <h3>6. Children’s Privacy</h3>
-                        <p>This platform is intended for use by adults aged 18 and over. We do not knowingly collect or
-                            store data from minors. If we become aware that a child has provided us with personal
-                            information, we will delete it promptly.</p>
-
-                        <h3>7. Your Rights</h3>
-                        <p>As a user of ValueCeylonHealth.com, you have the right to:</p>
-                        <ul>
-                            <li>Access or correct your personal information</li>
-                            <li>Request deletion of your account or data (subject to legal retention requirements)</li>
-                            <li>Withdraw consent for non-essential data processing (e.g., marketing)</li>
-                            <li>Lodge a complaint with a data protection authority</li>
-                        </ul>
-                        <p>To exercise your rights, email us at <a
-                                href="mailto:support@valueceylonhealth.com">support@valueceylonhealth.com</a>.</p>
-
-                        <h3>8. Changes to This Policy</h3>
-                        <p>We may update this Privacy Policy periodically to reflect changes in regulations or service
-                            offerings. Changes will be posted here with the "Effective Date" updated. We encourage you to
-                            review it regularly.</p>
-                    </section>
-
-
-                    <section id="returns-refunds-policy" class="policy-section">
-                        <h2>Returns & Refund Policy</h2>
-                        <p><strong>Last updated:</strong> [Insert Date]</p>
-                        <p>
-                            Thank you for shopping at ValueCeylonHealth.com, operated by Value Ceylon Technologies Pvt Ltd.
-                            ValueCeylonHealth.com is a multi-vendor online pharmacy platform connecting licensed pharmacies
-                            and healthcare product sellers with buyers across Sri Lanka.
-                        </p>
-                        <p>
-                            We request you to carefully review the following policy before initiating any return or refund
-                            request, as policies may vary based on the product category and the seller’s terms.
-                        </p>
-
-                        <h3>1. Returns</h3>
-
-                        <h4>1.1 Prescription Medication</h4>
-                        <p>
-                            Due to the sensitive nature of pharmaceutical products and the regulatory guidelines around
-                            medicine storage and dispensing, we do not accept returns or offer refunds for prescription
-                            medicines once delivered, except under the following conditions:
-                        </p>
-                        <ul>
-                            <li>The product delivered is defective or damaged</li>
-                            <li>The product received does not match the prescription (wrong medication or brand)</li>
-                            <li>The order is lost or damaged during shipping</li>
-                        </ul>
-
-                        <p><strong>📦 Return Conditions:</strong></p>
-                        <ul>
-                            <li>Items must be unopened and in their original packaging</li>
-                            <li>A valid prescription and proof of purchase are required</li>
-                            <li>Return requests must be initiated within 3 days of delivery</li>
-                        </ul>
-
-                        <p>
-                            Upon receiving your return request, the relevant seller will review the case and notify you
-                            within a reasonable period if the return is accepted. If approved, a refund will be processed to
-                            your original payment method.
-                        </p>
-                        <p>
-                            <strong>📞 For assistance:</strong> Contact the seller via the product page or email our support
-                            team at <a href="mailto:support@valueceylonhealth.com">support@valueceylonhealth.com</a>.
-                        </p>
-
-                        <h4>1.2 Over-the-Counter (OTC) and Non-Prescription Products</h4>
-                        <p>
-                            We allow returns for unopened OTC products such as supplements, wellness goods, or hygiene items
-                            within 3 days of delivery under the following conditions:
-                        </p>
-                        <ul>
-                            <li>The item is defective or damaged</li>
-                            <li>The wrong product was delivered</li>
-                        </ul>
-                        <p><strong>🚫 Important:</strong> Opened or used items are not eligible for return unless the
-                            product is found to be defective.</p>
-
-                        <h4>1.3 Other Product Categories including Grocery Items</h4>
-                        <p>
-                            Returns are generally not accepted for the following items due to hygiene and safety reasons:
-                        </p>
-                        <ul>
-                            <li>Surgical items and devices</li>
-                            <li>Baby care products</li>
-                            <li>Injections and temperature-sensitive items</li>
-                            <li>Beauty and personal care products</li>
-                        </ul>
-                        <p>
-                            However, if the product is damaged or incorrect, you may contact us within 3 days of receiving
-                            your order for resolution.
-                        </p>
-
-                        <h3>2. Exchanges</h3>
-                        <p>We only replace items if they are:</p>
-                        <ul>
-                            <li>Delivered in a defective or damaged condition</li>
-                            <li>Incorrect (not matching the product ordered)</li>
-                        </ul>
-                        <p>
-                            To initiate an exchange, contact our support team or the vendor directly. You may be required to
-                            send the item to the seller’s address, which will be provided during the exchange process.
-                        </p>
-                        <p><strong>📬 Note:</strong> You must retain original packaging and proof of purchase.</p>
-
-                        <h3>3. Refunds</h3>
-                        <p>
-                            Once your return is received and inspected by the seller, you will be notified of the status of
-                            your refund.
-                            If approved, your refund will be processed and applied automatically to your original method of
-                            payment within 7–10 business days (depending on your bank or payment processor).
-                        </p>
-                        <p><strong>📝 Note:</strong></p>
-                        <ul>
-                            <li>Only regular-priced items may be refunded. Sale items are non-refundable.</li>
-                            <li>Refunds exclude delivery and handling charges unless the return is due to an error by the
-                                seller.</li>
-                            <li>If the seller does not respond or disputes the return, ValueCeylonHealth.com will mediate
-                                the process fairly.</li>
-                        </ul>
-
-                        <h3>4. Shipping and Return Logistics</h3>
-                        <ul>
-                            <li>Customers are responsible for paying shipping costs for returning items, unless the seller
-                                agrees to cover them in specific cases (e.g., damaged/incorrect items).</li>
-                            <li>It is recommended that you use a trackable shipping method or purchase shipping insurance.
-                            </li>
-                            <li>ValueCeylonHealth.com is not responsible for loss or damage of return items during transit
-                                to the seller.</li>
-                        </ul>
-
-                        <h3>5. Seller-Specific Policies</h3>
-                        <p>
-                            Each vendor on ValueCeylonHealth.com may have individual return and refund terms. These will be
-                            displayed on the product page or vendor profile. Customers are advised to check vendor-specific
-                            policies before placing an order.
-                        </p>
-                        <p>
-                            We comply with the regulations and guidelines set forth by the National Medicines Regulatory
-                            Authority (NMRA) of Sri Lanka to ensure the safety, quality, and efficacy of all medicines
-                            available through our platform.
-                        </p>
-                    </section>
-
-                    <section id="advertising-policy" class="policy-section">
-                        <h2>Advertising Policy</h2>
-                        <p>
-                            At <strong>ValueCeylonHealth.com</strong>, we are committed to maintaining a safe, ethical, and
-                            medically responsible environment for all users. This Advertising Policy outlines the standards
-                            and conditions for advertisers wishing to promote products or services on our platform.
-                        </p>
-
-                        <h3>1. Compliance with Regulations</h3>
-                        <p>
-                            All advertisements must comply with the applicable laws and regulations in Sri Lanka, including
-                            the standards set by the National Medicines Regulatory Authority (NMRA). Advertisers are
-                            responsible for ensuring that all promoted products—especially pharmaceuticals, health
-                            supplements, and medical devices—are approved and meet safety, quality, and efficacy standards.
-                        </p>
-
-                        <h3>2. Acceptable Products and Services</h3>
-                        <p>We allow advertisements that are relevant to the healthcare, wellness, and pharmaceutical
-                            industries, including:</p>
-                        <ul>
-                            <li>Over-the-counter (OTC) medicines approved by NMRA</li>
-                            <li>Health and wellness supplements</li>
-                            <li>Medical equipment and devices</li>
-                            <li>Pharmacy and health services</li>
-                        </ul>
-                        <p><strong>Note:</strong> Prescription drugs may not be advertised directly to consumers.</p>
-
-                        <h3>3. Prohibited Content</h3>
-                        <p>Advertisements must not:</p>
-                        <ul>
-                            <li>Make false, misleading, or unverifiable health claims</li>
-                            <li>Promote unsafe or unapproved medicines or treatments</li>
-                            <li>Target minors inappropriately</li>
-                            <li>Use scare tactics or graphic health imagery</li>
-                            <li>Include adult, obscene, or offensive content</li>
-                        </ul>
-
-                        <h3>4. Review and Approval</h3>
-                        <p>
-                            All ads are subject to review and approval by our compliance team. We reserve the right to
-                            reject, remove, or request modifications to any advertisement that does not align with our
-                            policies or values.
-                        </p>
-
-                        <h3>5. Transparency and Accuracy</h3>
-                        <p>
-                            Advertisements must clearly identify the advertiser and must not be disguised as editorial or
-                            native content. Claims must be evidence-based, and disclaimers should be included where
-                            applicable.
-                        </p>
-
-                        <h3>6. Data Privacy</h3>
-                        <p>
-                            Advertisers must not collect user data from our platform without express permission and must
-                            comply with our <a href="#privacy-policy">Privacy Policy</a> and applicable data protection
-                            laws.
-                        </p>
-
-                        <h3>7. Reporting Violations</h3>
-                        <p>
-                            If you believe an ad violates our policy, please report it to <a
-                                href="mailto:info@valueceylonhealth.com">info@valueceylonhealth.com</a>. We will investigate
-                            and take appropriate action.
-                        </p>
-                    </section>
-
-                    <section id="delivery-policy" class="policy-section">
-                        <h2>Delivery Policy</h2>
-                        <p>
-                            At <strong>Value Ceylon Health</strong>, we aim to ensure that your orders are delivered
-                            promptly, safely, and with care. This Delivery Policy outlines the key details of our delivery
-                            services.
-                        </p>
-
-                        <h3>1. Delivery Coverage</h3>
-                        <p>
-                            We deliver across all regions of Sri Lanka, subject to courier service availability. Some remote
-                            or restricted areas may experience limited service or longer delivery times.
-                        </p>
-
-                        <h3>2. Delivery Timeframes</h3>
-                        <ul>
-                            <li><strong>Standard Delivery:</strong> 2–5 business days (island-wide)</li>
-                            <li><strong>Same-Day/Next-Day Delivery:</strong> Available in select areas for eligible
-                                products, subject to vendor and courier confirmation.</li>
-                        </ul>
-                        <p><em>Note: Delivery times may vary depending on product availability, order confirmation, and your
-                                delivery location.</em></p>
-
-                        <h3>3. Delivery Charges</h3>
-                        <ul>
-                            <li>Delivery charges are calculated at checkout based on location, weight, and vendor.</li>
-                            <li>Some vendors may offer free delivery for qualifying orders (e.g., minimum purchase value).
-                            </li>
-                        </ul>
-
-                        <h3>4. Order Tracking</h3>
-                        <p>
-                            Once your order is confirmed and dispatched, you will receive a tracking number via SMS or email
-                            to monitor the status of your delivery.
-                        </p>
-
-                        <h3>5. Delivery Partners</h3>
-                        <p>
-                            We collaborate with trusted courier partners to ensure safe and timely delivery of medicines and
-                            healthcare products. Cold chain-sensitive products are handled with required temperature control
-                            protocols.
-                        </p>
-
-                        <h3>6. Missed Deliveries</h3>
-                        <p>
-                            If delivery fails due to an incorrect address, recipient unavailability, or other reasons, our
-                            delivery partner will attempt redelivery or contact you for further instructions.
-                        </p>
-
-                        <h3>7. Vendor Responsibility</h3>
-                        <p>
-                            As a multivendor platform, individual sellers are responsible for timely dispatch and packaging.
-                            We work closely with all vendors to ensure adherence to our delivery standards.
-                        </p>
-
-                        <h3>8. Delays and Disruptions</h3>
-                        <p>
-                            In rare cases such as adverse weather, public holidays, or regulatory checks, delivery may be
-                            delayed. We will keep you informed of any delays and do our best to minimize inconvenience.
-                        </p>
-
-                        <h3>9. Contact Us</h3>
-                        <p>For questions or assistance with deliveries, please contact our customer support team:</p>
-                        <ul>
-                            <li><strong>Email:</strong> <a
-                                    href="mailto:support@valueceylonhealth.com">support@valueceylonhealth.com</a></li>
-                            <li><strong>Phone:</strong> +94 76 183 7685</li>
-                            <li><strong>Address:</strong> Value Ceylon Technologies Pvt Ltd, No. 73, Gagabada Road, Wewala,
-                                Piliyandala</li>
-                        </ul>
-                        <p>
-                            We are here to ensure that your experience on our platform is secure, compliant, and
-                            trustworthy.
-                        </p>
-                    </section>
-
-                    {{-- End policy --}}
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-left">
+                    <h1 class="fw-600 h3 text-dark mb-0">Privacy & Policies</h1>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="breadcrumb bg-transparent p-0 justify-content-center justify-content-lg-end mb-0">
+                        <li class="breadcrumb-item opacity-50">
+                            <a class="text-reset" href="{{ route('home') }}">{{ translate('Home') }}</a>
+                        </li>
+                        <li class="text-dark fw-600 breadcrumb-item active">
+                            {{ translate('Privacy Policy') }}
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Policy Content Container -->
+    <section class="mb-5">
+        <div class="container">
+            <div class="bg-white rounded shadow-sm p-4 p-md-5 text-left policy-container">
+
+                <!-- Visible Separator Quick Links -->
+                <div class="policy-nav-pills">
+                    <a href="#privacy-policy" class="policy-nav-link">Privacy Policy</a>
+                    <a href="#prescription-policy" class="policy-nav-link">Prescription & Comms Policy</a>
+                    <a href="#seller-policy" class="policy-nav-link">Seller-Specific Policies</a>
+                    <a href="#advertising-policy" class="policy-nav-link">Advertising Policy</a>
+                </div>
+
+                <!-- 1. PRIVACY POLICY -->
+                <div id="privacy-policy" class="policy-block mb-5">
+                    <h2 class="h4 fw-700 policy-blue-title policy-heading-border mb-3">Privacy Policy</h2>
+                    <p class="lh-1-8">
+                        Welcome to <strong>ValueCeylon.com</strong> ("we", "us", or "our"). This Privacy Policy outlines how we collect, use, store, and protect your personal information when you use our website (the "Platform"). We are committed to protecting your privacy and ensuring that your personal information is handled in a safe and responsible manner, in accordance with applicable data protection laws and healthcare regulations in Sri Lanka.
+                    </p>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-3">1. Information We Collect</h3>
+                        
+                        <h4 class="h6 fw-600 text-dark mb-2">A. Information You Provide to Us</h4>
+                        <p class="mb-2">When you use ValueCeylon.com, we may collect the following information:</p>
+                        <ul class="pl-4 mb-4">
+                            <li class="mb-1"><strong>Registration Information:</strong> Name, email address, phone number, and login credentials.</li>
+                            <li class="mb-1"><strong>Prescription Data:</strong> Uploads of medical prescriptions and relevant patient details (with patient consent).</li>
+                            <li class="mb-1"><strong>Health Profile Information:</strong> (Optional) Allergies, past purchases, or health conditions you provide for better recommendations.</li>
+                            <li class="mb-1"><strong>Seller Information:</strong> Business name, license number, pharmacy registration, contact details, products listed, and transaction history.</li>
+                            <li class="mb-1"><strong>Order & Payment Data:</strong> Shipping address, billing details, payment method, and transaction history.</li>
+                            <li class="mb-1"><strong>Communication Records:</strong> Emails, messages, or chats between customers and vendors, or with our support team.</li>
+                        </ul>
+
+                        <h4 class="h6 fw-600 text-dark mb-2">B. Information We Collect Automatically</h4>
+                        <p class="mb-2">When you visit our platform, we collect certain information about your device and usage, including:</p>
+                        <ul class="pl-4 mb-4">
+                            <li class="mb-1">IP address, browser type, time zone, and cookies</li>
+                            <li class="mb-1">Pages viewed, products clicked, referral sources</li>
+                            <li class="mb-1">Site interaction patterns and device specifications</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-3">2. Use of Personal Information</h3>
+                        <p class="mb-2">We use the collected information to:</p>
+                        <ul class="pl-4 mb-4">
+                            <li class="mb-1">Process and deliver your orders securely</li>
+                            <li class="mb-1">Authenticate buyers and sellers</li>
+                            <li class="mb-1">Verify and process prescriptions in compliance with health regulations</li>
+                            <li class="mb-1">Enable communication between customers and vendors</li>
+                            <li class="mb-1">Provide a personalized shopping experience, including medicine reminders and recommendations</li>
+                            <li class="mb-1">Detect and prevent fraud or misuse</li>
+                            <li class="mb-1">Improve our website's performance and customer experience</li>
+                            <li class="mb-1">Conduct marketing and promotional campaigns (with your consent)</li>
+                            <li class="mb-1">Ensure regulatory compliance with the National Medicines Regulatory Authority (NMRA) and other legal authorities</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-3">3. Sharing of Information</h3>
+                        <p class="mb-2">We do not sell your personal data. However, we may share your information with trusted parties under the following circumstances:</p>
+                        <ul class="pl-4 mb-4">
+                            <li class="mb-1"><strong>Licensed Sellers and Pharmacies:</strong> To fulfill your orders, especially prescription-based.</li>
+                            <li class="mb-1"><strong>Healthcare Professionals:</strong> Where applicable, to review prescriptions or offer support.</li>
+                            <li class="mb-1"><strong>Third-Party Service Providers:</strong> For logistics, payment processing, marketing, analytics, and cloud storage.</li>
+                            <li class="mb-1"><strong>Regulatory Bodies:</strong> To comply with the law or in response to legal processes, including NMRA, courts, and other healthcare regulators.</li>
+                            <li class="mb-1"><strong>Marketing Platforms:</strong> To provide relevant ads and offers (only with your consent).</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-3">4. Data Protection & Security</h3>
+                        <p class="mb-2">We implement appropriate physical, digital, and administrative safeguards to protect your personal and health-related information. These include:</p>
+                        <ul class="pl-4 mb-3">
+                            <li class="mb-1">SSL encryption for all transactions</li>
+                            <li class="mb-1">Access control and authentication protocols</li>
+                            <li class="mb-1">Secure prescription handling by verified pharmacies</li>
+                            <li class="mb-1">Regular security audits and data backup</li>
+                        </ul>
+                        <p>Prescription images and health data are handled with the highest confidentiality and only accessible by licensed entities for the purpose of dispensing medicine.</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-3">5. Cookies and Tracking Technologies</h3>
+                        <p class="mb-2">
+                            We may use cookies and other tracking technologies (such as pixels and web beacons) to collect, store, and track information about your interactions with our website. These technologies help us analyze site traffic, personalize content, and improve performance.
+                        </p>
+                        <p class="mb-2">We use cookies and similar technologies to:</p>
+                        <ul class="pl-4 mb-3">
+                            <li class="mb-1">Remember login preferences</li>
+                            <li class="mb-1">Track and analyze usage behavior</li>
+                            <li class="mb-1">Personalize product suggestions</li>
+                            <li class="mb-1">Enable social media features and targeted ads</li>
+                        </ul>
+                        <p class="small">You can manage cookie preferences in your browser settings. Disabling cookies may affect site functionality.</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-3">6. Children’s Privacy</h3>
+                        <p>
+                            This platform is intended for use by adults aged 18 and over. We do not knowingly collect or store data from minors. If we become aware that a child has provided us with personal information, we will delete it promptly.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-3">7. Your Rights</h3>
+                        <p class="mb-2">As a user of ValueCeylon.com, you have the right to:</p>
+                        <ul class="pl-4 mb-3">
+                            <li class="mb-1">Access or correct your personal information</li>
+                            <li class="mb-1">Request deletion of your account or data (subject to legal retention requirements)</li>
+                            <li class="mb-1">Withdraw consent for non-essential data processing (e.g., marketing)</li>
+                            <li class="mb-1">Lodge a complaint with a data protection authority</li>
+                        </ul>
+                        <p>To exercise your rights, email us at <a href="mailto:support@valueceylon.com" class="font-weight-bold">support@valueceylon.com</a>.</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-3">8. Changes to This Policy</h3>
+                        <p>
+                            We may update this Privacy Policy periodically to reflect changes in regulations or service offerings. Changes will be posted here with the "Effective Date" updated. We encourage you to review it regularly.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. PRESCRIPTION & COMMUNICATION POLICY -->
+                <div id="prescription-policy" class="policy-block mb-5 policy-section-border">
+                    <h2 class="h4 fw-700 policy-blue-title policy-heading-border mb-3">Prescription & Communication Policy</h2>
+
+                    <div class="mt-3">
+                        <h3 class="h5 fw-600 text-dark mb-2">Recording of Conversations</h3>
+                        <p class="mb-2">
+                            In accordance with the National Medicines Regulatory Authority (NMRA) of Sri Lanka, we record and securely store conversations between customers and our pharmacists to ensure compliance with healthcare standards, prescription accuracy, and quality assurance.
+                        </p>
+                        <p>
+                            These recordings are used solely for regulatory compliance, training, and service improvement purposes.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">Medication Records & Data Retention</h3>
+                        <p class="mb-2">
+                            We maintain detailed medication records of all prescriptions processed through our platform, as required by NMRA and other relevant healthcare regulations. These records help ensure proper patient care, prevent misuse, and facilitate future prescription refills or inquiries.
+                        </p>
+                        <p>
+                            Medication records are securely stored and will only be shared with the patient, authorized caregivers, or regulatory authorities as required by law.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">Confidentiality & Data Protection</h3>
+                        <p class="mb-2">
+                            All recorded conversations are treated as confidential and protected under applicable data privacy laws. We do not share recordings with third parties except when required by law or regulatory authorities.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">Customer Consent</h3>
+                        <p>
+                            By using our online pharmacy services, you consent to the recording of conversations as required by NMRA regulations. If you do not agree to this, you may choose not to proceed with our services.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">The Right of Refusal</h3>
+                        <p>
+                            A pharmacist has the right to refuse to fill any controlled-substance prescription. If legitimate concern exists, it is the pharmacist’s duty to refuse to fill a prescription and return the prescription to the patient. Even with physician approval, the pharmacist still maintains the right to not fill the prescription. It is illegal for a physician to write a prescription for a Schedule II medication for a family member. It is unethical for a prescriber to write a Schedule III medicines prescription for a family member.
+                        </p>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-light rounded border" style="border: 1px solid #fecaca !important;">
+                        <h3 class="h6 fw-700 text-danger mb-2">Restricted & Banned Product Policy</h3>
+                        <p class="mb-2"><strong>RESTRICTED PRODUCTS:</strong> The following therapeutic goods are not permitted for home delivery:</p>
+                        <ul class="pl-4 mb-0">
+                            <li class="mb-1">Schedule II C and III medicines.</li>
+                            <li class="mb-1">Prohibited substances as outlined in the Poisons, Opium, and Dangerous Drugs (Amendment) Act, No. 41 of 2022, including Tramadol, Gabapentin, and Pregabalin.</li>
+                            <li class="mb-1">Any injectable products, except for self-injecting preparations. Example: Insulin, Epinephrine</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 3. SELLER-SPECIFIC POLICIES -->
+                <div id="seller-policy" class="policy-block mb-5 policy-section-border">
+                    <h2 class="h4 fw-700 policy-blue-title policy-heading-border mb-3">Seller-Specific Policies</h2>
+                    <p class="mb-2">
+                        Each vendor on ValueCeylon.com may have individual return and refund terms. These will be displayed on the product page or vendor profile. Customers are advised to check vendor-specific policies before placing an order.
+                    </p>
+                    <p>
+                        We comply with the regulations and guidelines set forth by the National Medicines Regulatory Authority (NMRA) of Sri Lanka to ensure the safety, quality, and efficacy of all medicines available through our platform.
+                    </p>
+                </div>
+
+                <!-- 4. ADVERTISING POLICY -->
+                <div id="advertising-policy" class="policy-block policy-section-border">
+                    <h2 class="h4 fw-700 policy-blue-title policy-heading-border mb-3">Advertising Policy</h2>
+                    <p class="mb-3">
+                        At <strong>valueceylon.com</strong>, we are committed to maintaining a safe, ethical, and medically responsible environment for all users. This Advertising Policy outlines the standards and conditions for advertisers wishing to promote products or services on our platform.
+                    </p>
+
+                    <div class="mt-3">
+                        <h3 class="h5 fw-600 text-dark mb-2">1. Compliance with Regulations</h3>
+                        <p>
+                            All advertisements must comply with the applicable laws and regulations in Sri Lanka, including the standards set by the National Medicines Regulatory Authority (NMRA). Advertisers are responsible for ensuring that all promoted products—especially pharmaceuticals, health supplements, and medical devices—are approved and meet safety, quality, and efficacy standards.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">2. Acceptable Products and Services</h3>
+                        <p class="mb-2">We allow advertisements that are relevant to the healthcare, wellness, and pharmaceutical industries, including:</p>
+                        <ul class="pl-4 mb-2">
+                            <li class="mb-1">Over-the-counter (OTC) medicines approved by NMRA</li>
+                            <li class="mb-1">Health and wellness supplements</li>
+                            <li class="mb-1">Medical equipment and devices</li>
+                            <li class="mb-1">Pharmacy and health services</li>
+                        </ul>
+                        <p class="small">Prescription drugs may not be advertised directly to consumers.</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">3. Prohibited Content</h3>
+                        <p class="mb-2">Advertisements must not:</p>
+                        <ul class="pl-4 mb-3">
+                            <li class="mb-1">Make false, misleading, or unverifiable health claims</li>
+                            <li class="mb-1">Promote unsafe or unapproved medicines or treatments</li>
+                            <li class="mb-1">Target minors inappropriately</li>
+                            <li class="mb-1">Use scare tactics or graphic health imagery</li>
+                            <li class="mb-1">Include adult, obscene, or offensive content</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">4. Review and Approval</h3>
+                        <p>
+                            All ads are subject to review and approval by our compliance team. We reserve the right to reject, remove, or request modifications to any advertisement that does not align with our policies or values.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">5. Transparency and Accuracy</h3>
+                        <p>
+                            Advertisements must clearly identify the advertiser and must not be disguised as editorial or native content. Claims must be evidence-based, and disclaimers should be included where applicable.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">6. Data Privacy</h3>
+                        <p>
+                            Advertisers must not collect user data from our platform without express permission and must comply with our Privacy Policy and applicable data protection laws.
+                        </p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="h5 fw-600 text-dark mb-2">7. Reporting Violations</h3>
+                        <p>
+                            If you believe an ad violates our policy, please report it to <a href="mailto:info@valueceylon.com" class="font-weight-bold">info@valueceylon.com</a>. We will investigate and take appropriate action.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 @endsection
