@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 use App\Models\Address;
 use App\Models\City;
 use App\Models\State;
-use App\Models\District;
 use Auth;
 
 class AddressController extends Controller
@@ -48,7 +47,7 @@ class AddressController extends Controller
         }
         $address->address = $request->address;
         $address->country_id = $request->country_id;
-        $address->district_id = $request->district_id;
+        $address->state_id = $request->state_id;
         $address->city_id = $request->city_id;
         $address->longitude = $request->longitude;
         $address->latitude = $request->latitude;
@@ -80,12 +79,11 @@ class AddressController extends Controller
     public function edit($id)
     {
         $data['address_data'] = Address::findOrFail($id);
-        //$data['districts'] = District::where('status', 1)->where('country_id', $data['address_data']->country_id)->get();
-        $data['cities'] = City::where('status', 1)->where('district_id', $data['address_data']->district_id)->get();
+        $data['states'] = State::where('country_id', $data['address_data']->country_id)->orderBy('name')->get();
+        $data['cities'] = City::where('state_id', $data['address_data']->state_id)->orderBy('name')->get();
 
         $returnHTML = view('frontend.' . get_setting('homepage_select') . '.partials.address_edit_modal', $data)->render();
         return response()->json(array('data' => $data, 'html' => $returnHTML));
-        //        return ;
     }
 
     /**
@@ -133,7 +131,7 @@ class AddressController extends Controller
 
     public function getStates(Request $request)
     {
-        $states = State::where('status', 1)->where('country_id', $request->country_id)->get();
+        $states = State::where('country_id', $request->country_id)->orderBy('name')->get();
         $html = '<option value="">' . translate("Select State") . '</option>';
 
         foreach ($states as $state) {
@@ -145,7 +143,7 @@ class AddressController extends Controller
 
     public function getCities(Request $request)
     {
-        $cities = City::where('status', 1)->where('district_id', $request->district_id)->get();
+        $cities = City::where('state_id', $request->state_id)->orderBy('name')->get();
         $html = '<option value="">' . translate("Select City") . '</option>';
 
         foreach ($cities as $row) {

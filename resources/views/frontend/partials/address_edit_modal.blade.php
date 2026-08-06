@@ -33,7 +33,7 @@
         <!-- State -->
         <div class="row">
             <div class="col-md-2">
-                <label>{{ translate('State')}}</label>
+                <label>{{ translate('State/ District')}}</label>
             </div>
             <div class="col-md-10">
                 <select class="form-control mb-3 aiz-selectpicker rounded-0" name="state_id" id="edit_state"  data-live-search="true" required>

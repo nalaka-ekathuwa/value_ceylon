@@ -17,7 +17,7 @@ use App\Models\Wallet;
 use App\Models\Address;
 use App\Models\Carrier;
 use App\Models\Country;
-use App\Models\District;
+
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Currency;
@@ -123,12 +123,12 @@ if (!function_exists('get_active_countries')) {
     }
 }
 
-// get all active countries
-if (!function_exists('get_active_districts')) {
-    function get_active_districts()
+
+// get all active states
+if (!function_exists('get_active_states')) {
+    function get_active_states()
     {
-        $district_query = District::query();
-        return $district_query->isEnabled()->get();
+        return \App\Models\State::where('status', 1)->get();
     }
 }
 

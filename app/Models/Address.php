@@ -23,11 +23,6 @@ class Address extends Model
         return $this->belongsTo(State::class);
     }
 
-    public function district()
-    {
-        return $this->belongsTo(District::class);
-    }
-
     public function city()
     {
         return $this->belongsTo(City::class);

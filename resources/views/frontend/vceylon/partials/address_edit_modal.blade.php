@@ -23,7 +23,7 @@
                         data-placeholder="{{ translate('Select your country')}}" name="country_id" id="edit_country"
                         required>
                         <option value="">{{ translate('Select your country') }}</option>
-                        @foreach (get_active_countries() as $key => $country)
+                        @foreach (\App\Models\Country::orderBy('name')->get() as $key => $country)
                             <option value="{{ $country->id }}" @if($address_data->country_id == $country->id) selected @endif>
                                 {{ $country->name }}
                             </option>
@@ -36,7 +36,7 @@
         <!-- State -->
         <div class="row">
             <div class="col-md-2">
-                <label>{{ translate('State')}}</label>
+                <label>{{ translate('State/ District')}}</label>
             </div>
             <div class="col-md-10">
                 <select class="form-control mb-3 aiz-selectpicker rounded-0" name="state_id" id="edit_state"
@@ -109,7 +109,7 @@
             </div>
             <div class="col-md-10">
                 <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Your Postal Code')}}"
-                    value="{{ $address_data->postal_code }}" name="postal_code" value="" required>
+                    value="{{ $address_data->postal_code }}" name="postal_code">
             </div>
         </div>
 

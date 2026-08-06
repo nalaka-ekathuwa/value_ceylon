@@ -83,8 +83,8 @@
                                                             <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->city)->name }}</span>
                                                         </div>
                                                         <div class="row">
-                                                            <span class="fs-14 text-secondary col-3">{{ translate('District') }}</span>
-                                                            <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->district)->name_en }}</span>
+                                                            <span class="fs-14 text-secondary col-3">{{ translate('State/ District') }}</span>
+                                                            <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->state)->name }}</span>
                                                         </div>
                                                         <div class="row">
                                                             <span class="fs-14 text-secondary col-3">{{ translate('Country') }}</span>
