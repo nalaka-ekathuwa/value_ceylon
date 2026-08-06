@@ -9,6 +9,7 @@ use App\Models\AttributeValue;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductFaq;
 use App\Models\ProductTax;
 use App\Models\ProductTranslation;
 use App\Models\Wishlist;
@@ -129,6 +130,21 @@ class ProductController extends Controller
             'product_id'
         ]));
 
+        // Product FAQs
+        if ($request->has('faq_question') && $request->has('faq_answer')) {
+            $questions = $request->input('faq_question', []);
+            $answers   = $request->input('faq_answer', []);
+            foreach ($questions as $index => $question) {
+                if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                    ProductFaq::create([
+                        'product_id' => $product->id,
+                        'question'   => $question,
+                        'answer'     => $answers[$index],
+                    ]);
+                }
+            }
+        }
+
         if (get_setting('product_approve_by_admin') == 1) {
             $users = User::findMany([auth()->user()->id, User::where('user_type', 'admin')->first()->id]);
             Notification::send($users, new ShopProductNotification('physical', $product));
@@ -224,6 +240,21 @@ class ProductController extends Controller
             ])
         );
 
+        // Product FAQs
+        $product->faqs()->delete();
+        if ($request->has('faq_question') && $request->has('faq_answer')) {
+            $questions = $request->input('faq_question', []);
+            $answers   = $request->input('faq_answer', []);
+            foreach ($questions as $index => $question) {
+                if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                    ProductFaq::create([
+                        'product_id' => $product->id,
+                        'question'   => $question,
+                        'answer'     => $answers[$index],
+                    ]);
+                }
+            }
+        }
 
         flash(translate('Product has been updated successfully'))->success();
 

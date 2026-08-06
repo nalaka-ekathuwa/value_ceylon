@@ -517,8 +517,53 @@
                         </div>
                     </div>
 
+            </div>
+            </div>
+
+            {{-- FAQ Section --}}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 h6">{{ translate('Product FAQ') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div id="faq-rows">
+                        @foreach($product->faqs as $faq)
+                        <div class="faq-row mb-3 border p-3 rounded">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Question') }}</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="faq_question[]"
+                                        placeholder="{{ translate('Enter question') }}"
+                                        value="{{ $faq->question }}" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Answer') }}</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control" name="faq_answer[]" rows="3"
+                                        placeholder="{{ translate('Enter answer') }}" required>{{ $faq->answer }}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-11 text-right">
+                                    <button type="button" class="btn btn-sm btn-danger remove-faq-row">
+                                        <i class="las la-trash"></i> {{ translate('Remove') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="form-group row mt-2">
+                        <div class="col-md-12">
+                            <button type="button" id="add-faq-row" class="btn btn-sm btn-outline-primary">
+                                <i class="las la-plus"></i> {{ translate('Add FAQ') }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
+
 
             <div class="card">
                 <div class="card-header">
@@ -895,6 +940,34 @@
         update_sku();
     });
 
+
+    // FAQ Add/Remove
+    $('#add-faq-row').on('click', function() {
+        var row = '<div class="faq-row mb-3 border p-3 rounded">' +
+            '<div class="form-group row">' +
+                '<label class="col-md-3 col-from-label">{{ translate("Question") }}</label>' +
+                '<div class="col-md-8">' +
+                    '<input type="text" class="form-control" name="faq_question[]" placeholder="{{ translate("Enter question") }}" required>' +
+                '</div>' +
+            '</div>' +
+            '<div class="form-group row">' +
+                '<label class="col-md-3 col-from-label">{{ translate("Answer") }}</label>' +
+                '<div class="col-md-8">' +
+                    '<textarea class="form-control" name="faq_answer[]" rows="3" placeholder="{{ translate("Enter answer") }}" required></textarea>' +
+                '</div>' +
+            '</div>' +
+            '<div class="form-group row">' +
+                '<div class="col-md-11 text-right">' +
+                    '<button type="button" class="btn btn-sm btn-danger remove-faq-row"><i class="las la-trash"></i> {{ translate("Remove") }}</button>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+        $('#faq-rows').append(row);
+    });
+
+    $(document).on('click', '.remove-faq-row', function() {
+        $(this).closest('.faq-row').remove();
+    });
 
 </script>
 @endsection

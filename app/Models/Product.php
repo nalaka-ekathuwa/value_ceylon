@@ -104,6 +104,11 @@ class Product extends Model
         return $this->hasMany(Cart::class);
     }
     
+    public function faqs()
+    {
+        return $this->hasMany(ProductFaq::class);
+    }
+
     public function scopeIsApprovedPublished($query)
     {
         return $query->where('approved', '1')->where('published', 1);

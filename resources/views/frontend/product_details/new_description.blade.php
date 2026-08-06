@@ -95,6 +95,19 @@
             transform: translateY(-1px);
         }
 
+        /* ── FAQ Accordion Arrow Alignment & Smooth Rotation ── */
+        .faq-arrow {
+            transition: transform 0.3s ease-in-out;
+            font-size: 1.1rem;
+            color: #6c757d;
+            flex-shrink: 0;
+        }
+        .card-header[aria-expanded="true"] .faq-arrow,
+        .card-header:not(.collapsed) .faq-arrow {
+            transform: rotate(180deg);
+            color: rgb(27, 108, 168);
+        }
+
         /* ── Tablet & Mobile Responsiveness ── */
         @media (max-width: 991.98px) {
             .modern-spec-table td.spec-label {
@@ -142,6 +155,13 @@
             class="mr-3 mr-md-4 pb-3 fs-15 fw-700 text-reset active show flex-shrink-0">
             <i class="las la-file-alt mr-1"></i> {{ translate('Product Details') }}
         </a>
+
+        @if(isset($detailedProduct->faqs) && count($detailedProduct->faqs) > 0)
+        <a href="#tab_default_faq" data-toggle="tab"
+            class="mr-3 mr-md-4 pb-3 fs-15 fw-700 text-reset flex-shrink-0">
+            <i class="las la-question-circle mr-1"></i> {{ translate('Product FAQ') }} ({{ count($detailedProduct->faqs) }})
+        </a>
+        @endif
 
         <a href="#tab_default_2" data-toggle="tab"
             class="mr-3 mr-md-4 pb-3 fs-15 fw-700 text-reset flex-shrink-0">
@@ -344,6 +364,32 @@
 
             </div>
         </div>
+
+        @if(isset($detailedProduct->faqs) && count($detailedProduct->faqs) > 0)
+        <!-- Product FAQ Tab -->
+        <div class="tab-pane fade" id="tab_default_faq">
+            <div class="py-3">
+                <h5 class="section-subheading mb-3">{{ translate('Frequently Asked Questions (FAQ)') }}</h5>
+                <div class="accordion" id="productTabFaqAccordion">
+                    @foreach($detailedProduct->faqs as $index => $faq)
+                    <div class="card mb-2 border rounded overflow-hidden shadow-none">
+                        <div class="card-header bg-light p-3 cursor-pointer {{ $index != 0 ? 'collapsed' : '' }}" id="headingTabFaq{{ $faq->id }}" data-toggle="collapse" data-target="#collapseTabFaq{{ $faq->id }}" aria-expanded="{{ $index == 0 ? 'true' : 'false' }}" aria-controls="collapseTabFaq{{ $faq->id }}">
+                            <h6 class="mb-0 fs-14 fw-600 text-dark d-flex align-items-center justify-content-between w-100">
+                                <span class="pr-3"><i class="las la-question-circle text-primary mr-2"></i> {{ $faq->question }}</span>
+                                <i class="las la-angle-down faq-arrow"></i>
+                            </h6>
+                        </div>
+                        <div id="collapseTabFaq{{ $faq->id }}" class="collapse {{ $index == 0 ? 'show' : '' }}" aria-labelledby="headingTabFaq{{ $faq->id }}" data-parent="#productTabFaqAccordion">
+                            <div class="card-body bg-white text-secondary fs-14">
+                                {!! nl2br(e($faq->answer)) !!}
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
 
         <!-- Company Profile Tab -->
         <div class="tab-pane fade" id="tab_default_2">

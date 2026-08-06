@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Category;
 use App\Models\ProductTax;
+use App\Models\ProductFaq;
 use App\Models\AttributeValue;
 use App\Models\Cart;
 use App\Models\Wishlist;
@@ -259,6 +260,21 @@ class ProductController extends Controller
             'product_id'
         ]));
 
+        // Product FAQs
+        if ($request->has('faq_question') && $request->has('faq_answer')) {
+            $questions = $request->input('faq_question', []);
+            $answers   = $request->input('faq_answer', []);
+            foreach ($questions as $index => $question) {
+                if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                    ProductFaq::create([
+                        'product_id' => $product->id,
+                        'question'   => $question,
+                        'answer'     => $answers[$index],
+                    ]);
+                }
+            }
+        }
+
         flash(translate('Product has been inserted successfully'))->success();
 
         Artisan::call('view:clear');
@@ -397,6 +413,22 @@ class ProductController extends Controller
                 'description'
             ])
         );
+
+        // Product FAQs
+        $product->faqs()->delete();
+        if ($request->has('faq_question') && $request->has('faq_answer')) {
+            $questions = $request->input('faq_question', []);
+            $answers   = $request->input('faq_answer', []);
+            foreach ($questions as $index => $question) {
+                if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                    ProductFaq::create([
+                        'product_id' => $product->id,
+                        'question'   => $question,
+                        'answer'     => $answers[$index],
+                    ]);
+                }
+            }
+        }
 
         flash(translate('Product has been updated successfully'))->success();
 
