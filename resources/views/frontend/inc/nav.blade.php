@@ -88,7 +88,7 @@
                     @if (get_setting('vendor_system_activation') == 1)
                         <!-- Order tracking link -->
                         <li class="list-inline-item mr-4 pl-0 py-0">
-                            <a href="#" target="_blank" class="top-nav-links fs-12 d-flex align-items-center">
+                            <a href="{{ route('orders.track') }}" class="top-nav-links fs-12 d-flex align-items-center">
                                 <svg fill="#000000" height="16px" width="16px" version="1.1" id="Layer_1"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                     viewBox="0 0 512 512" xml:space="preserve">

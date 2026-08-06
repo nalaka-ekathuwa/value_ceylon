@@ -102,8 +102,9 @@
             <div class="mb-3">
                 @php
                     $removedXML = '<?xml version="1.0" encoding="UTF-8"?>';
+                    $qrUrl = route('orders.track', ['order_code' => $order->code]);
                 @endphp
-                {!! str_replace($removedXML, '', QrCode::size(100)->generate($order->code)) !!}
+                {!! str_replace($removedXML, '', QrCode::size(100)->generate($qrUrl)) !!}
             </div>
             <div class="row gutters-5">
                 <div class="col text-md-left text-center">

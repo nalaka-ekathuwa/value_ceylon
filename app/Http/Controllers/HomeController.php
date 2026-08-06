@@ -273,13 +273,15 @@ class HomeController extends Controller
 
     public function trackOrder(Request $request)
     {
-        if ($request->has('order_code')) {
-            $order = Order::where('code', $request->order_code)->first();
-            if ($order != null) {
-                return view('frontend.track_order', compact('order'));
+        $order = null;
+        $order_not_found = false;
+        if ($request->has('order_code') && !empty($request->order_code)) {
+            $order = Order::where('code', trim($request->order_code))->first();
+            if ($order == null) {
+                $order_not_found = true;
             }
         }
-        return view('frontend.track_order');
+        return view('frontend.track_order', compact('order', 'order_not_found'));
     }
 
     public function product(Request $request, $slug)

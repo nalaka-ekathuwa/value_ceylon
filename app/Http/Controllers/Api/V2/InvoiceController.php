@@ -89,12 +89,10 @@ class InvoiceController extends Controller
             $font_family = "'Roboto','sans-serif'";
         }
 
-        // $config = ['instanceConfigurator' => function($mpdf) {
-        //     $mpdf->showImageErrors = true;
-        // }];
-        // mpdf config will be used in 4th params of loadview
-
-        $config = [];
+        $config = ['instanceConfigurator' => function($mpdf) {
+            $mpdf->curlAllowUnsafeSslRequests = config('app.debug', false);
+            $mpdf->curlTimeout = 10;
+        }];
 
         $order = Order::findOrFail($id);
         return PDF::loadView('backend.invoices.invoice', [

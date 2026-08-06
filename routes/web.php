@@ -182,7 +182,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/terms', 'terms')->name('terms');
     Route::get('/privacy-policy', 'privacypolicy')->name('privacypolicy');
 
-    Route::get('/track-your-order', 'trackOrder')->name('orders.track');
+    Route::get('/track-your-order', 'trackOrder')->name('orders.track')->middleware('auth');
 
     Route::get('contact-us', 'contact')->name('contact-us');
 

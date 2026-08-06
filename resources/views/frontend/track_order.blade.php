@@ -31,8 +31,13 @@
                             </div>
                             <div class="form-box-content p-3">
                                 <div class="form-group">
-                                    <input type="text" class="form-control rounded-0 mb-3" placeholder="{{ translate('Order Code')}}" name="order_code" required>
+                                    <input type="text" class="form-control rounded-0 mb-3" placeholder="{{ translate('Order Code')}}" name="order_code" value="{{ request('order_code') }}" required>
                                 </div>
+                                @if (isset($order_not_found) && $order_not_found)
+                                    <div class="alert alert-danger text-center mb-3 fs-13" role="alert">
+                                        {{ translate('No order found with the provided Order Code. Please check the code and try again.') }}
+                                    </div>
+                                @endif
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-primary rounded-0 w-150px">{{ translate('Track Order')}}</button>
                                 </div>
@@ -57,17 +62,20 @@
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Customer')}}:</td>
-                                        <td>{{ json_decode($order->shipping_address)->name }}</td>
+                                        <td>{{ $order->shipping_address ? (json_decode($order->shipping_address)->name ?? '') : '' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Email')}}:</td>
-                                        @if ($order->user_id != null)
-                                            <td>{{ $order->user->email }}</td>
-                                        @endif
+                                        <td>{{ $order->user_id != null && $order->user ? $order->user->email : '' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600">{{ translate('Shipping address')}}:</td>
-                                        <td>{{ json_decode($order->shipping_address)->address }}, {{ json_decode($order->shipping_address)->city }}, {{ json_decode($order->shipping_address)->country }}</td>
+                                        <td>
+                                            @if($order->shipping_address)
+                                                @php $addr = json_decode($order->shipping_address); @endphp
+                                                {{ $addr->address ?? '' }}, {{ $addr->city ?? '' }}, {{ $addr->country ?? '' }}
+                                            @endif
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
@@ -111,8 +119,6 @@
                         $status = $order->delivery_status;
                     @endphp
                     <div class="bg-white border rounded-0 mt-4">
-                        
-                        @if($orderDetail->product != null)
                         <div class="p-3">
                             <table class="table">
                                 <thead>
@@ -124,14 +130,25 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                    <td>{{ $orderDetail->product->getTranslation('name') }} ({{ $orderDetail->variation }})</td>
+                                        <td>
+                                            @if($orderDetail->product != null)
+                                                {{ $orderDetail->product->getTranslation('name') }} @if($orderDetail->variation) ({{ $orderDetail->variation }}) @endif
+                                            @else
+                                                <span class="text-muted">{{ translate('Product Unavailable') }}</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $orderDetail->quantity }}</td>
-                                        <td>{{ $orderDetail->product->user->name }}</td>
+                                        <td>
+                                            @if($orderDetail->product != null && $orderDetail->product->user != null)
+                                                {{ $orderDetail->product->user->name }}
+                                            @else
+                                                {{ get_setting('site_name') }}
+                                            @endif
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        @endif
                     </div>
                 @endforeach
 

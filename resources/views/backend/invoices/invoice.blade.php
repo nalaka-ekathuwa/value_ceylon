@@ -184,8 +184,9 @@
 			            <td class="text-left">
                             @php
                                 $removedXML = '<?xml version="1.0" encoding="UTF-8"?>';
+                                $qrUrl = route('orders.track', ['order_code' => $order->code]);
                             @endphp
-                            {!! str_replace($removedXML,"", QrCode::size(100)->generate($order->code)) !!}
+                            {!! str_replace($removedXML, "", QrCode::size(100)->generate($qrUrl)) !!}
 			            </td>
 			            <td>
 					        <table class="text-right sm-padding small strong">
