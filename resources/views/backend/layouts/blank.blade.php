@@ -145,6 +145,23 @@
     <script src="{{ static_asset('assets/js/vendors.js') }}" ></script>
     <script src="{{ static_asset('assets/js/aiz-core.js?v=') }}{{ rand(1000,9999) }}" ></script>
 
+    <script type="text/javascript">
+        function togglePasswordVisibility(btn) {
+            var $btn = $(btn);
+            var $input = $btn.siblings('input');
+            if ($input.length === 0) {
+                $input = $btn.parent().find('input');
+            }
+            if ($input.attr('type') === 'password') {
+                $input.attr('type', 'text');
+                $btn.removeClass('la-eye').addClass('la-eye-slash');
+            } else {
+                $input.attr('type', 'password');
+                $btn.removeClass('la-eye-slash').addClass('la-eye');
+            }
+        }
+    </script>
+
     @yield('script')
 
     <script type="text/javascript">

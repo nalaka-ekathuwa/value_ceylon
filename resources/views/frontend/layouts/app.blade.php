@@ -135,7 +135,7 @@
             justify-content: space-between;
             width: 100%;
             font-weight: 600;
-            color: #203df0;
+            color: #1b6ca8;
             background: none;
             text-align: left;
             padding: 15px 20px;
@@ -203,13 +203,13 @@
             --dark: #292933;
             --soft-dark: #1b1b28;
             --primary:
-                {{ get_setting('base_color', '#d43533') }}
+                {{ get_setting('base_color', '#1b6ca8') }}
             ;
             --hov-primary:
-                {{ get_setting('base_hov_color', '#9d1b1a') }}
+                {{ get_setting('base_hov_color', '#1b6ca8') }}
             ;
             --soft-primary:
-                {{ hex2rgba(get_setting('base_color', '#d43533'), 0.15) }}
+                {{ hex2rgba(get_setting('base_color', '#1b6ca8'), 0.15) }}
             ;
         }
 
@@ -981,6 +981,23 @@
             }
         </script>
     @endif
+
+    <script type="text/javascript">
+        function togglePasswordVisibility(btn) {
+            var $btn = $(btn);
+            var $input = $btn.siblings('input');
+            if ($input.length === 0) {
+                $input = $btn.parent().find('input');
+            }
+            if ($input.attr('type') === 'password') {
+                $input.attr('type', 'text');
+                $btn.removeClass('la-eye').addClass('la-eye-slash');
+            } else {
+                $input.attr('type', 'password');
+                $btn.removeClass('la-eye-slash').addClass('la-eye');
+            }
+        }
+    </script>
 
     @yield('script')
 

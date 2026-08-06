@@ -152,12 +152,12 @@
     font-size: 20px;
     margin-bottom: 10px;
     list-style: none;
-    /* border-top: 1px solid #203df0; */
-    border-bottom: 1px solid #203df0;
+    /* border-top: 1px solid #1b6ca8; */
+    border-bottom: 1px solid #1b6ca8;
 }
 
 .request-for-quotation .sourcing ul li span{
-    background: #203df0;
+    background: #1b6ca8;
     padding: 3px 10px;
     color: #fff;
     display: inline-block;

@@ -67,7 +67,10 @@
                                                 <!-- password -->
                                                 <div class="form-group">
                                                     <label for="password" class="fs-12 fw-700 text-soft-dark">{{  translate('Password') }}</label>
-                                                    <input type="password" class="form-control rounded-0{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{  translate('Password') }}" name="password">
+                                                    <div class="position-relative">
+                                                        <input type="password" class="form-control rounded-0{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{  translate('Password') }}" name="password">
+                                                        <i class="las la-eye position-absolute cursor-pointer text-secondary toggle-password" onclick="togglePasswordVisibility(this)" style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 18px; cursor: pointer;"></i>
+                                                    </div>
                                                     <div class="text-right mt-1">
                                                         <span class="fs-12 fw-400 text-gray-dark">{{ translate('Password must contain at least 6 digits') }}</span>
                                                     </div>
@@ -81,7 +84,10 @@
                                                 <!-- password Confirm -->
                                                 <div class="form-group">
                                                     <label for="password_confirmation" class="fs-12 fw-700 text-soft-dark">{{  translate('Confirm Password') }}</label>
-                                                    <input type="password" class="form-control rounded-0" placeholder="{{  translate('Confirm Password') }}" name="password_confirmation">
+                                                    <div class="position-relative">
+                                                        <input type="password" class="form-control rounded-0" placeholder="{{  translate('Confirm Password') }}" name="password_confirmation">
+                                                        <i class="las la-eye position-absolute cursor-pointer text-secondary toggle-password" onclick="togglePasswordVisibility(this)" style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 18px; cursor: pointer;"></i>
+                                                    </div>
                                                 </div>
 
                                                 <!-- Recaptcha -->

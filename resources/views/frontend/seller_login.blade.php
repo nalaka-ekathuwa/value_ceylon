@@ -15,7 +15,7 @@
                             @else
                                 <img src="{{ static_asset('assets/img/logo.png') }}" class="mw-100 mb-4" height="40">
                             @endif
-                            <h1 class="fs-20 fs-md-24 fw-700 text-primary" style="color:#203df0!important"  >{{ translate('Welcome Back !')}}</h1>
+                            <h1 class="fs-20 fs-md-24 fw-700 text-primary" style="color:#1b6ca8!important"  >{{ translate('Welcome Back !')}}</h1>
                             <h5 class="fs-14 fw-400 text-dark">{{ translate('Login To Your Seller Account')}}</h5>
                         </div>
                         <form class="pad-hor" method="POST" role="form" action="{{ route('login') }}">
@@ -34,7 +34,10 @@
                             <!-- password -->
                             <div class="form-group">
                                 <label for="password" class="fs-12 fw-500 text-secondary">{{  translate('Password') }}</label>
-                                <input type="password" class="form-control rounded-0 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password">
+                                <div class="position-relative">
+                                    <input type="password" class="form-control rounded-0 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password">
+                                    <i class="las la-eye position-absolute cursor-pointer text-secondary toggle-password" onclick="togglePasswordVisibility(this)" style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 18px; cursor: pointer;"></i>
+                                </div>
                             </div>
 
                             <div class="row mb-2">
@@ -54,7 +57,7 @@
 
                             <!-- Submit Button -->
                             <div class="mb-4 mt-4">
-                                <button type="submit" class="btn btn-default text-white btn-block fw-700 fs-14 rounded-4" style="background:#203df0!important">{{  translate('Login') }}</button>
+                                <button type="submit" class="btn btn-default text-white btn-block fw-700 fs-14 rounded-4" style="background:#1b6ca8!important">{{  translate('Login') }}</button>
                             </div>
                         </form>
                         @if (env("DEMO_MODE") == "On")
