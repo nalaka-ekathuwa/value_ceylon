@@ -170,34 +170,62 @@
             border-radius: 8px;
             display: inline-flex;
             align-items: center;
+            justify-content: space-between;
             padding: 3px;
             width: 130px;
+            height: 42px;
+            user-select: none;
         }
         .product-info-panel .qty-control-modern .btn-qty {
             border: none;
             background: transparent;
-            color: #000000;
+            color: #0f172a;
             width: 34px;
             height: 34px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 6px;
             padding: 0;
+            font-size: 14px;
+            line-height: 1;
             font-weight: 700;
-            transition: background 0.15s;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            flex-shrink: 0;
         }
-        .product-info-panel .qty-control-modern .btn-qty:hover {
+        .product-info-panel .qty-control-modern .btn-qty i {
+            line-height: 1;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .product-info-panel .qty-control-modern .btn-qty:hover:not(:disabled) {
             background: #e2e8f0;
+            color: #000000;
+        }
+        .product-info-panel .qty-control-modern .btn-qty:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
         .product-info-panel .qty-control-modern .input-qty {
             border: none;
             background: transparent;
-            width: 45px;
+            width: 100%;
+            height: 100%;
             text-align: center;
             font-weight: 700;
-            color: #000000;
+            color: #0f172a;
             font-size: 1rem;
+            padding: 0;
+            margin: 0;
+            outline: none !important;
+            box-shadow: none !important;
+            -moz-appearance: textfield;
+        }
+        .product-info-panel .qty-control-modern .input-qty::-webkit-outer-spin-button,
+        .product-info-panel .qty-control-modern .input-qty::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         .product-info-panel .product-quantity {
             display: flex;
@@ -611,7 +639,13 @@
                         </span>
                         <span class="price-old">{{ home_price($detailedProduct) }}</span>
                         @if ($detailedProduct->unit != null)
-                            <span class="opacity-70" style="font-size:.85rem;">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                            <span class="fs-13 text-secondary font-weight-normal">
+                                @if(is_numeric($detailedProduct->getTranslation('unit')))
+                                    / {{ translate('Pc') }}
+                                @else
+                                    / {{ $detailedProduct->getTranslation('unit') }}
+                                @endif
+                            </span>
                         @endif
                         @if (discount_in_percentage($detailedProduct) > 0)
                             <span class="discount-badge">-{{ discount_in_percentage($detailedProduct) }}%</span>
@@ -642,7 +676,13 @@
                             {{ home_discounted_price($detailedProduct) }}
                         </span>
                         @if ($detailedProduct->unit != null)
-                            <span class="opacity-70" style="font-size:.85rem;">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                            <span class="fs-13 text-secondary font-weight-normal">
+                                @if(is_numeric($detailedProduct->getTranslation('unit')))
+                                    / {{ translate('Pc') }}
+                                @else
+                                    / {{ $detailedProduct->getTranslation('unit') }}
+                                @endif
+                            </span>
                         @endif
                         @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
                             <div class="ml-2 bg-secondary-base d-flex justify-content-center align-items-center px-3 py-1"
@@ -691,7 +731,6 @@
                                             <span
                                                 class="aiz-megabox-elem rounded-2 d-flex align-items-center justify-content-between py-2 px-3">
                                                 <span>{{ $value }}</span>
-                                                <i class="las la-angle-down ml-2 opacity-60"></i>
                                             </span>
                                         </label>
                                     @endforeach
@@ -734,7 +773,7 @@
                     </div>
                     <div class="col-sm-9 col-8">
                         <div class="product-quantity d-flex align-items-center">
-                            <div class="qty-control-modern mr-3">
+                            <div class="qty-control-modern aiz-plus-minus mr-3">
                                 <button class="btn btn-qty" type="button"
                                     data-type="minus" data-field="quantity" disabled="">
                                     <i class="las la-minus"></i>

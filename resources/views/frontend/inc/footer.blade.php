@@ -261,12 +261,7 @@
                                     class="text-reset opacity-80 hov-opacity-100">Seller Knowledge Base</a>
                             </p>
                         </li>
-                        <li class="mb-2">
-                            <p class="fs-14 mb-1">
-                                <a href="#" class="text-reset opacity-80 hov-opacity-100">Membership
-                                    plans</a>
-                            </p>
-                        </li>
+
                         <li class="mb-2">
                             <p class="fs-14 mb-1">
                                 <a href="{{ route('seller.create-step-1') }}"

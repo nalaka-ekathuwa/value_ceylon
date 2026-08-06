@@ -350,94 +350,99 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        //Product
-        $product = $this->productService->update($request->except([
-            '_token',
-            'sku',
-            'choice',
-            'tax_id',
-            'tax',
-            'tax_type',
-            'flash_deal_id',
-            'flash_discount',
-            'flash_discount_type'
-        ]), $product);
-
-        $request->merge(['product_id' => $product->id]);
-
-        //Product categories
-        $product->categories()->sync($request->category_ids);
-
-        //Product Stock
-        $product->stocks()->delete();
-        $this->productStockService->store($request->only([
-            'colors_active',
-            'colors',
-            'choice_no',
-            'unit_price',
-            'sku',
-            'current_stock',
-            'product_id'
-        ]), $product);
-
-        //Flash Deal
-        $this->productFlashDealService->store($request->only([
-            'flash_deal_id',
-            'flash_discount',
-            'flash_discount_type'
-        ]), $product);
-
-        //VAT & Tax
-        if ($request->tax_id) {
-            $product->taxes()->delete();
-            $this->productTaxService->store($request->only([
+        try {
+            //Product
+            $product = $this->productService->update($request->except([
+                '_token',
+                'sku',
+                'choice',
                 'tax_id',
                 'tax',
                 'tax_type',
-                'product_id'
-            ]));
-        }
+                'flash_deal_id',
+                'flash_discount',
+                'flash_discount_type'
+            ]), $product);
 
-        // Product Translations
-        if ($request->lang == null) {
-            $request->merge(['lang' => env('DEFAULT_LANGUAGE', 'en')]);
-        }
-        ProductTranslation::updateOrCreate(
-            $request->only([
-                'lang',
-                'product_id'
-            ]),
-            $request->only([
-                'name',
-                'unit',
-                'description'
-            ])
-        );
+            $request->merge(['product_id' => $product->id]);
 
-        // Product FAQs
-        $product->faqs()->delete();
-        if ($request->has('faq_question') && $request->has('faq_answer')) {
-            $questions = $request->input('faq_question', []);
-            $answers   = $request->input('faq_answer', []);
-            foreach ($questions as $index => $question) {
-                if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
-                    ProductFaq::create([
-                        'product_id' => $product->id,
-                        'question'   => $question,
-                        'answer'     => $answers[$index],
-                    ]);
+            //Product categories
+            $product->categories()->sync($request->category_ids);
+
+            //Product Stock
+            $product->stocks()->delete();
+            $this->productStockService->store($request->only([
+                'colors_active',
+                'colors',
+                'choice_no',
+                'unit_price',
+                'sku',
+                'current_stock',
+                'product_id'
+            ]), $product);
+
+            //Flash Deal
+            $this->productFlashDealService->store($request->only([
+                'flash_deal_id',
+                'flash_discount',
+                'flash_discount_type'
+            ]), $product);
+
+            //VAT & Tax
+            if ($request->tax_id) {
+                $product->taxes()->delete();
+                $this->productTaxService->store($request->only([
+                    'tax_id',
+                    'tax',
+                    'tax_type',
+                    'product_id'
+                ]));
+            }
+
+            // Product Translations
+            if ($request->lang == null) {
+                $request->merge(['lang' => env('DEFAULT_LANGUAGE', 'en')]);
+            }
+            ProductTranslation::updateOrCreate(
+                $request->only([
+                    'lang',
+                    'product_id'
+                ]),
+                $request->only([
+                    'name',
+                    'unit',
+                    'description'
+                ])
+            );
+
+            // Product FAQs
+            $product->faqs()->delete();
+            if ($request->has('faq_question') && $request->has('faq_answer')) {
+                $questions = $request->input('faq_question', []);
+                $answers   = $request->input('faq_answer', []);
+                foreach ($questions as $index => $question) {
+                    if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                        ProductFaq::create([
+                            'product_id' => $product->id,
+                            'question'   => $question,
+                            'answer'     => $answers[$index],
+                        ]);
+                    }
                 }
             }
-        }
 
-        flash(translate('Product has been updated successfully'))->success();
+            flash(translate('Product has been updated successfully'))->success();
 
-        Artisan::call('view:clear');
-        Artisan::call('cache:clear');
-        if ($request->has('tab') && $request->tab != null) {
-            return Redirect::to(URL::previous() . "#" . $request->tab);
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+            if ($request->has('tab') && $request->tab != null) {
+                return Redirect::to(URL::previous() . "#" . $request->tab);
+            }
+            return back();
+        } catch (\Exception $e) {
+            flash(translate('Something went wrong') . ': ' . $e->getMessage())->error();
+            return back()->withInput();
         }
-        return back();
     }
 
     /**

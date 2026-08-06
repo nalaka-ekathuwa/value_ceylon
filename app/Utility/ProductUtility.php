@@ -24,8 +24,11 @@ class ProductUtility
             foreach ($collection['choice_no'] as $key => $no) {
                 $name = 'choice_options_' . $no;
                 $data = array();
-                foreach (request()[$name] as $key => $eachValue) {
-                    array_push($data, $eachValue);
+                $reqData = request()->has($name) ? request()[$name] : [];
+                if (is_array($reqData) || is_object($reqData)) {
+                    foreach ($reqData as $key => $eachValue) {
+                        array_push($data, $eachValue);
+                    }
                 }
                 array_push($options, $data);
             }
