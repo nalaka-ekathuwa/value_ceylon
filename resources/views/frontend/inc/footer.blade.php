@@ -186,8 +186,13 @@
                         </li>
                         <li class="mb-2">
                             <p class="fs-14 mb-1">
-                                <a href="{{ route('shippingpolicy') }}"
-                                    class="text-reset opacity-80 hov-opacity-100">Shipping & Delivery Policy</a>
+                                <a href="{{ route('custom-pages.show_custom_page', 'shipping-and-delivery-policy') }}" class="text-reset opacity-80 hov-opacity-100">Shipping and Delivery Policy</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p class="fs-14 mb-1">
+                                <a href="{{ route('returnpolicy') }}"
+                                    class="text-reset opacity-80 hov-opacity-100">Return Policy</a>
                             </p>
                         </li>
                         <li class="mb-2">

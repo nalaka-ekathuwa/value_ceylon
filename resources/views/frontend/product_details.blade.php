@@ -177,6 +177,24 @@
 
     <section class="product-page-section mb-4">
         <div class="container">
+            <!-- Breadcrumbs -->
+            <ul class="breadcrumb bg-transparent py-2 px-1 text-left">
+                <li class="breadcrumb-item has-transition opacity-50 hov-opacity-100">
+                    <a class="text-reset" href="{{ route('home') }}">{{ translate('Home') }}</a>
+                </li>
+                <li class="breadcrumb-item has-transition opacity-50 hov-opacity-100">
+                    <a class="text-reset" href="{{ route('search') }}">{{ translate('All Categories') }}</a>
+                </li>
+                @if ($detailedProduct->main_category != null)
+                    <li class="breadcrumb-item has-transition opacity-50 hov-opacity-100">
+                        <a class="text-reset" href="{{ route('products.category', $detailedProduct->main_category->slug) }}">{{ $detailedProduct->main_category->getTranslation('name') }}</a>
+                    </li>
+                @endif
+                <li class="text-dark fw-600 breadcrumb-item active opacity-100">
+                    <a class="text-reset" href="{{ route('product', $detailedProduct->slug) }}">{{ $detailedProduct->getTranslation('name') }}</a>
+                </li>
+            </ul>
+
             <div class="product-detail-card">
                 <div class="row">
                     <!-- Product Image Gallery -->

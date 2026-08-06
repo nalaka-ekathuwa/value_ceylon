@@ -181,7 +181,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/support-policy', 'supportpolicy')->name('supportpolicy');
     Route::get('/terms', 'terms')->name('terms');
     Route::get('/privacy-policy', 'privacypolicy')->name('privacypolicy');
-    Route::get('/shipping-policy', 'shippingpolicy')->name('shippingpolicy');
 
     Route::get('/track-your-order', 'trackOrder')->name('orders.track');
 

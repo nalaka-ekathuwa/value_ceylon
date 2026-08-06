@@ -602,11 +602,6 @@ class HomeController extends Controller
         return view("frontend.policies.privacypolicy", compact('page'));
     }
 
-    public function shippingpolicy()
-    {
-        return view("frontend.policies.shippingpolicy");
-    }
-
     public function get_pick_up_points(Request $request)
     {
         $pick_up_points = PickupPoint::all();

@@ -378,19 +378,19 @@
 
 
                             <!-- <div>
-                                            <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
-                                                <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
-                                                    class="img-fluid">
+                                                    <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
+                                                        <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
+                                                            class="img-fluid">
 
-                                            </a>
-                                        </div>
-                                        <div>
-                                            <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
-                                                <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
-                                                    class="img-fluid">
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
+                                                        <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
+                                                            class="img-fluid">
 
-                                            </a>
-                                        </div> -->
+                                                    </a>
+                                                </div> -->
                         </div>
 
 
@@ -614,7 +614,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3>Most Trusted Ceylon Brands</h3>
+                    <h3>Most Trusted Brand Partners</h3>
                     <!-- Top Sellers -->
                     @if (get_setting('vendor_system_activation') == 1)
                         @php
