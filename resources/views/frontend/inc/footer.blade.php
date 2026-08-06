@@ -174,14 +174,20 @@
                         </li>
                         <li class="mb-2">
                             <p class="fs-14 mb-1">
-                                <a href="{{ route('policy_section') }}"
+                                <a href="{{ route('privacypolicy') }}"
                                     class="text-reset opacity-80 hov-opacity-100">Privacy Policy</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p class="fs-14 mb-1">
-                                <a href="{{ route('terms_condition') }}"
+                                <a href="{{ route('terms') }}"
                                     class="text-reset opacity-80 hov-opacity-100">Terms and Conditions</a>
+                            </p>
+                        </li>
+                        <li class="mb-2">
+                            <p class="fs-14 mb-1">
+                                <a href="{{ route('shippingpolicy') }}"
+                                    class="text-reset opacity-80 hov-opacity-100">Shipping & Delivery Policy</a>
                             </p>
                         </li>
                         <li class="mb-2">

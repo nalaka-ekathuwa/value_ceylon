@@ -545,7 +545,7 @@
                             {{-- Privacy --}}
                             <div class="rx-privacy mt-3">
                                 By submitting your prescription, you will be registered on Value Ceylon Health's Online Pharmacy Platform.
-                                Please read our <a href="{{ route('policy_section') }}" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and Cookie Policy.
+                                Please read our <a href="{{ route('privacypolicy') }}" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and Cookie Policy.
                                 By clicking <em>"Send Prescription"</em> you confirm you have read and agreed to our Privacy, Cookie Policies and Terms &amp; Conditions.
                             </div>
 

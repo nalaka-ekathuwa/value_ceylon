@@ -29,8 +29,6 @@ class SitemapController extends Controller
             '/faq_seller',
             '/faq_customer',
             '/faq_special',
-            '/terms_condition',
-            '/policy_section',
             '/our_services',
             '/value-ceylon-sourcing',
             '/upload_presctiption',

@@ -181,6 +181,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/support-policy', 'supportpolicy')->name('supportpolicy');
     Route::get('/terms', 'terms')->name('terms');
     Route::get('/privacy-policy', 'privacypolicy')->name('privacypolicy');
+    Route::get('/shipping-policy', 'shippingpolicy')->name('shippingpolicy');
 
     Route::get('/track-your-order', 'trackOrder')->name('orders.track');
 
@@ -377,8 +378,6 @@ Route::get('faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('faq_seller', [HomeController::class, 'faq_seller'])->name('faq_seller');
 Route::get('faq_customer', [HomeController::class, 'faq_customer'])->name('faq_customer');
 Route::get('faq_special', [HomeController::class, 'faq_special'])->name('faq_special');
-Route::get('terms_condition', [HomeController::class, 'terms_condition'])->name('terms_condition');
-Route::get('policy_section', [HomeController::class, 'policy_section'])->name('policy_section');
 Route::get('our_services', [HomeController::class, 'our_services'])->name('our_services');
 
 Route::get('translation-check/{check}', [LanguageController::class, 'get_translation']);
