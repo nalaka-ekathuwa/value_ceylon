@@ -79,6 +79,18 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- Recaptcha -->
+                                                @if(get_setting('google_recaptcha') == 1)
+                                                    <div class="form-group">
+                                                        <div class="g-recaptcha" data-sitekey="{{ env('CAPTCHA_KEY') }}"></div>
+                                                    </div>
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                @endif
+
                                                 <!-- Submit Button -->
                                                 <div class="mb-4 mt-4">
                                                     <button type="submit" class="btn btn-primary btn-block fw-700 fs-14 rounded-4">{{  translate('Login') }}</button>
@@ -177,6 +189,9 @@
 @endsection
 
 @section('script')
+    @if(get_setting('google_recaptcha') == 1)
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endif
     <script type="text/javascript">
         function autoFillSeller(){
             $('#email').val('seller@example.com');

@@ -65,6 +65,16 @@
                                         </div>
                                     @endif
                                 </div>
+                                @if(get_setting('google_recaptcha') == 1)
+                                    <div class="form-group">
+                                        <div class="g-recaptcha" data-sitekey="{{ env('CAPTCHA_KEY') }}"></div>
+                                    </div>
+                                    @if ($errors->has('g-recaptcha-response'))
+                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                        </span>
+                                    @endif
+                                @endif
                                 <button type="submit" class="btn btn-primary btn-lg btn-block">
                                     {{ translate('Login') }}
                                 </button>
@@ -93,6 +103,9 @@
 @endsection
 
 @section('script')
+    @if(get_setting('google_recaptcha') == 1)
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endif
     <script type="text/javascript">
         function autoFill() {
             $('#email').val('admin@example.com');

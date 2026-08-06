@@ -185,6 +185,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/track-your-order', 'trackOrder')->name('orders.track')->middleware('auth');
 
     Route::get('contact-us', 'contact')->name('contact-us');
+    Route::post('contact-us', 'store_contact')->name('contact-us.store');
 
 });
 
@@ -200,11 +201,6 @@ Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('l
 
 // Currency Switch
 Route::post('/currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');
-
-
-Route::get('/sitemap.xml', function () {
-    return base_path('sitemap.xml');
-});
 
 // Classified Product
 Route::controller(CustomerProductController::class)->group(function () {

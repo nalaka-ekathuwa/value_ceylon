@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\CustomerProduct;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -58,6 +59,22 @@ class SitemapController extends Controller
         }
 
         /**
+         * DYNAMIC CUSTOM PAGES (FROM BACKEND)
+         */
+        Page::select('slug', 'updated_at')
+            ->whereNotNull('slug')
+            ->chunk(500, function ($pages) use (&$urls) {
+                foreach ($pages as $page) {
+                    $urls[] = [
+                        'loc' => url("/{$page->slug}"),
+                        'lastmod' => $page->updated_at ? $page->updated_at->toAtomString() : null,
+                        'changefreq' => 'weekly',
+                        'priority' => '0.7',
+                    ];
+                }
+            });
+
+        /**
          * BLOG POSTS
          */
         Blog::select('slug', 'updated_at')
@@ -66,7 +83,7 @@ class SitemapController extends Controller
                 foreach ($posts as $post) {
                     $urls[] = [
                         'loc' => url("/blog/{$post->slug}"),
-                        'lastmod' => $post->updated_at->toAtomString(),
+                        'lastmod' => $post->updated_at ? $post->updated_at->toAtomString() : null,
                         'changefreq' => 'daily',
                         'priority' => '0.7',
                     ];
@@ -74,15 +91,16 @@ class SitemapController extends Controller
             });
 
         /**
-         * PRODUCTS
+         * PRODUCTS (APPROVED & PUBLISHED ONLY)
          */
-        Product::select('slug', 'updated_at')
+        Product::isApprovedPublished()
+            ->select('slug', 'updated_at')
             ->whereNotNull('slug')
             ->chunk(500, function ($products) use (&$urls) {
                 foreach ($products as $product) {
                     $urls[] = [
                         'loc' => url("/product/{$product->slug}"),
-                        'lastmod' => $product->updated_at->toAtomString(),
+                        'lastmod' => $product->updated_at ? $product->updated_at->toAtomString() : null,
                         'changefreq' => 'daily',
                         'priority' => '0.9',
                     ];
@@ -98,7 +116,7 @@ class SitemapController extends Controller
                 foreach ($items as $cp) {
                     $urls[] = [
                         'loc' => url("/customer-product/{$cp->slug}"),
-                        'lastmod' => $cp->updated_at->toAtomString(),
+                        'lastmod' => $cp->updated_at ? $cp->updated_at->toAtomString() : null,
                         'changefreq' => 'weekly',
                         'priority' => '0.6',
                     ];
@@ -114,7 +132,7 @@ class SitemapController extends Controller
                 foreach ($cats as $cat) {
                     $urls[] = [
                         'loc' => url("/category/{$cat->slug}"),
-                        'lastmod' => $cat->updated_at->toAtomString(),
+                        'lastmod' => $cat->updated_at ? $cat->updated_at->toAtomString() : null,
                         'changefreq' => 'weekly',
                         'priority' => '0.6',
                     ];
@@ -130,7 +148,7 @@ class SitemapController extends Controller
                 foreach ($brands as $brand) {
                     $urls[] = [
                         'loc' => url("/brand/{$brand->slug}"),
-                        'lastmod' => $brand->updated_at->toAtomString(),
+                        'lastmod' => $brand->updated_at ? $brand->updated_at->toAtomString() : null,
                         'changefreq' => 'weekly',
                         'priority' => '0.6',
                     ];
@@ -142,3 +160,4 @@ class SitemapController extends Controller
             ->header('Content-Type', 'application/xml');
     }
 }
+

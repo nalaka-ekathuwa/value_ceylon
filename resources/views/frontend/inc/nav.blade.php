@@ -217,11 +217,7 @@
                     <div class="position-relative flex-grow-1 px-3 px-lg-0">
                         <form action="{{ route('search') }}" method="GET" class="stop-propagation">
                             <div class="d-flex position-relative align-items-center">
-                                <div class="d-lg-none" data-toggle="class-toggle" data-target=".front-header-search">
-                                    <button class="btn px-2" type="button"><i
-                                            class="la la-2x la-long-arrow-left"></i></button>
-                                </div>
-                                <div class="search-input-box">
+                                <div class="search-input-box flex-grow-1">
                                     <input type="text"
                                         class="border border-soft-light form-control fs-14 hov-popup-shadow rounded-pill px-4" id="search"
                                         name="keyword" @isset($query) value="{{ $query }}" @endisset
@@ -236,6 +232,11 @@
                                             d="M24.4,25.2a.8.8,0,0,1-.565-.234l-6.15-6.15a.8.8,0,0,1,1.13-1.13l6.15,6.15A.8.8,0,0,1,24.4,25.2Z"
                                             transform="translate(-5.2 -5.2)" fill="#b5b5bf" />
                                     </svg>
+                                </div>
+                                <div class="d-lg-none ml-2" data-toggle="class-toggle" data-target=".front-header-search">
+                                    <button class="btn btn-icon btn-sm btn-soft-secondary rounded-circle p-0" type="button" style="width: 32px; height: 32px;">
+                                        <i class="las la-times fs-18"></i>
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -655,182 +656,75 @@
 
 <!-- Top Menu Sidebar -->
 <div class="aiz-top-menu-sidebar collapse-sidebar-wrap sidebar-xl sidebar-left d-lg-none z-1035">
-
-
     <div class="overlay overlay-fixed dark c-pointer" data-toggle="class-toggle" data-target=".aiz-top-menu-sidebar"
         data-same=".hide-top-menu-bar"></div>
-    <div class="collapse-sidebar c-scrollbar-light text-left">
+    <div class="collapse-sidebar c-scrollbar-light text-left bg-white shadow-lg">
 
-        <div class="d-flex mt-4 flex-space-between">
-            <a class="d-block py-20px mr-3 ml-3" href="{{ route('home') }}">
+        <!-- Sidebar Header -->
+        <div class="d-flex align-items-center justify-content-between p-3 border-bottom bg-light">
+            <a class="d-block" href="{{ route('home') }}">
                 @php
                     $header_logo = get_setting('header_logo');
                 @endphp
                 @if ($header_logo != null)
                     <img src="{{ uploaded_asset($header_logo) }}" alt="{{ env('APP_NAME') }}"
-                        class="mw-100 h-30px h-md-40px" height="40">
+                        class="mw-100 h-35px" height="35">
                 @else
                     <img src="{{ static_asset('assets/img/logo.png') }}" alt="{{ env('APP_NAME') }}"
-                        class="mw-100 h-50px h-md-40px" height="40">
+                        class="mw-100 h-35px" height="35">
                 @endif
             </a>
 
-            <button type="button" class="btn btn-sm p-4 hide-top-menu-bar " data-toggle="class-toggle"
+            <button type="button" class="btn btn-icon btn-sm btn-soft-secondary rounded-circle hide-top-menu-bar" data-toggle="class-toggle"
                 data-target=".aiz-top-menu-sidebar">
-                <i class="las la-times la-2x text-primary "></i>
+                <i class="las la-times fs-20"></i>
             </button>
         </div>
 
-        <div class="d-flex">
-            <!-- Search field -->
-            <div class="flex-grow-1 d-flex align-items-center bg-white mx-xl-5">
-                <div class="position-relative flex-grow-1 px-3 px-lg-0">
-                    <form action="{{ route('search') }}" method="GET" class="stop-propagation">
-                        <div class="d-flex position-relative align-items-center">
-                            <div class="d-lg-none" data-toggle="class-toggle" data-target=".front-header-search">
-                                <button class="btn px-2" type="button"><i
-                                        class="la la-2x la-long-arrow-left"></i></button>
-                            </div>
-                            <div class="search-input-box">
-                                <input type="text" class="border border-soft-light form-control fs-14 hov-popup-shadow"
-                                    id="search" name="keyword" @isset($query) value="{{ $query }}" @endisset
-                                    placeholder="{{ translate('Search for product...') }}" autocomplete="off">
-
-                                <svg id="Group_723" data-name="Group 723" xmlns="http://www.w3.org/2000/svg"
-                                    width="20.001" height="20" viewBox="0 0 20.001 20" style="top: 14px;">
-                                    <path id="Path_3090" data-name="Path 3090"
-                                        d="M9.847,17.839a7.993,7.993,0,1,1,7.993-7.993A8,8,0,0,1,9.847,17.839Zm0-14.387a6.394,6.394,0,1,0,6.394,6.394A6.4,6.4,0,0,0,9.847,3.453Z"
-                                        transform="translate(-1.854 -1.854)" fill="#b5b5bf" />
-                                    <path id="Path_3091" data-name="Path 3091"
-                                        d="M24.4,25.2a.8.8,0,0,1-.565-.234l-6.15-6.15a.8.8,0,0,1,1.13-1.13l6.15,6.15A.8.8,0,0,1,24.4,25.2Z"
-                                        transform="translate(-5.2 -5.2)" fill="#b5b5bf" />
-                                </svg>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="typed-search-box stop-propagation document-click-d-none d-none bg-white rounded shadow-lg position-absolute left-0 top-100 w-100"
-                        style="min-height: 200px">
-                        <div class="search-preloader absolute-top-center">
-                            <div class="dot-loader">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
-                        </div>
-                        <div class="search-nothing d-none p-3 text-center fs-16">
-
-                        </div>
-                        <div id="search-content" class="text-left">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Search box -->
-            <div class="d-none d-lg-none ml-3 mr-0">
-                <div class="nav-search-box">
-                    <a href="#" class="nav-box-link">
-                        <i class="la la-search la-flip-horizontal d-inline-block nav-box-icon"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
+        <!-- User Information Banner / Quick Links -->
+        <div class="p-3 border-bottom bg-primary-soft">
         @auth
-            <span class="d-flex align-items-center nav-user-info pl-4">
+            <div class="d-flex align-items-center">
                 <!-- Image -->
-                <span class="size-40px rounded-circle overflow-hidden border border-transparent nav-user-img">
+                <div class="size-45px rounded-circle overflow-hidden border border-2 border-white shadow-sm flex-shrink-0">
                     @if ($user->avatar_original != null)
-                        <img src="{{ $user_avatar }}" class="img-fit h-100" alt="{{ translate('avatar') }}"
+                        <img src="{{ $user_avatar }}" class="img-fit h-100 w-100" alt="{{ translate('avatar') }}"
                             onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
                     @else
-                        <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="image"
+                        <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="img-fit h-100 w-100"
                             alt="{{ translate('avatar') }}"
                             onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
                     @endif
-                </span>
-                <!-- Name -->
-                <h4 class="h5 fs-14 fw-700 text-dark ml-2 mb-0">{{ $user->name }}</h4>
-            </span>
+                </div>
+                <!-- Name & Subtext -->
+                <div class="ml-3 overflow-hidden">
+                    <h5 class="fs-14 fw-700 text-dark mb-0 text-truncate">{{ $user->name }}</h5>
+                    <span class="fs-12 text-secondary d-block text-truncate">{{ $user->email ?? $user->phone }}</span>
+                </div>
+            </div>
         @else
-            <!--Login & Registration -->
-            <span class="d-flex align-items-center nav-user-info pl-4">
-                <!-- Image -->
-                <span
-                    class="size-40px rounded-circle overflow-hidden border d-flex align-items-center justify-content-center nav-user-img">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="19.902" height="20.012" viewBox="0 0 19.902 20.012">
-                        <path id="fe2df171891038b33e9624c27e96e367"
-                            d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1.006,1.006,0,1,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1,10,10,0,0,0-6.25-8.19ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"
-                            transform="translate(-2.064 -1.995)" fill="#91919b" />
-                    </svg>
-                </span>
-                <a href="{{ route('user.login') }}"
-                    class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block border-right border-soft-light border-width-2 pr-2 ml-3">{{ translate('Login') }}</a>
-                <a href="{{ route('user.registration') }}"
-                    class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate('Registration') }}</a>
-            </span>
+            <!-- Login & Registration -->
+            <div class="d-flex align-items-center justify-content-between p-2 rounded bg-white shadow-sm">
+                <div class="d-flex align-items-center">
+                    <span class="size-35px rounded-circle bg-soft-primary d-flex align-items-center justify-content-center mr-2">
+                        <i class="las la-user text-primary fs-18"></i>
+                    </span>
+                    <span class="fs-13 fw-600 text-dark">{{ translate('Welcome Guest') }}</span>
+                </div>
+                <div>
+                    <a href="{{ route('user.login') }}" class="btn btn-sm btn-soft-primary px-3 rounded-pill fs-12 font-weight-bold mr-1">{{ translate('Login') }}</a>
+                    <a href="{{ route('user.registration') }}" class="btn btn-sm btn-primary px-3 rounded-pill fs-12 font-weight-bold">{{ translate('Register') }}</a>
+                </div>
+            </div>
         @endauth
-        <hr>
-        <h6 class="mx-3 pl-3 text-underline">Menu</h6>
-        <ul class="mb-0 pl-3 pb-3 ">
-            @include('frontend.' . get_setting('homepage_select') . '.partials.mobile_menu')
+        </div>
 
-            @auth
-                @if (isAdmin())
-                    <hr>
-                    <li class="mr-0">
-                        <a href="{{ route('admin.dashboard') }}"
-                            class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links">
-                            <img src="{{ static_asset('assets/img/icons/view-profile.png') }}" alt=""
-                                class="img-fluid image-icon">
-                            {{ translate('My Account') }}
-                        </a>
-                    </li>
-                @else
-                    <hr>
-                    <li class="mr-0">
-                        <a href="{{ route('dashboard') }}"
-                            class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                                                {{ areActiveRoutes(['dashboard'], ' active') }}">
-                            <img src="{{ static_asset('assets/img/icons/view-profile.png') }}" alt=""
-                                class="img-fluid image-icon">
-                            {{ translate('My Account') }}
-                        </a>
-                    </li>
-                @endif
-                @if (isCustomer())
-                    <li class="mr-0">
-                        <a href="{{ route('all-notifications') }}"
-                            class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                                                {{ areActiveRoutes(['all-notifications'], ' active') }}">
-                            <img src="{{ static_asset('assets/img/icons/my-inquiries.png') }}" alt=""
-                                class="img-fluid image-icon">
-                            {{ translate('Notifications') }}
-                        </a>
-                    </li>
-                    <li class="mr-0">
-                        <a href="{{ route('wishlists.index') }}"
-                            class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                                                                                                                {{ areActiveRoutes(['wishlists.index'], ' active') }}">
-                            <img src="{{ static_asset('assets/img/icons/wishlist.png') }}" alt="" class="img-fluid image-icon">
-                            {{ translate('Wishlist') }}
-                        </a>
-                    </li>
-                @endif
-                <hr>
-                <li class="mr-0">
-                    <a href="{{ route('logout') }}"
-                        class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-primary header_menu_links">
-                        <i class="las la-sign-out-alt la-2x"></i>
-                        {{ translate('Logout') }}
-                    </a>
-                </li>
-            @endauth
-
-        </ul>
-
-        <div class="d-block d-md-none pb-5">
-            @include('frontend.' . get_setting('homepage_select') . '.partials.category_mobile_menu')
+        <!-- Navigation Menu Links -->
+        <div class="py-2">
+            <div class="px-3 py-2 text-uppercase fs-11 fw-700 text-secondary tracking-wider">{{ translate('Navigation Menu') }}</div>
+            <ul class="mb-0 list-unstyled px-2">
+                @include('frontend.' . get_setting('homepage_select') . '.partials.mobile_menu')
+            </ul>
         </div>
     </div>
 </div>

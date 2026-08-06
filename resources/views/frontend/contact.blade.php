@@ -68,10 +68,75 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 📝 Send Us a Message Form -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0 text-white">📝 Send Us a Message</h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ route('contact-us.store') }}" method="POST">
+                                    @csrf
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="name">{{ translate('Your Name') }} <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name') }}" required placeholder="{{ translate('Your Name') }}">
+                                            @error('name')
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="email">{{ translate('Your Email') }} <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ old('email') }}" required placeholder="{{ translate('Your Email') }}">
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subject">{{ translate('Subject') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('subject') is-invalid @enderror" name="subject" id="subject" value="{{ old('subject') }}" required placeholder="{{ translate('Subject') }}">
+                                        @error('subject')
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message">{{ translate('Message') }} <span class="text-danger">*</span></label>
+                                        <textarea class="form-control @error('message') is-invalid @enderror" name="message" id="message" rows="4" required placeholder="{{ translate('Your Message...') }}">{{ old('message') }}</textarea>
+                                        @error('message')
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Recaptcha -->
+                                    @if(get_setting('google_recaptcha') == 1)
+                                        <div class="form-group">
+                                            <div class="g-recaptcha" data-sitekey="{{ env('CAPTCHA_KEY') }}"></div>
+                                            @if ($errors->has('g-recaptcha-response'))
+                                                <span class="invalid-feedback" role="alert" style="display: block;">
+                                                    <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    <button type="submit" class="btn btn-primary px-4">{{ translate('Send Message') }}</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
         </div>
     </section>
+@endsection
 
+@section('script')
+    @if(get_setting('google_recaptcha') == 1)
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endif
 @endsection

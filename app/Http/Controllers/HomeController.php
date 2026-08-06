@@ -839,6 +839,23 @@ class HomeController extends Controller
     {
         return view('frontend.contact');
     }
+
+    public function store_contact(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+            'g-recaptcha-response' => [
+                \Illuminate\Validation\Rule::when(get_setting('google_recaptcha') == 1, ['required', new \App\Rules\Recaptcha()], ['sometimes'])
+            ]
+        ]);
+
+        flash(translate('Thank you for contacting us. We will get back to you soon.'))->success();
+        return back();
+    }
+
     public function our_services()
     {
         return view('frontend.our_services');
