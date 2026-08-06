@@ -263,13 +263,13 @@
                         </li>
                         <li class="mb-2">
                             <p class="fs-14 mb-1">
-                                <a href="{{ route('lorem') }}" class="text-reset opacity-80 hov-opacity-100">Membership
+                                <a href="#" class="text-reset opacity-80 hov-opacity-100">Membership
                                     plans</a>
                             </p>
                         </li>
                         <li class="mb-2">
                             <p class="fs-14 mb-1">
-                                <a href="{{ route('advertise-with-us') }}"
+                                <a href="{{ route('seller.create-step-1') }}"
                                     class="text-reset opacity-80 hov-opacity-100">Advertise with us</a>
                             </p>
                         </li>
@@ -296,7 +296,7 @@
                         </li>
                         <li class="mb-2">
                             <p class="fs-14 mb-1">
-                                <a href="{{ route('lorem') }}" class="text-reset opacity-80 hov-opacity-100">Trade
+                                <a href="#" class="text-reset opacity-80 hov-opacity-100">Trade
                                     assurance</a>
                             </p>
                         </li>

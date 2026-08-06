@@ -833,11 +833,6 @@ class HomeController extends Controller
         return view('frontend.faq_special');
     }
 
-    public function lorem()
-    {
-        return view('frontend.lorem');
-    }
-
     public function contact()
     {
         return view('frontend.contact');

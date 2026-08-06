@@ -184,7 +184,6 @@ Route::controller(HomeController::class)->group(function () {
 
     Route::get('/track-your-order', 'trackOrder')->name('orders.track');
 
-    Route::get('/lorem', 'lorem')->name('lorem');
     Route::get('contact-us', 'contact')->name('contact-us');
 
 });
