@@ -43,6 +43,8 @@ class ProductRequest extends FormRequest
         $rules['current_stock'] = 'sometimes|required|numeric';
         $rules['starting_bid']  = 'sometimes|required|numeric|min:1';
         $rules['auction_date_range']  = 'sometimes|required';
+        $rules['related_product_ids'] = 'nullable|array';
+        $rules['related_product_ids.*'] = 'nullable|numeric';
 
         return $rules;
     }

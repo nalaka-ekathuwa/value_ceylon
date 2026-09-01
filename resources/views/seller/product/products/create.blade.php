@@ -497,6 +497,28 @@
                     </div>
                 </div>
 
+                {{-- Related Products Section --}}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0 h6">{{ translate('Related Products') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-from-label">{{ translate('Related Products') }}</label>
+                            <div class="col-md-8">
+                                <select name="related_product_ids[]" id="related_products" class="form-control aiz-selectpicker" multiple data-live-search="true" data-selected-text-format="count" data-actions-box="true" data-placeholder="{{ translate('Select Related Products') }}">
+                                    @if(isset($seller_products))
+                                        @foreach($seller_products as $p)
+                                            <option value="{{ $p->id }}">{{ $p->getTranslation('name') }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <small class="text-muted">{{ translate('Select your products to display as related products.') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{ translate('SEO Meta Tags') }}</h5>

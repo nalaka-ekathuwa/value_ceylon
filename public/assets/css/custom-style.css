@@ -226,6 +226,19 @@ section.ceylon-brands{
     padding: 50px 0px;
 }
 
+section.ceylon-brands .slick-track {
+    margin-left: 0 !important;
+}
+
+[dir="rtl"] section.ceylon-brands .slick-track {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+}
+
+section.ceylon-brands .slick-arrow.slick-disabled {
+    display: none !important;
+}
+
 .top-nav-links {
     color: #000;
 }

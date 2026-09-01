@@ -119,6 +119,7 @@
                 padding: 16px 12px;
                 border-radius: 14px;
             }
+        }
         /* ── Single Product Page Primary Color Overrides ── */
         .btn-primary,
         .bg-primary,
@@ -260,6 +261,17 @@
         </div>
     </section>
 
+    <!-- Related Products -->
+    @php
+        $related_products = get_related_products($detailedProduct);
+    @endphp
+    @if(count($related_products) > 0)
+        <section class="mb-4">
+            <div class="container">
+                @include('frontend.product_details.related_products', ['related_products' => $related_products])
+            </div>
+        </section>
+    @endif
 
 @endsection
 
@@ -375,6 +387,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             getVariantPrice();
+            AIZ.plugins.slickCarousel();
 
             if (typeof GLightbox !== 'undefined') {
                 const lightbox = GLightbox({

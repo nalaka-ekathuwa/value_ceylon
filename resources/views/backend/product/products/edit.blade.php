@@ -64,6 +64,13 @@
                         {{ translate('Product FAQ') }}
                     </a>
                 </li>
+                <!-- Related Products -->
+                <li class="nav-item">
+                    <a class="nav-link" id="related-products-tab" href="#related_products"
+                        data-toggle="tab" data-target="#related_products" type="button" role="tab" aria-controls="related_products" aria-selected="false">
+                        {{ translate('Related Products') }}
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -788,6 +795,31 @@
                                     <button type="button" id="add-faq-row" class="btn btn-sm btn-outline-primary">
                                         <i class="las la-plus"></i> {{ translate('Add FAQ') }}
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Products -->
+                    <div class="tab-pane fade" id="related_products" role="tabpanel" aria-labelledby="related-products-tab">
+                        <div class="bg-white p-3 p-sm-2rem">
+                            <h5 class="mb-3 pb-3 fs-17 fw-700" style="border-bottom: 1px dashed #e4e5eb;">{{ translate('Related Products') }}</h5>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Related Products') }}</label>
+                                <div class="col-md-8">
+                                    @php
+                                        $selected_related_products = $product->related_products->pluck('id')->toArray();
+                                    @endphp
+                                    <select name="related_product_ids[]" id="related_products" class="form-control aiz-selectpicker" multiple data-live-search="true" data-selected-text-format="count" data-actions-box="true" data-placeholder="{{ translate('Select Related Products') }}">
+                                        @if(isset($admin_products))
+                                            @foreach($admin_products as $p)
+                                                <option value="{{ $p->id }}" {{ in_array($p->id, $selected_related_products) ? 'selected' : '' }}>
+                                                    {{ $p->getTranslation('name') }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="text-muted">{{ translate('Choose products to display as related products.') }}</small>
                                 </div>
                             </div>
                         </div>

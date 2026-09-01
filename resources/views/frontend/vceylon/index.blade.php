@@ -22,6 +22,19 @@
                 margin-bottom: -4px;
             }
         }
+
+        section.ceylon-brands .slick-track {
+            margin-left: 0 !important;
+        }
+
+        [dir="rtl"] section.ceylon-brands .slick-track {
+            margin-right: 0 !important;
+            margin-left: auto !important;
+        }
+
+        section.ceylon-brands .slick-arrow.slick-disabled {
+            display: none !important;
+        }
     </style>
 
     <!-- Sliders -->
@@ -618,7 +631,7 @@
                     <!-- Top Sellers -->
                     @if (get_setting('vendor_system_activation') == 1)
                         @php
-                            $best_selers = get_best_sellers(6);
+                            $best_selers = get_best_sellers(12);
                         @endphp
                         @if (count($best_selers) > 0)
                             <section class="mb-2 mb-md-3 mt-2 mt-md-3">
@@ -626,9 +639,9 @@
 
 
                                     <!-- Sellers Section -->
-                                    <div class="aiz-carousel arrow-x-0 arrow-inactive-none" data-items="3" data-xxl-items="3"
-                                        data-xl-items="3" data-lg-items="3.4" data-md-items="2.5" data-sm-items="2"
-                                        data-xs-items="1.4" data-arrows="true" data-dots="false">
+                                    <div class="aiz-carousel arrow-x-0 arrow-inactive-none" data-items="6" data-xxl-items="6"
+                                        data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2"
+                                        data-xs-items="2" data-arrows="true" data-dots="false">
                                         @foreach ($best_selers as $key => $seller)
                                             @if ($seller->user != null)
                                                 <div class="carousel-box h-100 position-relative text-center  has-transition ">

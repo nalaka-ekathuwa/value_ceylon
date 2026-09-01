@@ -109,6 +109,11 @@ class Product extends Model
         return $this->hasMany(ProductFaq::class);
     }
 
+    public function related_products()
+    {
+        return $this->belongsToMany(Product::class, 'product_related_products', 'product_id', 'related_product_id');
+    }
+
     public function scopeIsApprovedPublished($query)
     {
         return $query->where('approved', '1')->where('published', 1);

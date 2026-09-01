@@ -71,7 +71,13 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-        return view('seller.product.products.create', compact('categories'));
+
+        $seller_products = Product::where('user_id', Auth::user()->id)
+            ->where('digital', 0)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('seller.product.products.create', compact('categories', 'seller_products'));
     }
 
     public function store(ProductRequest $request)
@@ -145,6 +151,14 @@ class ProductController extends Controller
             }
         }
 
+        // Related Products
+        if ($request->has('related_product_ids')) {
+            $valid_ids = Product::where('user_id', Auth::user()->id)
+                ->whereIn('id', $request->related_product_ids)
+                ->pluck('id');
+            $product->related_products()->sync($valid_ids);
+        }
+
         if (get_setting('product_approve_by_admin') == 1) {
             $users = User::findMany([auth()->user()->id, User::where('user_type', 'admin')->first()->id]);
             Notification::send($users, new ShopProductNotification('physical', $product));
@@ -177,7 +191,14 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-        return view('seller.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
+
+        $seller_products = Product::where('user_id', Auth::user()->id)
+            ->where('digital', 0)
+            ->where('id', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('seller.product.products.edit', compact('product', 'categories', 'tags', 'lang', 'seller_products'));
     }
 
     public function update(ProductRequest $request, Product $product)
@@ -254,6 +275,17 @@ class ProductController extends Controller
                     ]);
                 }
             }
+        }
+
+        // Related Products
+        if ($request->has('related_product_ids')) {
+            $valid_ids = Product::where('user_id', Auth::user()->id)
+                ->where('id', '!=', $product->id)
+                ->whereIn('id', $request->related_product_ids)
+                ->pluck('id');
+            $product->related_products()->sync($valid_ids);
+        } else {
+            $product->related_products()->detach();
         }
 
         flash(translate('Product has been updated successfully'))->success();

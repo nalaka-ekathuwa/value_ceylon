@@ -135,6 +135,9 @@ class ProductService
             $published = 0;
         }
         unset($collection['button']);
+        unset($collection['related_product_ids']);
+        unset($collection['faq_question']);
+        unset($collection['faq_answer']);
 
         $data = $collection->merge(compact(
             'user_id',
@@ -282,6 +285,9 @@ class ProductService
         }
 
         unset($collection['button']);
+        unset($collection['related_product_ids']);
+        unset($collection['faq_question']);
+        unset($collection['faq_answer']);
         
         $data = $collection->merge(compact(
             'discount_start_date',

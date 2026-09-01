@@ -182,7 +182,12 @@ class ProductController extends Controller
             ->with('childrenCategories')
             ->get();
 
-        return view('backend.product.products.create', compact('categories'));
+        $admin_products = Product::where('added_by', 'admin')
+            ->where('digital', 0)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('backend.product.products.create', compact('categories', 'admin_products'));
     }
 
     public function add_more_choice_option(Request $request)
@@ -275,6 +280,14 @@ class ProductController extends Controller
             }
         }
 
+        // Related Products
+        if ($request->has('related_product_ids')) {
+            $valid_ids = Product::where('added_by', 'admin')
+                ->whereIn('id', $request->related_product_ids)
+                ->pluck('id');
+            $product->related_products()->sync($valid_ids);
+        }
+
         flash(translate('Product has been inserted successfully'))->success();
 
         Artisan::call('view:clear');
@@ -315,7 +328,14 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
+
+        $admin_products = Product::where('added_by', 'admin')
+            ->where('digital', 0)
+            ->where('id', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang', 'admin_products'));
     }
 
     /**
@@ -338,7 +358,13 @@ class ProductController extends Controller
             ->with('childrenCategories')
             ->get();
 
-        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
+        $admin_products = Product::where('user_id', $product->user_id)
+            ->where('digital', 0)
+            ->where('id', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang', 'admin_products'));
     }
 
     /**
@@ -429,6 +455,19 @@ class ProductController extends Controller
                         ]);
                     }
                 }
+            }
+
+            // Related Products
+            if ($request->has('related_product_ids')) {
+                $allowed_query = $product->added_by == 'seller' 
+                    ? Product::where('user_id', $product->user_id) 
+                    : Product::where('added_by', 'admin');
+                $valid_ids = $allowed_query->where('id', '!=', $product->id)
+                    ->whereIn('id', $request->related_product_ids)
+                    ->pluck('id');
+                $product->related_products()->sync($valid_ids);
+            } else {
+                $product->related_products()->detach();
             }
 
             flash(translate('Product has been updated successfully'))->success();

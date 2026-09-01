@@ -1834,6 +1834,9 @@ if (!function_exists('get_home_page_classified_products')) {
 if (!function_exists('get_related_products')) {
     function get_related_products($product)
     {
+        if ($product->related_products()->exists()) {
+            return filter_products($product->related_products())->get();
+        }
         $product_query = Product::query();
         return filter_products($product_query->where('id', '!=', $product->id)->where('category_id', $product->category_id))->limit(10)->get();
     }
