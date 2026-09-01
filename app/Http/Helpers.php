@@ -1188,6 +1188,17 @@ if (!function_exists('uploaded_asset')) {
     }
 }
 
+if (!function_exists('get_favicon')) {
+    function get_favicon()
+    {
+        $site_icon = get_setting('site_icon');
+        if ($site_icon && ($asset = Upload::find($site_icon)) != null) {
+            return $asset->external_link == null ? my_asset($asset->file_name) : $asset->external_link;
+        }
+        return static_asset('favicon.ico');
+    }
+}
+
 if (!function_exists('my_asset')) {
     /**
      * Generate an asset path for the application.
