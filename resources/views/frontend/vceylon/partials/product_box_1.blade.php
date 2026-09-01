@@ -1,8 +1,8 @@
 @php
     $cart_added = [];
 @endphp
-<div class="aiz-card-box h-auto bg-white py-3 hov-scale-img px-3">
-    <div class="position-relative img-fit overflow-hidden">
+<div class="aiz-card-box h-100 bg-white py-3 hov-scale-img px-3 d-flex flex-column justify-content-between">
+    <div class="position-relative h-140px h-md-200px img-fit overflow-hidden">
         @php
             $product_url = route('product', $product->slug);
             if ($product->auction_product == 1) {
@@ -10,8 +10,8 @@
             }
         @endphp
         <!-- Image -->
-        <a href="{{ $product_url }}" class="d-block h-100">
-            <img class="lazyload mx-auto img-fit has-transition"
+        <a href="{{ $product_url }}" class="d-block h-100 w-100 text-center">
+            <img class="lazyload mx-auto img-fit has-transition h-100"
                 src="{{ get_image($product->thumbnail) }}"
                 alt="{{ $product->getTranslation('name') }}" title="{{ $product->getTranslation('name') }}"
                 onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
@@ -87,13 +87,13 @@
         @endif
     </div>
 
-    <div class="p-2 p-md-3 text-left">
+    <div class="p-2 p-md-3 text-left d-flex flex-column flex-grow-1 justify-content-between">
         <!-- Product name -->
         <h3 class="fw-400 fs-13 text-truncate-2 lh-1-4 mb-0 h-35px text-center">
             <a href="{{ $product_url }}" class="d-block text-reset hov-text-primary"
                 title="{{ $product->getTranslation('name') }}">{{ $product->getTranslation('name') }}</a>
         </h3>
-        <div class="fs-14 d-flex justify-content-center mt-3">
+        <div class="fs-14 d-flex justify-content-center align-items-center mt-3" style="min-height: 24px;">
             @if ($product->auction_product == 0)
                 <!-- Previous price -->
                 @if (home_base_price($product) != home_discounted_base_price($product))

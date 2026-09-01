@@ -187,8 +187,17 @@
     background: #efefef;
 }
 
-.home-new-arrivals{
+.home-new-arrivals,
+.home-categories{
     background: #efefef;
+    padding: 25px 0 10px;
+}
+
+@media (min-width: 768px){
+    .home-new-arrivals,
+    .home-categories{
+        padding: 35px 0 20px;
+    }
 }
 
 @media (min-width: 768px){
