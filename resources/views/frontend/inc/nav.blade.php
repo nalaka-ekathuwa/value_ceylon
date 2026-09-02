@@ -726,6 +726,17 @@
                 @include('frontend.' . get_setting('homepage_select') . '.partials.mobile_menu')
             </ul>
         </div>
+
+        <!-- Category Mobile Menu Links -->
+        @if (view()->exists('frontend.' . get_setting('homepage_select') . '.partials.category_mobile_menu'))
+            <div class="py-2 border-top">
+                @include('frontend.' . get_setting('homepage_select') . '.partials.category_mobile_menu')
+            </div>
+        @elseif (view()->exists('frontend.vceylon.partials.category_mobile_menu'))
+            <div class="py-2 border-top">
+                @include('frontend.vceylon.partials.category_mobile_menu')
+            </div>
+        @endif
     </div>
 </div>
 
