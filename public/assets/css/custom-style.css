@@ -205,16 +205,31 @@
     background: #efefef;
 }
 
+.home-square-banner {
+    width: 100% !important;
+    max-width: 512px;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
+
 .home-new-arrivals,
-.home-categories{
+.home-categories,
+section.home-categories,
+section.home-new-arrivals {
     background: #efefef;
-    padding: 25px 0 10px;
+    padding: 25px 0 10px !important;
 }
 
 @media (min-width: 768px){
     .home-new-arrivals,
-    .home-categories{
-        padding: 35px 0 20px;
+    .home-categories,
+    section.home-categories,
+    section.home-new-arrivals {
+        padding: 35px 0 20px !important;
     }
 }
 
@@ -251,6 +266,12 @@ p{
 section.ceylon-brands{
     background: #d0e7fb;
     padding: 50px 0px;
+}
+
+@media (max-width: 767.98px) {
+    section.ceylon-brands h3 {
+        text-align: center !important;
+    }
 }
 
 section.ceylon-brands .slick-track {

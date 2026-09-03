@@ -266,7 +266,7 @@
     @endif
 
     <!-- Category section -->
-    <section class="home-categories" style="background: #efefef">
+    <section class="home-categories pt-4 pt-md-5 pb-3 pb-md-4" style="background: #efefef; padding-top: 35px !important; padding-bottom: 20px !important;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 d-none d-lg-block">
@@ -534,70 +534,67 @@
                     ->latest()
                     ->limit($featured_ad_blocks_slots)
                     ->get();
+
+                $total_display_slots = 3;
+                $shown_slots = count($active_featured_ad_blocks);
+                $remaining_count = $total_display_slots - $shown_slots;
+                $default_banners = $remaining_count > 0 ? get_advertising_banner(3, $remaining_count) : collect();
+                $total_banners_count = $shown_slots + count($default_banners);
+                $block_col_class = $total_banners_count == 2 ? 'col-12 col-sm-6 col-md-6 col-lg-4' : 'col-12 col-sm-6 col-md-4';
             @endphp
 
-
-            <div class="row">
-                @php
-                    $total_display_slots = 3;
-                    $shown_slots = 0;
-                @endphp
-
-                {{-- Display active ads --}}
-                @foreach ($active_featured_ad_blocks as $seller_ad)
-                    @php
-                        $ad_link = 'javascript:void(0);';
-                        if ($seller_ad->product_id && $seller_ad->product) {
-                            $ad_link = route('product', $seller_ad->product->slug);
-                        } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
-                            $ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
-                        }
-                        $shown_slots++;
-                    @endphp
-                    <div class="col-md-4 mb-3">
-                        <a href="{{ $ad_link }}">
-                            <img src="{{ uploaded_asset($seller_ad->media) }}" alt="" class="img-fluid"
-                                style="width: 512px; height: 512px; object-fit: cover; max-width: 100%;"
-                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
-                        </a>
-                    </div>
-                @endforeach
-
-                {{-- Fill remaining slots with default banners --}}
-                @if ($shown_slots < $total_display_slots)
-                    @php
-                        $remaining_count = $total_display_slots - $shown_slots;
-                        $default_banners = get_advertising_banner(3, $remaining_count);
-                    @endphp
-                    @foreach ($default_banners as $rect_banner)
-                        <div class="col-md-4 mb-3">
-                            <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid"
-                                style="width: 512px; height: 512px; object-fit: cover; max-width: 100%;">
+            @if ($total_banners_count > 0)
+                <div class="row justify-content-center gutters-10">
+                    {{-- Display active ads --}}
+                    @foreach ($active_featured_ad_blocks as $seller_ad)
+                        @php
+                            $ad_link = 'javascript:void(0);';
+                            if ($seller_ad->product_id && $seller_ad->product) {
+                                $ad_link = route('product', $seller_ad->product->slug);
+                            } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
+                                $ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
+                            }
+                        @endphp
+                        <div class="{{ $block_col_class }} mb-3 text-center">
+                            <a href="{{ $ad_link }}" class="d-block">
+                                <img src="{{ uploaded_asset($seller_ad->media) }}" alt="" class="img-fluid home-square-banner"
+                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                            </a>
                         </div>
                     @endforeach
-                @endif
-            </div>
 
+                    {{-- Fill remaining slots with default banners --}}
+                    @foreach ($default_banners as $rect_banner)
+                        <div class="{{ $block_col_class }} mb-3 text-center">
+                            <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid home-square-banner"
+                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                        </div>
+                    @endforeach
+                </div>
+            @endif
 
             @php
                 $rect_banners = get_advertising_banner(2, 1);
             @endphp
 
-            <div class="my-5">
-                <div class="row">
-                    <div class="col-md-12">
-                        @foreach ($rect_banners as $rect_banner)
-                            <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid">
-                        @endforeach
+            @if (count($rect_banners) > 0)
+                <div class="my-3 my-md-5">
+                    <div class="row">
+                        <div class="col-12">
+                            @foreach ($rect_banners as $rect_banner)
+                                <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid w-100 rounded"
+                                    style="height: auto; max-width: 100%; object-fit: cover;">
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
         </div>
     </section>
 
 
-    <section class="home-new-arrivals">
+    <section class="home-new-arrivals pt-4 pt-md-5 pb-3 pb-md-4" style="background: #efefef; padding-top: 35px !important; padding-bottom: 20px !important;">
         <div class="container">
             <div id="new_arrivals">
 
@@ -677,7 +674,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3>Most Trusted Brand Partners</h3>
+                    <h3 class="text-center text-md-left">Most Trusted Brand Partners</h3>
                     <!-- Top Sellers -->
                     @if (get_setting('vendor_system_activation') == 1)
                         @php

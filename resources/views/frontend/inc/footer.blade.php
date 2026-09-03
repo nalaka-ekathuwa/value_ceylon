@@ -16,7 +16,7 @@
                                 {{ get_setting('footer_title', null, $system_language->code) }}
                             </h1>
                         </div>
-                        <p class="fs-13 fs-md-14 text-dark text-justify mb-0 lh-1-7" style="color: #1f2937 !important;">
+                        <p class="fs-13 fs-md-14 text-dark text-left text-md-justify mb-0 lh-1-7" style="color: #1f2937 !important;">
                             {!! nl2br(get_setting('footer_description', null, $system_language->code)) !!}
                         </p>
                     </div>
