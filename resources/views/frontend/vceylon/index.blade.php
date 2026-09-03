@@ -308,17 +308,22 @@
     <!-- Frontend Product banners -->
     @php
         $all_banners = get_home_product_banner('home-product-banner', 100);
-        $valid_banners = [];
+        $valid_banners = collect();
         foreach ($all_banners as $banner) {
-            if (is_numeric($banner->meta)) {
+            $product = null;
+            if (!empty($banner->meta)) {
                 $product = get_product_by_sku($banner->meta) ?? \App\Models\Product::find($banner->meta);
-                if ($product) {
-                    $banner->product = $product;
-                    $valid_banners[] = $banner;
-                }
+            }
+            if (!$product && preg_match('/home-product-banner-(\d+)/', $banner->title, $matches)) {
+                $product = \App\Models\Product::find($matches[1]);
+            }
+            if ($product && $product->published != 0) {
+                $banner->product = $product;
+                $valid_banners->push($banner);
             }
         }
-        $product_banners = collect($valid_banners)->shuffle()->take(5);
+        // Deduplicate so each unique banner is only displayed once
+        $product_banners = $valid_banners->unique('banner')->values();
     @endphp
 
     @if (count($product_banners) > 0)

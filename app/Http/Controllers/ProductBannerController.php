@@ -40,19 +40,23 @@ class ProductBannerController extends Controller
         // Fetch product to get the SKU from the first stock entry
         $product = Product::findOrFail($request->product_id);
         $stock   = ProductStock::where('product_id', $product->id)->first();
-        $sku     = $stock ? $stock->sku : $product->id;
+        $sku     = ($stock && !empty($stock->sku)) ? $stock->sku : $product->id;
 
         // Ensure the title contains 'home-product-banner' so the helper picks it up
         $title = self::TITLE_PREFIX . '-' . $product->id;
 
         // We use AdvertisingCategory id=5 (or any that fits). If no category needed,
         // we store 0; the helper ignores category_id for product banners.
-        AdvertisingBanner::create([
-            'title'       => $title,
-            'banner'      => $request->banner,
-            'category_id' => 0,
-            'meta'        => $sku,
-        ]);
+        AdvertisingBanner::updateOrCreate(
+            [
+                'title'  => $title,
+                'banner' => $request->banner,
+            ],
+            [
+                'category_id' => 0,
+                'meta'        => $sku,
+            ]
+        );
 
         flash(translate('Product banner created successfully'))->success();
         return redirect()->route('product-banners.index');

@@ -39,8 +39,11 @@
                             @foreach ($banners as $banner)
                                 @php
                                     $productFromSku = get_product_by_sku($banner->meta);
-                                    if (!$productFromSku && is_numeric($banner->meta)) {
+                                    if (!$productFromSku && !empty($banner->meta)) {
                                         $productFromSku = \App\Models\Product::find($banner->meta);
+                                    }
+                                    if (!$productFromSku && preg_match('/home-product-banner-(\d+)/', $banner->title, $matches)) {
+                                        $productFromSku = \App\Models\Product::find($matches[1]);
                                     }
                                 @endphp
                                 <tr>

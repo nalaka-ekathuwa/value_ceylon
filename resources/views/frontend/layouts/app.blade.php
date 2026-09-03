@@ -424,7 +424,7 @@
     <!-- SCRIPTS -->
     <script src="{{ asset('assets/js/vendors.js') }}"></script>
     <script src="{{ asset('assets/js/aiz-core.js?v=') }}{{ rand(1000, 9999) }}"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}?v={{ rand(1000, 9999) }}"></script>
 
 
 
