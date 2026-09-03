@@ -396,19 +396,19 @@
 
 
                             <!-- <div>
-                                                    <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
-                                                        <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
-                                                            class="img-fluid">
+                                                        <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
+                                                            <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
+                                                                class="img-fluid">
 
-                                                    </a>
-                                                </div>
-                                                <div>
-                                                    <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
-                                                        <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
-                                                            class="img-fluid">
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <a href="{{ route('customer.request-for-quotation') }}" target="_blank">
+                                                            <img src="{{ static_asset("assets/img/banner/sourcing-banner.jpg") }}" alt="rfq banner"
+                                                                class="img-fluid">
 
-                                                    </a>
-                                                </div> -->
+                                                        </a>
+                                                    </div> -->
                         </div>
 
 
@@ -421,51 +421,96 @@
 
     <section class="home-skyscaper">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-2">
-                    @php
-                        $sidebar_spotlight_pricing = \App\Models\AdSlotPricing::where('placement', 'home')->where('position', 'sidebar_spotlight')->first();
-                        $sidebar_spotlight_slots = $sidebar_spotlight_pricing ? $sidebar_spotlight_pricing->total_slots : 1;
-                        $active_sidebar_spotlight_ads = \App\Models\SellerAd::where('placement', 'home')
-                            ->where('position', 'sidebar_spotlight')
-                            ->where('status', 'active')
-                            ->where('start_date', '<=', \Carbon\Carbon::today())
-                            ->where('end_date', '>=', \Carbon\Carbon::today())
-                            ->with('seller.shop', 'product')
-                            ->latest()
-                            ->limit($sidebar_spotlight_slots)
-                            ->get();
-                    @endphp
+            @php
+                $sidebar_spotlight_pricing = \App\Models\AdSlotPricing::where('placement', 'home')->where('position', 'sidebar_spotlight')->first();
+                $sidebar_spotlight_slots = $sidebar_spotlight_pricing ? $sidebar_spotlight_pricing->total_slots : 1;
+                $active_sidebar_spotlight_ads = \App\Models\SellerAd::where('placement', 'home')
+                    ->where('position', 'sidebar_spotlight')
+                    ->where('status', 'active')
+                    ->where('start_date', '<=', \Carbon\Carbon::today())
+                    ->where('end_date', '>=', \Carbon\Carbon::today())
+                    ->with('seller.shop', 'product')
+                    ->latest()
+                    ->limit($sidebar_spotlight_slots)
+                    ->get();
 
+                $skyscraper_ad_link = null;
+                $skyscraper_img_src = null;
+
+                if (count($active_sidebar_spotlight_ads) > 0) {
+                    $seller_ad = $active_sidebar_spotlight_ads->first();
+                    if ($seller_ad->product_id && $seller_ad->product) {
+                        $skyscraper_ad_link = route('product', $seller_ad->product->slug);
+                    } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
+                        $skyscraper_ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
+                    }
+                    $skyscraper_img_src = uploaded_asset($seller_ad->media);
+                } else {
+                    $rect_banners = get_advertising_banner(1, 1);
+                    if (count($rect_banners) > 0) {
+                        $skyscraper_img_src = uploaded_asset($rect_banners->first()->banner);
+                    }
+                }
+            @endphp
+
+            {{-- Mobile view: Single skyscraper banner scaled to content width --}}
+            @if ($skyscraper_img_src)
+                <div class="d-block d-md-none pt-3 mb-2 text-center">
+                    @if ($skyscraper_ad_link)
+                        <a href="{{ $skyscraper_ad_link }}" class="d-block">
+                            <img src="{{ $skyscraper_img_src }}" alt="" class="img-fluid w-100 skyscraper-mobile-img"
+                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                        </a>
+                    @else
+                        <img src="{{ $skyscraper_img_src }}" alt="" class="img-fluid w-100 skyscraper-mobile-img"
+                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                    @endif
+                </div>
+            @endif
+
+            {{-- Tablet view: Three duplicate skyscraper banners side by side --}}
+            @if ($skyscraper_img_src)
+                <div class="d-none d-md-block d-lg-none pt-4 mb-2">
+                    <div class="row gutters-10">
+                        @for ($i = 0; $i < 3; $i++)
+                            <div class="col-4">
+                                @if ($skyscraper_ad_link)
+                                    <a href="{{ $skyscraper_ad_link }}" class="d-block">
+                                        <img src="{{ $skyscraper_img_src }}" alt="" class="img-fluid w-100 skyscraper-tablet-img"
+                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                    </a>
+                                @else
+                                    <img src="{{ $skyscraper_img_src }}" alt="" class="img-fluid w-100 skyscraper-tablet-img"
+                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                @endif
+                            </div>
+                        @endfor
+                    </div>
+                </div>
+            @endif
+
+            <div class="row">
+                {{-- Desktop view: Left sidebar skyscraper banner --}}
+                <div class="col-lg-2 d-none d-lg-block">
                     <div class="my-5">
-                        @if (count($active_sidebar_spotlight_ads) > 0)
-                            @foreach ($active_sidebar_spotlight_ads as $seller_ad)
-                                @php
-                                    $ad_link = 'javascript:void(0);';
-                                    if ($seller_ad->product_id && $seller_ad->product) {
-                                        $ad_link = route('product', $seller_ad->product->slug);
-                                    } elseif ($seller_ad->seller && $seller_ad->seller->shop) {
-                                        $ad_link = route('shop.visit', $seller_ad->seller->shop->slug);
-                                    }
-                                @endphp
-                                <a href="{{ $ad_link }}" class="d-block mb-3">
-                                    <img src="{{ uploaded_asset($seller_ad->media) }}" alt="" class="img-fluid"
+                        @if ($skyscraper_img_src)
+                            @if ($skyscraper_ad_link)
+                                <a href="{{ $skyscraper_ad_link }}" class="d-block mb-3">
+                                    <img src="{{ $skyscraper_img_src }}" alt="" class="img-fluid"
                                         style="width: 242px; height: 560px; object-fit: cover; max-width: 100%;"
                                         onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
                                 </a>
-                            @endforeach
-                        @else
-                            @php
-                                $rect_banners = get_advertising_banner(1, 1);
-                            @endphp
-                            @foreach ($rect_banners as $rect_banner)
-                                <img src="{{ uploaded_asset($rect_banner->banner) }}" alt="" class="img-fluid"
-                                    style="width: 242px; height: 560px; object-fit: cover; max-width: 100%;">
-                            @endforeach
+                            @else
+                                <img src="{{ $skyscraper_img_src }}" alt="" class="img-fluid"
+                                    style="width: 242px; height: 560px; object-fit: cover; max-width: 100%;"
+                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                            @endif
                         @endif
                     </div>
                 </div>
-                <div class="col-lg-10">
+
+                {{-- Products container: 10 columns on desktop, full 12 columns on tablet and mobile --}}
+                <div class="col-12 col-lg-10">
                     <div id="skyskaper_products">
 
                     </div>
@@ -645,8 +690,8 @@
 
                                     <!-- Sellers Section -->
                                     <div class="aiz-carousel arrow-x-0 arrow-inactive-none" data-items="6" data-xxl-items="6"
-                                        data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2"
-                                        data-xs-items="2" data-arrows="true" data-dots="false">
+                                        data-xl-items="5" data-lg-items="4" data-md-items="3" data-sm-items="2" data-xs-items="2"
+                                        data-arrows="true" data-dots="false">
                                         @foreach ($best_selers as $key => $seller)
                                             @if ($seller->user != null)
                                                 <div class="carousel-box h-100 position-relative text-center  has-transition ">

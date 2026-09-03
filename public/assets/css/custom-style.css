@@ -183,6 +183,24 @@
     background: #efefef;
 }
 
+.skyscraper-mobile-img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    border-radius: 8px;
+    display: block;
+}
+
+.skyscraper-tablet-img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    border-radius: 8px;
+    display: block;
+}
+
 .home-banners{
     background: #efefef;
 }

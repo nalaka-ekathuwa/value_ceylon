@@ -7,7 +7,8 @@
         }
     @endphp
 
-    <div class="d-flex mt-3 mt-lg-5 mb-3 mb-md-4 align-items-center justify-content-between bg-primary text-white p-3 rounded-top">
+    <div
+        class="d-flex mt-3 mt-lg-5 mb-3 mb-md-4 align-items-center justify-content-between bg-primary text-white p-3 rounded-top">
         <!-- Title -->
         <h3 class="fs-16 fs-md-20 fw-700 mb-0 text-white">
             <span>{{ translate('Best Seller Products') }}</span>
@@ -21,9 +22,10 @@
 
     <div class="row gutters-5 sm-gutters-10">
         @foreach ($products as $product)
-            <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 mb-2 mb-md-3">
-                <div class="aiz-card-box h-100 bg-white py-2 py-md-3 px-2 px-md-3 hov-scale-img d-flex flex-column justify-content-between has-transition hov-shadow-out border border-light">
-                    <div class="position-relative h-140px h-md-160px img-fit overflow-hidden">
+            <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-2 mb-md-3">
+                <div
+                    class="aiz-card-box h-100 bg-white py-2 py-md-3 px-2 px-md-3 hov-scale-img d-flex flex-column justify-content-between has-transition hov-shadow-out border border-light">
+                    <div class="position-relative card-img-square overflow-hidden" style="aspect-ratio: 1 / 1;">
                         @php
                             $product_url = route('product', $product->slug);
                             if ($product->auction_product == 1) {
@@ -40,8 +42,7 @@
 
                         <!-- Discount percentage tag -->
                         @if (discount_in_percentage($product) > 0)
-                            <span
-                                class="absolute-top-left bg-primary ml-1 mt-1 fs-11 fw-700 text-white w-35px text-center"
+                            <span class="absolute-top-left bg-primary ml-1 mt-1 fs-11 fw-700 text-white w-35px text-center"
                                 style="padding-top:2px;padding-bottom:2px;">-{{ discount_in_percentage($product) }}%</span>
                         @endif
                         <!-- Wholesale tag -->
@@ -54,13 +55,10 @@
                         @if ($product->auction_product == 0)
                             <!-- wishlist icon -->
                             <div class="absolute-top-right aiz-p-hov-icon">
-                                <a href="javascript:void(0)" class="hov-svg-white"
-                                    onclick="addToWishList({{ $product->id }})" data-toggle="tooltip"
-                                    data-title="{{ translate('Add to wishlist') }}" data-placement="left">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14.4"
-                                        viewBox="0 0 16 14.4">
-                                        <g id="_51a3dbe0e593ba390ac13cba118295e4"
-                                            data-name="51a3dbe0e593ba390ac13cba118295e4"
+                                <a href="javascript:void(0)" class="hov-svg-white" onclick="addToWishList({{ $product->id }})"
+                                    data-toggle="tooltip" data-title="{{ translate('Add to wishlist') }}" data-placement="left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14.4" viewBox="0 0 16 14.4">
+                                        <g id="_51a3dbe0e593ba390ac13cba118295e4" data-name="51a3dbe0e593ba390ac13cba118295e4"
                                             transform="translate(-3.05 -4.178)">
                                             <path id="Path_32649" data-name="Path 32649"
                                                 d="M11.3,5.507l-.247.246L10.8,5.506A4.538,4.538,0,1,0,4.38,11.919l.247.247,6.422,6.412,6.422-6.412.247-.247A4.538,4.538,0,1,0,11.3,5.507Z"
@@ -74,8 +72,8 @@
                             </div>
                             <!-- add to cart -->
                             <a class="cart-btn absolute-bottom-left w-100 h-35px aiz-p-hov-icon text-white fs-13 fw-700 d-flex flex-column justify-content-center align-items-center @if (in_array($product->id, $cart_added)) active @endif"
-                                href="javascript:void(0)"
-                                @if (Auth::check()) onclick="showAddToCartModal({{ $product->id }})" @else onclick="showLoginModal()" @endif>
+                                href="javascript:void(0)" @if (Auth::check()) onclick="showAddToCartModal({{ $product->id }})" @else
+                                onclick="showLoginModal()" @endif>
                                 <span class="cart-btn-text">
                                     {{ translate('Add to Cart') }}
                                 </span>
@@ -83,17 +81,17 @@
                             </a>
                         @endif
                         @if (
-                            $product->auction_product == 1 &&
+                                $product->auction_product == 1 &&
                                 $product->auction_start_date <= strtotime('now') &&
-                                $product->auction_end_date >= strtotime('now'))
+                                $product->auction_end_date >= strtotime('now')
+                            )
                             <!-- Place Bid -->
                             @php
                                 $highest_bid = $product->bids->max('amount');
                                 $min_bid_amount = $highest_bid != null ? $highest_bid + 1 : $product->starting_bid;
                             @endphp
                             <a class="cart-btn absolute-bottom-left w-100 h-35px aiz-p-hov-icon text-white fs-13 fw-700 d-flex flex-column justify-content-center align-items-center @if (in_array($product->id, $cart_added)) active @endif"
-                                href="javascript:void(0)"
-                                onclick="bid_single_modal({{ $product->id }}, {{ $min_bid_amount }})">
+                                href="javascript:void(0)" onclick="bid_single_modal({{ $product->id }}, {{ $min_bid_amount }})">
                                 <span class="cart-btn-text">{{ translate('Place Bid') }}</span>
                                 <br>
                                 <span><i class="las la-2x la-gavel"></i></span>
