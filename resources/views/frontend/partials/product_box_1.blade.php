@@ -2,7 +2,7 @@
     $cart_added = [];
 @endphp
 <div class="aiz-card-box h-auto bg-white py-3 hov-scale-img">
-    <div class="position-relative h-140px h-md-200px img-fit overflow-hidden">
+    <div class="position-relative card-img-square overflow-hidden" style="aspect-ratio: 1 / 1;">
         @php
             $product_url = route('product', $product->slug);
             if ($product->auction_product == 1) {
@@ -11,7 +11,7 @@
         @endphp
         <!-- Image -->
         <a href="{{ $product_url }}" class="d-block h-100">
-            <img class="lazyload mx-auto img-fit has-transition"
+            <img class="lazyload mx-auto img-fit has-transition h-100"
                 src="{{ $product->thumbnail != null ? my_asset($product->thumbnail->file_name) : static_asset('assets/img/placeholder.jpg') }}"
                 alt="{{ $product->getTranslation('name') }}" title="{{ $product->getTranslation('name') }}"
                 onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">

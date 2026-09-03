@@ -24,7 +24,7 @@
         @foreach ($products as $product)
             <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 mb-md-3">
                 <div class="aiz-card-box h-100 bg-white py-2 py-md-3 px-2 px-md-3 hov-scale-img d-flex flex-column justify-content-between has-transition hov-shadow-out border border-light">
-                    <div class="position-relative h-140px h-md-170px img-fit overflow-hidden">
+                    <div class="position-relative card-img-square overflow-hidden" style="aspect-ratio: 1 / 1;">
                         @php
                             $product_url = route('product', $product->slug);
                             if ($product->auction_product == 1) {

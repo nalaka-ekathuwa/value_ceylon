@@ -333,3 +333,31 @@ section.ceylon-brands .slick-arrow.slick-disabled {
 #new-banner-products-slider .slick-slide {
     padding: 0 10px;
 }
+
+/* Product cards square image container to prevent cropping */
+.card-img-square {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.card-img-square > a:not(.cart-btn) {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.card-img-square > a:not(.cart-btn) img {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.card-img-square .cart-btn {
+    height: 35px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}

@@ -2,7 +2,7 @@
     $cart_added = [];
 @endphp
 <div class="aiz-card-box h-100 bg-white py-3 hov-scale-img px-3 d-flex flex-column justify-content-between">
-    <div class="position-relative h-140px h-md-200px img-fit overflow-hidden">
+    <div class="position-relative card-img-square overflow-hidden" style="aspect-ratio: 1 / 1;">
         @php
             $product_url = route('product', $product->slug);
             if ($product->auction_product == 1) {
