@@ -120,7 +120,7 @@ class ShopController extends Controller
             ->where('seller_id', '=', auth()->user()->id)
             ->where('delivery_status', '=', 'delivered')
             ->select(DB::raw("sum(grand_total) as total, DATE_FORMAT(created_at, '%b-%d') as date"))
-            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d')"))
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d'), DATE_FORMAT(created_at, '%b-%d')"))
             ->get()->toArray();
 
         //$array_date = [];

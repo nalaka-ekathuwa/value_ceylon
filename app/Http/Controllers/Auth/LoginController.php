@@ -227,6 +227,9 @@ class LoginController extends Controller
             'email'    => 'required_without:phone',
             'phone'    => 'required_without:email',
             'password' => 'required|string',
+            'g-recaptcha-response' => [
+                \Illuminate\Validation\Rule::when(get_setting('google_recaptcha') == 1, ['required', new \App\Rules\Recaptcha()], ['sometimes'])
+            ]
         ]);
     }
 

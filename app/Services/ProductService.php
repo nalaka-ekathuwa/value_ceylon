@@ -109,10 +109,10 @@ class ProductService
                 $str = 'choice_options_' . $no;
                 $item['attribute_id'] = $no;
                 $attribute_data = array();
-                // foreach (json_decode($request[$str][0]) as $key => $eachValue) {
-                foreach ($collection[$str] as $key => $eachValue) {
-                    // array_push($data, $eachValue->value);
-                    array_push($attribute_data, $eachValue);
+                if (isset($collection[$str]) && (is_array($collection[$str]) || is_object($collection[$str]))) {
+                    foreach ($collection[$str] as $key => $eachValue) {
+                        array_push($attribute_data, $eachValue);
+                    }
                 }
                 unset($collection[$str]);
 
@@ -135,6 +135,9 @@ class ProductService
             $published = 0;
         }
         unset($collection['button']);
+        unset($collection['related_product_ids']);
+        unset($collection['faq_question']);
+        unset($collection['faq_answer']);
 
         $data = $collection->merge(compact(
             'user_id',
@@ -260,10 +263,10 @@ class ProductService
                 $str = 'choice_options_' . $no;
                 $item['attribute_id'] = $no;
                 $attribute_data = array();
-                // foreach (json_decode($request[$str][0]) as $key => $eachValue) {
-                foreach ($collection[$str] as $key => $eachValue) {
-                    // array_push($data, $eachValue->value);
-                    array_push($attribute_data, $eachValue);
+                if (isset($collection[$str]) && (is_array($collection[$str]) || is_object($collection[$str]))) {
+                    foreach ($collection[$str] as $key => $eachValue) {
+                        array_push($attribute_data, $eachValue);
+                    }
                 }
                 unset($collection[$str]);
 
@@ -282,6 +285,9 @@ class ProductService
         }
 
         unset($collection['button']);
+        unset($collection['related_product_ids']);
+        unset($collection['faq_question']);
+        unset($collection['faq_answer']);
         
         $data = $collection->merge(compact(
             'discount_start_date',

@@ -90,7 +90,7 @@
                             <span class="col-md-10 text-dark">{{ optional($address->city)->name }}</span>
                         </div>
                         <div class="row fs-14 mb-2 mb-md-0">
-                            <span class="col-md-2 text-secondary">{{ translate('State') }}:</span>
+                            <span class="col-md-2 text-secondary">{{ translate('State/ District') }}:</span>
                             <span class="col-md-10 text-dark">{{ optional($address->state)->name }}</span>
                         </div>
                         <div class="row fs-14 mb-2 mb-md-0">

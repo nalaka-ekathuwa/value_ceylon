@@ -23,10 +23,12 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="{{ translate('password') }}">
-
+                                <div class="position-relative">
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="{{ translate('password') }}">
+                                    <i class="las la-eye position-absolute cursor-pointer text-secondary toggle-password" onclick="togglePasswordVisibility(this)" style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 18px; cursor: pointer;"></i>
+                                </div>
                                 @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
@@ -41,7 +43,10 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="{{ translate('Confrim Password') }}">
+                                <div class="position-relative">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="{{ translate('Confrim Password') }}">
+                                    <i class="las la-eye position-absolute cursor-pointer text-secondary toggle-password" onclick="togglePasswordVisibility(this)" style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 18px; cursor: pointer;"></i>
+                                </div>
                             </div>
                             <div class="checkbox pad-btm text-left">
                                 <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox" required>

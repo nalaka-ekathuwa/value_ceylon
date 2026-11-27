@@ -35,6 +35,7 @@ use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\AdvertisingController;
+use App\Http\Controllers\ProductBannerController;
 use App\Http\Controllers\PickupPointController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\ConversationController;
@@ -49,6 +50,7 @@ use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\BusinessSettingsController;
 use App\Http\Controllers\ProductBulkUploadController;
 use App\Http\Controllers\SellerWithdrawRequestController;
+use App\Http\Controllers\Admin\AdminAdController;
 
 /*
   |--------------------------------------------------------------------------
@@ -308,6 +310,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     // Advertising
     Route::resource('advertising', AdvertisingController::class );
     Route::get('advertising/{advertising}/delete', [AdvertisingController::class, 'delete'] )->name('advertising.delete');
+
+    // Home Product Banners
+    Route::get('/product-banners', [ProductBannerController::class, 'index'])->name('product-banners.index');
+    Route::get('/product-banners/create', [ProductBannerController::class, 'create'])->name('product-banners.create');
+    Route::post('/product-banners/store', [ProductBannerController::class, 'store'])->name('product-banners.store');
+    Route::get('/product-banners/{id}/delete', [ProductBannerController::class, 'delete'])->name('product-banners.delete');
+    Route::get('/product-banners/search-products', [ProductBannerController::class, 'searchProducts'])->name('product-banners.search-products');
     
 
     //Subscribers
@@ -507,6 +516,26 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::resource('rfq', RFQController::class);
         Route::get('rfq/{rfq}/delete', [RFQController::class,'delete'])->name('rfq.delete');
 
+        // ── Seller Ads Management ────────────────────────────────────────────
+        Route::controller(AdminAdController::class)->group(function () {
+            // Slot Pricing
+            Route::get('/ad-pricing', 'pricingIndex')->name('ad_pricing.index');
+            Route::get('/ad-pricing/categories', 'categoryAvailability')->name('ad_pricing.categories');
+            Route::get('/ad-pricing/subcategories', 'subcategoryAvailability')->name('ad_pricing.subcategories');
+            Route::post('/ad-pricing/store', 'pricingStore')->name('ad_pricing.store');
+            Route::get('/ad-pricing/{id}/delete', 'pricingDestroy')->name('ad_pricing.destroy');
+            Route::post('/ad-pricing/{id}/update-slots', 'updateSlots')->name('ad_pricing.update_slots');
+
+            // All Ads
+            Route::get('/seller-ads', 'adsIndex')->name('seller_ads.index');
+            Route::get('/seller-ads/{id}/approve', 'approve')->name('seller_ads.approve');
+            Route::post('/seller-ads/{id}/reject', 'reject')->name('seller_ads.reject');
+            Route::post('/seller-ads/details', 'adDetails')->name('seller_ads.details');
+            Route::post('/seller-ads/{id}/update-status', 'updateStatus')->name('seller_ads.update_status');
+
+            // Revenue
+            Route::get('/ads-revenue', 'revenue')->name('ads_revenue.index');
+        });
     });
     
 

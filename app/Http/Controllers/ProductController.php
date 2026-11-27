@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Models\Category;
 use App\Models\ProductTax;
+use App\Models\ProductFaq;
 use App\Models\AttributeValue;
 use App\Models\Cart;
 use App\Models\Wishlist;
@@ -181,7 +182,12 @@ class ProductController extends Controller
             ->with('childrenCategories')
             ->get();
 
-        return view('backend.product.products.create', compact('categories'));
+        $admin_products = Product::where('added_by', 'admin')
+            ->where('digital', 0)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('backend.product.products.create', compact('categories', 'admin_products'));
     }
 
     public function add_more_choice_option(Request $request)
@@ -206,7 +212,15 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $product = $this->productService->store($request->except([
-            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            '_token',
+            'sku',
+            'choice',
+            'tax_id',
+            'tax',
+            'tax_type',
+            'flash_deal_id',
+            'flash_discount',
+            'flash_discount_type'
         ]));
         $request->merge(['product_id' => $product->id]);
 
@@ -216,25 +230,63 @@ class ProductController extends Controller
         //VAT & Tax
         if ($request->tax_id) {
             $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
+                'tax_id',
+                'tax',
+                'tax_type',
+                'product_id'
             ]));
         }
 
         //Flash Deal
         $this->productFlashDealService->store($request->only([
-            'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            'flash_deal_id',
+            'flash_discount',
+            'flash_discount_type'
         ]), $product);
 
         //Product Stock
         $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+            'colors_active',
+            'colors',
+            'choice_no',
+            'unit_price',
+            'sku',
+            'current_stock',
+            'product_id'
         ]), $product);
 
         // Product Translations
         $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
         ProductTranslation::create($request->only([
-            'lang', 'name', 'unit', 'description', 'product_id'
+            'lang',
+            'name',
+            'unit',
+            'description',
+            'product_id'
         ]));
+
+        // Product FAQs
+        if ($request->has('faq_question') && $request->has('faq_answer')) {
+            $questions = $request->input('faq_question', []);
+            $answers   = $request->input('faq_answer', []);
+            foreach ($questions as $index => $question) {
+                if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                    ProductFaq::create([
+                        'product_id' => $product->id,
+                        'question'   => $question,
+                        'answer'     => $answers[$index],
+                    ]);
+                }
+            }
+        }
+
+        // Related Products
+        if ($request->has('related_product_ids')) {
+            $valid_ids = Product::where('added_by', 'admin')
+                ->whereIn('id', $request->related_product_ids)
+                ->pluck('id');
+            $product->related_products()->sync($valid_ids);
+        }
 
         flash(translate('Product has been inserted successfully'))->success();
 
@@ -276,7 +328,14 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
+
+        $admin_products = Product::where('added_by', 'admin')
+            ->where('digital', 0)
+            ->where('id', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang', 'admin_products'));
     }
 
     /**
@@ -299,7 +358,13 @@ class ProductController extends Controller
             ->with('childrenCategories')
             ->get();
 
-        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
+        $admin_products = Product::where('user_id', $product->user_id)
+            ->where('digital', 0)
+            ->where('id', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang', 'admin_products'));
     }
 
     /**
@@ -311,53 +376,112 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        //Product
-        $product = $this->productService->update($request->except([
-            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
-        ]), $product);
+        try {
+            //Product
+            $product = $this->productService->update($request->except([
+                '_token',
+                'sku',
+                'choice',
+                'tax_id',
+                'tax',
+                'tax_type',
+                'flash_deal_id',
+                'flash_discount',
+                'flash_discount_type'
+            ]), $product);
 
-        $request->merge(['product_id' => $product->id]);
+            $request->merge(['product_id' => $product->id]);
 
-        //Product categories
-        $product->categories()->sync($request->category_ids);
+            //Product categories
+            $product->categories()->sync($request->category_ids);
 
-        //Product Stock
-        $product->stocks()->delete();
-        $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
-        ]), $product);
+            //Product Stock
+            $product->stocks()->delete();
+            $this->productStockService->store($request->only([
+                'colors_active',
+                'colors',
+                'choice_no',
+                'unit_price',
+                'sku',
+                'current_stock',
+                'product_id'
+            ]), $product);
 
-        //Flash Deal
-        $this->productFlashDealService->store($request->only([
-            'flash_deal_id', 'flash_discount', 'flash_discount_type'
-        ]), $product);
+            //Flash Deal
+            $this->productFlashDealService->store($request->only([
+                'flash_deal_id',
+                'flash_discount',
+                'flash_discount_type'
+            ]), $product);
 
-        //VAT & Tax
-        if ($request->tax_id) {
-            $product->taxes()->delete();
-            $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
-            ]));
+            //VAT & Tax
+            if ($request->tax_id) {
+                $product->taxes()->delete();
+                $this->productTaxService->store($request->only([
+                    'tax_id',
+                    'tax',
+                    'tax_type',
+                    'product_id'
+                ]));
+            }
+
+            // Product Translations
+            if ($request->lang == null) {
+                $request->merge(['lang' => env('DEFAULT_LANGUAGE', 'en')]);
+            }
+            ProductTranslation::updateOrCreate(
+                $request->only([
+                    'lang',
+                    'product_id'
+                ]),
+                $request->only([
+                    'name',
+                    'unit',
+                    'description'
+                ])
+            );
+
+            // Product FAQs
+            $product->faqs()->delete();
+            if ($request->has('faq_question') && $request->has('faq_answer')) {
+                $questions = $request->input('faq_question', []);
+                $answers   = $request->input('faq_answer', []);
+                foreach ($questions as $index => $question) {
+                    if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                        ProductFaq::create([
+                            'product_id' => $product->id,
+                            'question'   => $question,
+                            'answer'     => $answers[$index],
+                        ]);
+                    }
+                }
+            }
+
+            // Related Products
+            if ($request->has('related_product_ids')) {
+                $allowed_query = $product->added_by == 'seller' 
+                    ? Product::where('user_id', $product->user_id) 
+                    : Product::where('added_by', 'admin');
+                $valid_ids = $allowed_query->where('id', '!=', $product->id)
+                    ->whereIn('id', $request->related_product_ids)
+                    ->pluck('id');
+                $product->related_products()->sync($valid_ids);
+            } else {
+                $product->related_products()->detach();
+            }
+
+            flash(translate('Product has been updated successfully'))->success();
+
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+            if ($request->has('tab') && $request->tab != null) {
+                return Redirect::to(URL::previous() . "#" . $request->tab);
+            }
+            return back();
+        } catch (\Exception $e) {
+            flash(translate('Something went wrong') . ': ' . $e->getMessage())->error();
+            return back()->withInput();
         }
-
-        // Product Translations
-        ProductTranslation::updateOrCreate(
-            $request->only([
-                'lang', 'product_id'
-            ]),
-            $request->only([
-                'name', 'unit', 'description'
-            ])
-        );
-
-        flash(translate('Product has been updated successfully'))->success();
-
-        Artisan::call('view:clear');
-        Artisan::call('cache:clear');
-        if($request->has('tab') && $request->tab != null){
-            return Redirect::to(URL::previous() . "#" . $request->tab);
-        }
-        return back();
     }
 
     /**
@@ -473,7 +597,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($request->id);
         $product->approved = $request->approved;
 
-        if ($product->added_by == 'seller' ) {
+        if ($product->added_by == 'seller') {
             $shop = $product->user->shop;
             if (
                 $shop->package_invalid_at == null
@@ -486,9 +610,9 @@ class ProductController extends Controller
 
         $product->save();
 
-        $product_type   = $product->digital ==  0 ? 'physical' : 'digital';
-        $status         = $request->approved == 1 ? 'approved' : 'rejected';
-        $users          = User::findMany([User::where('user_type', 'admin')->first()->id, $product->user_id]);
+        $product_type = $product->digital == 0 ? 'physical' : 'digital';
+        $status = $request->approved == 1 ? 'approved' : 'rejected';
+        $users = User::findMany([User::where('user_type', 'admin')->first()->id, $product->user_id]);
         Notification::send($users, new ShopProductNotification($product_type, $product, $status));
 
         Artisan::call('view:clear');

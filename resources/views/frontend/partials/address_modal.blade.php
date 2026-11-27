@@ -42,11 +42,11 @@
                         <!-- State -->
                         <div class="row">
                             <div class="col-md-2">
-                                <label>{{ translate('State')}}</label>
+                                <label>{{ translate('State/ District')}}</label>
                             </div>
                             <div class="col-md-10">
                                 <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="state_id" required>
-
+                                    <option>{{ translate('Select your state') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-md-10">
                                 <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="city_id" required>
-
+                                    <option>{{ translate('Select your city') }}</option>
                                 </select>
                             </div>
                         </div>

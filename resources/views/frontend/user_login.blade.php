@@ -58,7 +58,10 @@
                                                 <!-- password -->
                                                 <div class="form-group">
                                                     <label for="password" class="fs-12 fw-700 text-soft-dark">{{  translate('Password') }}</label>
-                                                    <input type="password" class="form-control rounded-0 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password">
+                                                    <div class="position-relative">
+                                                        <input type="password" class="form-control rounded-0 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password">
+                                                        <i class="las la-eye position-absolute cursor-pointer text-secondary toggle-password" onclick="togglePasswordVisibility(this)" style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 18px; cursor: pointer;"></i>
+                                                    </div>
                                                 </div>
 
                                                 <div class="row mb-2">
@@ -75,6 +78,18 @@
                                                         <a href="{{ route('password.request') }}" class="text-reset fs-12 fw-400 text-gray-dark hov-text-primary"><u>{{ translate('Forgot password?')}}</u></a>
                                                     </div>
                                                 </div>
+
+                                                <!-- Recaptcha -->
+                                                @if(get_setting('google_recaptcha') == 1)
+                                                    <div class="form-group">
+                                                        <div class="g-recaptcha" data-sitekey="{{ env('CAPTCHA_KEY') }}"></div>
+                                                    </div>
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                @endif
 
                                                 <!-- Submit Button -->
                                                 <div class="mb-4 mt-4">
@@ -174,6 +189,9 @@
 @endsection
 
 @section('script')
+    @if(get_setting('google_recaptcha') == 1)
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endif
     <script type="text/javascript">
         function autoFillSeller(){
             $('#email').val('seller@example.com');

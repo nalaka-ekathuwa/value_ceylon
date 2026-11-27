@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1.2",
         "aiz-packages/color-code-converter": "dev-main",
         "aiz-packages/combination-generate": "dev-main",
         "anandsiddharth/laravel-paytm-wallet": "^2.0",
@@ -21,7 +21,7 @@
         "kingflamez/laravelrave": "dev-master",
         "laracasts/flash": "^3.2",
         "laravel/framework": "^9.2",
-        "laravel/sanctum": "3.0",
+        "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",

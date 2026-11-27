@@ -10,9 +10,18 @@
     <div class="row">
         <div class="@if (auth()->user()->can('add_product_attribute')) col-lg-7 @else col-lg-12 @endif">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Attributes') }}</h5>
-                </div>
+                <form class="" id="sort_attributes" action="" method="GET">
+                    <div class="card-header border-bottom-0">
+                        <h5 class="mb-0 h6">{{ translate('Attributes') }}</h5>
+                        <div class="col-md-5 pl-0 pr-0 pl-md-2">
+                            <div class="form-group mb-0">
+                                <input type="text" class="form-control form-control-sm" id="search" name="search"
+                                    @isset($sort_search) value="{{ $sort_search }}" @endisset
+                                    placeholder="{{ translate('Type attribute name & Enter') }}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <div class="card-body">
                     <table class="table aiz-table mb-0">
                         <thead>
@@ -26,7 +35,7 @@
                         <tbody>
                             @foreach ($attributes as $key => $attribute)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ ($key+1) + ($attributes->currentPage() - 1)*$attributes->perPage() }}</td>
                                     <td>{{ $attribute->getTranslation('name') }}</td>
                                     <td>
                                         @foreach ($attribute->attribute_values as $key => $value)
@@ -63,7 +72,7 @@
                         </tbody>
                     </table>
                     <div class="aiz-pagination">
-                        {{ $attributes->links() }}
+                        {{ $attributes->appends(request()->input())->links() }}
                     </div>
                 </div>
             </div>

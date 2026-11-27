@@ -273,13 +273,15 @@ class HomeController extends Controller
 
     public function trackOrder(Request $request)
     {
-        if ($request->has('order_code')) {
-            $order = Order::where('code', $request->order_code)->first();
-            if ($order != null) {
-                return view('frontend.track_order', compact('order'));
+        $order = null;
+        $order_not_found = false;
+        if ($request->has('order_code') && !empty($request->order_code)) {
+            $order = Order::where('code', trim($request->order_code))->first();
+            if ($order == null) {
+                $order_not_found = true;
             }
         }
-        return view('frontend.track_order');
+        return view('frontend.track_order', compact('order', 'order_not_found'));
     }
 
     public function product(Request $request, $slug)
@@ -444,7 +446,7 @@ class HomeController extends Controller
 
     public function all_brands(Request $request)
     {
-        $brands = Brand::all();
+        $brands = Brand::orderBy('name', 'asc')->get();
         return view('frontend.all_brand', compact('brands'));
     }
 
@@ -832,26 +834,29 @@ class HomeController extends Controller
     {
         return view('frontend.faq_special');
     }
-    public function terms_condition()
-    {
-        return view('frontend.terms');
-    }
-        public function policy_section()
-    {
-        return view('frontend.policy');
-    }
-
-
-    public function lorem()
-    {
-        return view('frontend.lorem');
-    }
 
     public function contact()
     {
         return view('frontend.contact');
     }
-        public function our_services()
+
+    public function store_contact(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+            'g-recaptcha-response' => [
+                \Illuminate\Validation\Rule::when(get_setting('google_recaptcha') == 1, ['required', new \App\Rules\Recaptcha()], ['sometimes'])
+            ]
+        ]);
+
+        flash(translate('Thank you for contacting us. We will get back to you soon.'))->success();
+        return back();
+    }
+
+    public function our_services()
     {
         return view('frontend.our_services');
     }

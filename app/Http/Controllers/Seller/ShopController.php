@@ -27,19 +27,19 @@ class ShopController extends Controller
                 $shop->shipping_cost = $request->shipping_cost;
             }
 
-            $shop->name             = $request->name;
-            $shop->address          = $request->address;
-            $shop->phone            = $request->phone;
-            $shop->slug             = preg_replace('/\s+/', '-', $request->name) . '-' . $shop->id;
-            $shop->meta_title       = $request->meta_title;
+            $shop->name = $request->name;
+            $shop->address = $request->address;
+            $shop->phone = $request->phone;
+            $shop->slug = preg_replace('/\s+/', '-', $request->name) . '-' . $shop->id;
+            $shop->meta_title = $request->meta_title;
             $shop->meta_description = $request->meta_description;
-            $shop->logo             = $request->logo;
+            $shop->logo = $request->logo;
         }
 
         if ($request->has('delivery_pickup_longitude') && $request->has('delivery_pickup_latitude')) {
 
-            $shop->delivery_pickup_longitude    = $request->delivery_pickup_longitude;
-            $shop->delivery_pickup_latitude     = $request->delivery_pickup_latitude;
+            $shop->delivery_pickup_longitude = $request->delivery_pickup_longitude;
+            $shop->delivery_pickup_latitude = $request->delivery_pickup_latitude;
         } elseif (
             $request->has('facebook') ||
             $request->has('google') ||
@@ -115,9 +115,13 @@ class ShopController extends Controller
         $shop = Auth::user()->shop;
         $shop->verification_info = json_encode($data);
         if ($shop->save()) {
-            $users = User::findMany([auth()->user()->id, User::where('user_type', 'admin')->first()->id]);
-            Notification::send($users, new ShopVerificationNotification($shop));
-            
+            $admin = User::where('user_type', 'admin')->first();
+            $notificationUsers = [auth()->user()];
+            if ($admin) {
+                array_push($notificationUsers, $admin);
+            }
+            Notification::send($notificationUsers, new ShopVerificationNotification($shop));
+
             flash(translate('Your shop verification request has been submitted successfully!'))->success();
             return redirect()->route('seller.dashboard');
         }

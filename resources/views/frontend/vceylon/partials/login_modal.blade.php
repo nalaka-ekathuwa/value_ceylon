@@ -56,8 +56,11 @@
 
                         <!-- Password -->
                         <div class="form-group">
-                            <input type="password" name="password" class="form-control h-auto rounded-0 form-control-lg"
-                                placeholder="{{ translate('Password') }}">
+                            <div class="position-relative">
+                                <input type="password" name="password" class="form-control h-auto rounded-0 form-control-lg"
+                                    placeholder="{{ translate('Password') }}">
+                                <i class="las la-eye position-absolute cursor-pointer text-secondary toggle-password" onclick="togglePasswordVisibility(this)" style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; font-size: 18px; cursor: pointer;"></i>
+                            </div>
                         </div>
 
                         <!-- Remember Me & Forgot password -->

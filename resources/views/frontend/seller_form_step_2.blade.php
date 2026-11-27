@@ -70,6 +70,8 @@
                                         <option value="1">Retail</option>
                                         <option value="2">Whole Sale</option>
                                         <option value="3">Manufacturer</option>
+                                        <option value="4">Disitributor</option>
+                                        <option value="5">Importer</option>
                                     </select>
                                     @if ($errors->has('seller_type'))
                                         <span class="invalid-feedback" role="alert">
@@ -79,7 +81,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Pharmacy Name <span class="text-primary">*</span></label>
+                                    <label>Business Name <span class="text-primary">*</span></label>
                                     <input type="text"
                                         class="form-control rounded-0 {{ $errors->has('first_name') ? ' is-invalid' : '' }}"
                                         id="business_name" name="business_name" value="{{ old('business_name') }}">
@@ -93,7 +95,8 @@
 
                                 <div class="form-group">
                                     <label>Company profile /Description <span class="text-primary">*</span></label>
-                                    <textarea class="form-control" name="business_description" id="business_description" cols="30" rows="5">{{ old('business_description') }}</textarea>
+                                    <textarea class="form-control" name="business_description" id="business_description"
+                                        cols="30" rows="5">{{ old('business_description') }}</textarea>
 
                                     @error('business_description')
                                         <span class="invalid-feedback" role="alert">
@@ -104,8 +107,7 @@
 
                                 <div class="form-group">
                                     <label>Company address <span class="text-primary">*</span></label>
-                                    <input type="text" class="form-control" id="business_address"
-                                        name="business_address">
+                                    <input type="text" class="form-control" id="business_address" name="business_address">
                                     @error('business_address')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -119,8 +121,10 @@
                                         <option value="Sole proprietorship">Sole proprietorship</option>
                                         <option value="Partnership">Partnership</option>
                                         <option value="Private company">Private company</option>
-                                        <option value="Public Liability Company (PLC)">Public Liability Company (PLC)</option>
-                                        <option value="Limited Liability Company (LLC)">Limited Liability Company (LLC)</option>
+                                        <option value="Public Liability Company (PLC)">Public Liability Company (PLC)
+                                        </option>
+                                        <option value="Limited Liability Company (LLC)">Limited Liability Company (LLC)
+                                        </option>
                                         <option value="Overseas Company">Overseas Company</option>
                                     </select>
                                     @if ($errors->has('type_of_registration'))
@@ -130,17 +134,16 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group">
-                                    <label>{{ translate('Your designation') }} <span class="text-primary">*</span></label>
-                                    <input type="text" class="form-control" id="your_designation"
-                                        name="your_designation">
+                                <!-- <div class="form-group">
+                                            <label>{{ translate('Your designation') }} <span class="text-primary">*</span></label>
+                                            <input type="text" class="form-control" id="your_designation" name="your_designation">
 
-                                    @error('your_designation')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                                            @error('your_designation')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div> -->
 
                                 <div class="form-group">
                                     <label>{{ translate('Business registration number') }} <span
@@ -168,12 +171,11 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>{{ translate('SLMC register number') }} <span
+                                    <label>{{ translate('NMRA register number') }} <span
                                             class="text-primary">*</span></label>
-                                    <input type="text" class="form-control" id="slmc_reg_no"
-                                        name="slmc_reg_no">
+                                    <input type="text" class="form-control" id="nmra_reg_no" name="nmra_reg_no">
 
-                                    @error('slmc_reg_no')
+                                    @error('nmra_reg_no')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -181,10 +183,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>{{ translate('SLMC Licence expire date') }} <span
+                                    <label>{{ translate('NMRA Licence expire date') }} <span
                                             class="text-primary">*</span></label>
-                                    <input type="date" class="form-control" id="licence_exp_date"
-                                        name="licence_exp_date">
+                                    <input type="date" class="form-control" id="licence_exp_date" name="licence_exp_date">
 
                                     @error('licence_exp_date')
                                         <span class="invalid-feedback" role="alert">
@@ -194,10 +195,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>{{ translate('Pharmasist Name') }} <span
-                                            class="text-primary">*</span></label>
-                                    <input type="text" class="form-control" id="pharmacist_name"
-                                        name="pharmacist_name">
+                                    <label>{{ translate('Pharmasist Name') }} <span class="text-primary">*</span></label>
+                                    <input type="text" class="form-control" id="pharmacist_name" name="pharmacist_name">
 
                                     @error('pharmacist_name')
                                         <span class="invalid-feedback" role="alert">
@@ -206,7 +205,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label>Number of employees <span class="text-primary">*</span></label>
                                     <input type="number" class="form-control" id="number_of_employees"
                                         name="number_of_employees">
@@ -215,9 +214,9 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                </div>
+                                </div> -->
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label>{{ translate('Production Volume') }} <span class="text-primary">*</span></label>
                                     <input type="text" class="form-control" id="manufacturing_capacity"
                                         name="manufacturing_capacity">
@@ -226,13 +225,12 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                </div>
+                                </div> -->
 
 
                                 <div class="form-group">
                                     <label>{{ translate('Company website') }} <span class="text-primary"></span></label>
-                                    <input type="text" class="form-control" id="company_website"
-                                        name="company_website">
+                                    <input type="text" class="form-control" id="company_website" name="company_website">
 
                                     @error('company_website')
                                         <span class="invalid-feedback" role="alert">
@@ -266,8 +264,8 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script type="text/javascript">
         // making the CAPTCHA  a required field for form submission
-        $(document).ready(function() {
-            $("#shop").on("submit", function(evt) {
+        $(document).ready(function () {
+            $("#shop").on("submit", function (evt) {
                 var response = grecaptcha.getResponse();
                 if (response.length == 0) {
                     //reCaptcha not verified

@@ -9,7 +9,13 @@ class AdvertisingBanner extends Model
 {
     use HasFactory;
 
-
+    protected $fillable = [
+        'title',
+        'banner',
+        'category_id',
+        'meta',
+    ];
+    
     protected $guarded = [];
 
 

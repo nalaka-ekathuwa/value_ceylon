@@ -1,10 +1,10 @@
 <div class="aiz-user-sidenav-wrap position-relative z-1 rounded-0">
     <div class="aiz-user-sidenav overflow-auto c-scrollbar-light px-4 pb-4">
         <!-- Close button -->
-        <div class="d-xl-none">
-            <button class="btn btn-sm p-2 " data-toggle="class-toggle" data-backdrop="static"
+        <div class="d-xl-none text-right pt-3 pb-2">
+            <button class="btn btn-icon btn-sm btn-soft-secondary rounded-circle" data-toggle="class-toggle" data-backdrop="static"
                 data-target=".aiz-mobile-side-nav" data-same=".mobile-side-nav-thumb">
-                <i class="las la-times la-2x"></i>
+                <i class="las la-times fs-18"></i>
             </button>
         </div>
         @php

@@ -279,6 +279,35 @@
                     </a>
                 </li>
 
+                {{-- Advertisements --}}
+                <li class="aiz-side-nav-item">
+                    <a href="#" class="aiz-side-nav-link {{ areActiveRoutes(['seller.ads.index','seller.ads.create','seller.ads.payment','seller.ads.payment_history']) ? 'active' : '' }}">
+                        <i class="las la-bullhorn aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Advertisements') }}</span>
+                        <span class="aiz-side-nav-arrow"></span>
+                    </a>
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.ads.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.ads.index','seller.ads.show']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('List Ads') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.ads.create') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.ads.create']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Create Ad') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('seller.ads.payment_history') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['seller.ads.payment_history']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Payments') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->
     </div><!-- .aiz-sidebar -->

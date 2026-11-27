@@ -56,7 +56,8 @@ class PageController extends Controller
             $page->meta_image       = $request->meta_image;
             $page->save();
 
-            $page_translation           = PageTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'page_id' => $page->id]);
+            $default_lang = env('DEFAULT_LANGUAGE', 'en') ?: 'en';
+            $page_translation = PageTranslation::firstOrNew(['lang' => $default_lang, 'page_id' => $page->id]);
             $page_translation->title    = $request->title;
             $page_translation->content  = $request->content;
             $page_translation->save();
@@ -88,7 +89,7 @@ class PageController extends Controller
      */
    public function edit(Request $request, $id)
    {
-        $lang = $request->lang;
+        $lang = $request->lang ?? env('DEFAULT_LANGUAGE', 'en') ?: 'en';
         $page_name = $request->page;
         $page = Page::where('slug', $id)->first();
         if($page != null){
@@ -111,10 +112,13 @@ class PageController extends Controller
     {
         $page = Page::findOrFail($id);
         if (Page::where('id','!=', $id)->where('slug', preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug)))->first() == null) {
+            $default_lang = env('DEFAULT_LANGUAGE', 'en') ?: 'en';
+            $lang = $request->lang ?? $default_lang;
+
             if($page->type == 'custom_page'){
               $page->slug           = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->slug));
             }
-            if($request->lang == env("DEFAULT_LANGUAGE")){
+            if($lang == $default_lang){
               $page->title          = $request->title;
               $page->content        = $request->content;
             }
@@ -124,7 +128,7 @@ class PageController extends Controller
             $page->meta_image       = $request->meta_image;
             $page->save();
 
-            $page_translation           = PageTranslation::firstOrNew(['lang' => $request->lang, 'page_id' => $page->id]);
+            $page_translation           = PageTranslation::firstOrNew(['lang' => $lang, 'page_id' => $page->id]);
             $page_translation->title    = $request->title;
             $page_translation->content  = $request->content;
             $page_translation->save();

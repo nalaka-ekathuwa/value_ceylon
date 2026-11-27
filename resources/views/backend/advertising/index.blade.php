@@ -35,7 +35,7 @@
                                         <td><img src="{{ uploaded_asset($banner->banner) }}" alt="banner" class="h-50px">
                                         </td>
                                         <td>{{ $banner->title }}</td>
-                                        <td>{{ $banner->category->name }}</td>
+                                        <td>{{ optional($banner->category)->name ?? '—' }}</td>
                                         <td>
                                             
                                             <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{ route('advertising.delete', ['advertising' => $banner->id] ) }}" title="{{ translate('Delete') }}">

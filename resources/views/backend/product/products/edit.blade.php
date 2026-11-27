@@ -57,6 +57,20 @@
                         {{ translate('Shipping') }}
                     </a>
                 </li>
+                <!-- FAQ -->
+                <li class="nav-item">
+                    <a class="nav-link" id="faq-tab" href="#faq"
+                        data-toggle="tab" data-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="false">
+                        {{ translate('Product FAQ') }}
+                    </a>
+                </li>
+                <!-- Related Products -->
+                <li class="nav-item">
+                    <a class="nav-link" id="related-products-tab" href="#related_products"
+                        data-toggle="tab" data-target="#related_products" type="button" role="tab" aria-controls="related_products" aria-selected="false">
+                        {{ translate('Related Products') }}
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -744,6 +758,73 @@
                         </div>
                     </div>
 
+                    <!-- FAQ -->
+                    <div class="tab-pane fade" id="faq" role="tabpanel" aria-labelledby="faq-tab">
+                        <div class="bg-white p-3 p-sm-2rem">
+                            <h5 class="mb-3 pb-3 fs-17 fw-700" style="border-bottom: 1px dashed #e4e5eb;">{{translate('Product FAQ')}}</h5>
+                            <div id="faq-rows">
+                                @foreach($product->faqs as $faq)
+                                <div class="faq-row mb-3 border p-3 rounded">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-from-label">{{ translate('Question') }}</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="faq_question[]"
+                                                placeholder="{{ translate('Enter question') }}"
+                                                value="{{ $faq->question }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-from-label">{{ translate('Answer') }}</label>
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" name="faq_answer[]" rows="3"
+                                                placeholder="{{ translate('Enter answer') }}" required>{{ $faq->answer }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-11 text-right">
+                                            <button type="button" class="btn btn-sm btn-danger remove-faq-row">
+                                                <i class="las la-trash"></i> {{ translate('Remove') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            <div class="form-group row mt-3">
+                                <div class="col-md-12">
+                                    <button type="button" id="add-faq-row" class="btn btn-sm btn-outline-primary">
+                                        <i class="las la-plus"></i> {{ translate('Add FAQ') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Products -->
+                    <div class="tab-pane fade" id="related_products" role="tabpanel" aria-labelledby="related-products-tab">
+                        <div class="bg-white p-3 p-sm-2rem">
+                            <h5 class="mb-3 pb-3 fs-17 fw-700" style="border-bottom: 1px dashed #e4e5eb;">{{ translate('Related Products') }}</h5>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-from-label">{{ translate('Related Products') }}</label>
+                                <div class="col-md-8">
+                                    @php
+                                        $selected_related_products = $product->related_products->pluck('id')->toArray();
+                                    @endphp
+                                    <select name="related_product_ids[]" id="related_products" class="form-control aiz-selectpicker" multiple data-live-search="true" data-selected-text-format="count" data-actions-box="true" data-placeholder="{{ translate('Select Related Products') }}">
+                                        @if(isset($admin_products))
+                                            @foreach($admin_products as $p)
+                                                <option value="{{ $p->id }}" {{ in_array($p->id, $selected_related_products) ? 'selected' : '' }}>
+                                                    {{ $p->getTranslation('name') }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="text-muted">{{ translate('Choose products to display as related products.') }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Update Button -->
                     <div class="mt-4 text-right">
                         <button type="button" onclick="submitFormWithTab()" name="button" class="mx-2 btn btn-success w-230px btn-md rounded-2 fs-14 fw-700 shadow-success action-btn">{{ translate('Update') }}</button>
@@ -930,6 +1011,36 @@
         // Change hash for page-reload
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
             window.location.hash = e.target.hash;
+        });
+
+        $('#add-faq-row').on('click', function() {
+            var faqRowHtml = `
+                <div class="faq-row mb-3 border p-3 rounded">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-from-label">{{ translate('Question') }}</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="faq_question[]" placeholder="{{ translate('Enter question') }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-from-label">{{ translate('Answer') }}</label>
+                        <div class="col-md-8">
+                            <textarea class="form-control" name="faq_answer[]" rows="3" placeholder="{{ translate('Enter answer') }}" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-11 text-right">
+                            <button type="button" class="btn btn-sm btn-danger remove-faq-row">
+                                <i class="las la-trash"></i> {{ translate('Remove') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            $('#faq-rows').append(faqRowHtml);
+        });
+
+        $(document).on('click', '.remove-faq-row', function() {
+            $(this).closest('.faq-row').remove();
         });
     });
     

@@ -43,13 +43,13 @@
                                     <div class="name">{{$rfq->first_name}} {{$rfq->last_name}}</div>
                                     <div class="email">{{$rfq->email}}</div>
                                 </td>
-                                <td>{{$rfq->category->name}}</td>
-                                <td>{{$rfq->quantity .' '. $rfq->package_type->name}}</td>
-                                <td>{{$rfq->product_customization}}</td>
-                                <td>{{$rfq->rfq_submission_date}}</td>
-                                <td>{{$rfq->rfq_deadline_date}}</td>
+                                <td>{{ $rfq->category?->name ?? translate('N/A') }}</td>
+                                <td>{{ $rfq->quantity }} {{ $rfq->package_type?->name }}</td>
+                                <td>{{ $rfq->product_customization }}</td>
+                                <td>{{ $rfq->rfq_submission_date }}</td>
+                                <td>{{ $rfq->rfq_deadline_date }}</td>
                                 <td>
-                                    {{ $rfq->quoteStatus->name }}
+                                    {{ $rfq->quoteStatus?->name ?? translate('N/A') }}
                                 </td>
 
                               

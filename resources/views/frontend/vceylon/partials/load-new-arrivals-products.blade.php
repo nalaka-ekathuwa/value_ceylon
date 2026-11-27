@@ -1,20 +1,30 @@
-<div class="d-flex my-5 mb-2 mb-md-3 align-items-baseline justify-content-between bg-primary text-white p-3">
-    <!-- Title -->
-    <h3 class="fs-16 fs-md-20 fw-700 mb-2 mb-sm-0">
-        <span class="pb-3">New Arrivals </span>
-    </h3>
-</div>
-
 @if (count($products) > 0)
+    @php
+        $cart_added = [];
+        $carts = get_user_cart();
+        if (count($carts) > 0) {
+            $cart_added = $carts->pluck('product_id')->toArray();
+        }
+    @endphp
 
-    <div class="row my-5">
+    <div class="home-section-bar ">
+        <!-- Title -->
+        <h3 class="fs-16 fs-md-20 fw-700 mb-0 text-white">
+            <span>{{ translate('New Arrivals') }}</span>
+        </h3>
+        <!-- View All Link -->
+        <a class="text-white fs-12 fs-md-14 fw-700 hov-text-white opacity-80 hov-opacity-100 animate-underline-white"
+            href="{{ route('search', ['sort_by' => 'newest']) }}">
+            {{ translate('View All') }} <i class="las la-angle-right ml-1"></i>
+        </a>
+    </div>
+
+    <div class="row gutters-5 sm-gutters-10">
         @foreach ($products as $product)
-            <div class="col-lg-3">
-                @php
-                    $cart_added = [];
-                @endphp
-                <div class="aiz-card-box h-auto bg-white py-3 hov-scale-img px-3 mb-3">
-                    <div class="position-relative img-fit overflow-hidden">
+            <div class="col-6 col-sm-6 col-md-3 mb-2 mb-md-3">
+                <div
+                    class="aiz-card-box h-100 bg-white py-2 py-md-3 hov-scale-img px-2 px-md-3 d-flex flex-column justify-content-between has-transition hov-shadow-out border border-light">
+                    <div class="position-relative card-img-square overflow-hidden" style="aspect-ratio: 1 / 1;">
                         @php
                             $product_url = route('product', $product->slug);
                             if ($product->auction_product == 1) {
@@ -22,8 +32,8 @@
                             }
                         @endphp
                         <!-- Image -->
-                        <a href="{{ $product_url }}" class="d-block h-100">
-                            <img class="lazyload mx-auto img-fit has-transition"
+                        <a href="{{ $product_url }}" class="d-block h-100 w-100 text-center">
+                            <img class="lazyload mx-auto img-fit has-transition h-100"
                                 src="{{ get_image($product->thumbnail) }}" alt="{{ $product->getTranslation('name') }}"
                                 title="{{ $product->getTranslation('name') }}"
                                 onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
@@ -31,8 +41,7 @@
 
                         <!-- Discount percentage tag -->
                         @if (discount_in_percentage($product) > 0)
-                            <span
-                                class="absolute-top-left bg-primary ml-1 mt-1 fs-11 fw-700 text-white w-35px text-center"
+                            <span class="absolute-top-left bg-primary ml-1 mt-1 fs-11 fw-700 text-white w-35px text-center"
                                 style="padding-top:2px;padding-bottom:2px;">-{{ discount_in_percentage($product) }}%</span>
                         @endif
                         <!-- Wholesale tag -->
@@ -43,15 +52,12 @@
                             </span>
                         @endif
                         @if ($product->auction_product == 0)
-                            <!-- wishlisht & compare icons -->
+                            <!-- wishlist icon -->
                             <div class="absolute-top-right aiz-p-hov-icon">
-                                <a href="javascript:void(0)" class="hov-svg-white"
-                                    onclick="addToWishList({{ $product->id }})" data-toggle="tooltip"
-                                    data-title="{{ translate('Add to wishlist') }}" data-placement="left">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14.4"
-                                        viewBox="0 0 16 14.4">
-                                        <g id="_51a3dbe0e593ba390ac13cba118295e4"
-                                            data-name="51a3dbe0e593ba390ac13cba118295e4"
+                                <a href="javascript:void(0)" class="hov-svg-white" onclick="addToWishList({{ $product->id }})"
+                                    data-toggle="tooltip" data-title="{{ translate('Add to wishlist') }}" data-placement="left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14.4" viewBox="0 0 16 14.4">
+                                        <g id="_51a3dbe0e593ba390ac13cba118295e4" data-name="51a3dbe0e593ba390ac13cba118295e4"
                                             transform="translate(-3.05 -4.178)">
                                             <path id="Path_32649" data-name="Path 32649"
                                                 d="M11.3,5.507l-.247.246L10.8,5.506A4.538,4.538,0,1,0,4.38,11.919l.247.247,6.422,6.412,6.422-6.412.247-.247A4.538,4.538,0,1,0,11.3,5.507Z"
@@ -62,19 +68,11 @@
                                         </g>
                                     </svg>
                                 </a>
-                                {{-- <a href="javascript:void(0)" class="hov-svg-white" onclick="addToCompare({{ $product->id }})"
-                    data-toggle="tooltip" data-title="{{ translate('Add to compare') }}" data-placement="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                        <path id="_9f8e765afedd47ec9e49cea83c37dfea" data-name="9f8e765afedd47ec9e49cea83c37dfea"
-                            d="M18.037,5.547v.8a.8.8,0,0,1-.8.8H7.221a.4.4,0,0,0-.4.4V9.216a.642.642,0,0,1-1.1.454L2.456,6.4a.643.643,0,0,1,0-.909L5.723,2.227a.642.642,0,0,1,1.1.454V4.342a.4.4,0,0,0,.4.4H17.234a.8.8,0,0,1,.8.8Zm-3.685,4.86a.642.642,0,0,0-1.1.454v1.661a.4.4,0,0,1-.4.4H2.84a.8.8,0,0,0-.8.8v.8a.8.8,0,0,0,.8.8H12.854a.4.4,0,0,1,.4.4V17.4a.642.642,0,0,0,1.1.454l3.267-3.268a.643.643,0,0,0,0-.909Z"
-                            transform="translate(-2.037 -2.038)" fill="#919199" />
-                    </svg>
-                </a> --}}
                             </div>
                             <!-- add to cart -->
                             <a class="cart-btn absolute-bottom-left w-100 h-35px aiz-p-hov-icon text-white fs-13 fw-700 d-flex flex-column justify-content-center align-items-center @if (in_array($product->id, $cart_added)) active @endif"
-                                href="javascript:void(0)"
-                                @if (Auth::check()) onclick="showAddToCartModal({{ $product->id }})" @else onclick="showLoginModal()" @endif>
+                                href="javascript:void(0)" @if (Auth::check()) onclick="showAddToCartModal({{ $product->id }})" @else
+                                onclick="showLoginModal()" @endif>
                                 <span class="cart-btn-text">
                                     {{ translate('Add to Cart') }}
                                 </span>
@@ -82,21 +80,17 @@
                             </a>
                         @endif
                         @if (
-                            $product->auction_product == 1 &&
+                                $product->auction_product == 1 &&
                                 $product->auction_start_date <= strtotime('now') &&
-                                $product->auction_end_date >= strtotime('now'))
+                                $product->auction_end_date >= strtotime('now')
+                            )
                             <!-- Place Bid -->
                             @php
-                                $carts = get_user_cart();
-                                if (count($carts) > 0) {
-                                    $cart_added = $carts->pluck('product_id')->toArray();
-                                }
                                 $highest_bid = $product->bids->max('amount');
                                 $min_bid_amount = $highest_bid != null ? $highest_bid + 1 : $product->starting_bid;
                             @endphp
                             <a class="cart-btn absolute-bottom-left w-100 h-35px aiz-p-hov-icon text-white fs-13 fw-700 d-flex flex-column justify-content-center align-items-center @if (in_array($product->id, $cart_added)) active @endif"
-                                href="javascript:void(0)"
-                                onclick="bid_single_modal({{ $product->id }}, {{ $min_bid_amount }})">
+                                href="javascript:void(0)" onclick="bid_single_modal({{ $product->id }}, {{ $min_bid_amount }})">
                                 <span class="cart-btn-text">{{ translate('Place Bid') }}</span>
                                 <br>
                                 <span><i class="las la-2x la-gavel"></i></span>
@@ -104,13 +98,14 @@
                         @endif
                     </div>
 
-                    <div class="p-2 p-md-3 text-left">
+                    <div class="pt-3 text-left d-flex flex-column flex-grow-1 justify-content-between">
                         <!-- Product name -->
                         <h3 class="fw-400 fs-13 text-truncate-2 lh-1-4 mb-0 h-35px text-center">
                             <a href="{{ $product_url }}" class="d-block text-reset hov-text-primary"
                                 title="{{ $product->getTranslation('name') }}">{{ $product->getTranslation('name') }}</a>
                         </h3>
-                        <div class="fs-14 d-flex justify-content-center mt-3">
+                        <!-- Price -->
+                        <div class="fs-14 d-flex justify-content-center align-items-center mt-3" style="min-height: 24px;">
                             @if ($product->auction_product == 0)
                                 <!-- Previous price -->
                                 @if (home_base_price($product) != home_discounted_base_price($product))
@@ -135,6 +130,5 @@
 
             </div>
         @endforeach
-
     </div>
 @endif

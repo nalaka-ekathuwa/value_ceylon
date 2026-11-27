@@ -382,4 +382,57 @@ class PayhereController extends Controller
         flash(translate("Payment Incomplete"))->error();
         return redirect()->route('home')->send();
     }
+
+    // Ads related functions ------------------------------------<starts>
+    public function ads_notify(Request $request)
+    {
+        $merchant_id = $request->merchant_id;
+        $order_id = $request->order_id;
+        $payhere_amount = $request->payhere_amount;
+        $payhere_currency = $request->payhere_currency;
+        $status_code = $request->status_code;
+        $md5sig = $request->md5sig;
+
+        if (!$merchant_id || !$order_id || !$payhere_amount || !$payhere_currency || !$status_code || !$md5sig) {
+            return response('Missing parameters', 400);
+        }
+
+        $merchant_secret = config('services.payhere.secret');
+        $local_md5sig = strtoupper(md5($merchant_id . $order_id . $payhere_amount . $payhere_currency . $status_code . strtoupper(md5($merchant_secret))));
+
+        if (($local_md5sig === $md5sig) and ($status_code == 2)) {
+            $ad_id = $request->custom_1;
+            
+            $ad = \App\Models\SellerAd::find($ad_id);
+            if ($ad) {
+                \App\Models\AdPayment::updateOrCreate(
+                    ['ad_id' => $ad->id],
+                    [
+                        'amount'         => $ad->price,
+                        'payment_method' => $request->method ?? 'payhere',
+                        'transaction_id' => $request->payment_id ?? 'TXN-' . strtoupper(uniqid()),
+                        'status'         => 'paid',
+                    ]
+                );
+
+                $ad->update(['status' => 'pending_payment']);
+                return response('Success', 200);
+            }
+        }
+
+        return response('Invalid Checksum or Status', 400);
+    }
+
+    public function ads_return()
+    {
+        flash(translate('Card payment completed successfully. Your ad is under review.'))->success();
+        return redirect()->route('seller.ads.index');
+    }
+
+    public function ads_cancel($id)
+    {
+        flash(translate('Card payment was cancelled.'))->error();
+        return redirect()->route('seller.ads.payment', $id);
+    }
+    // Ads related functions ------------------------------------<ends>
 }

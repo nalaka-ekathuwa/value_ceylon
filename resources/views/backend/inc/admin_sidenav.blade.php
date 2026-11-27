@@ -519,7 +519,37 @@
                                 <span class="aiz-side-nav-text">{{ translate('Create a banner') }}</span>
                             </a>
                         </li>
-
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('product-banners.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['product-banners.index', 'product-banners.create']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Home Product Banners') }}</span>
+                            </a>
+                        </li>
+                        {{-- Seller Ads --}}
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.seller_ads.index') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Seller Ads') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.ad_pricing.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['admin.ad_pricing.index']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Ad Slot Pricing') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.ad_pricing.categories') }}" class="aiz-side-nav-link {{ areActiveRoutes(['admin.ad_pricing.categories']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Category Availability') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.ad_pricing.subcategories') }}" class="aiz-side-nav-link {{ areActiveRoutes(['admin.ad_pricing.subcategories']) }}">
+                                <span class="aiz-side-nav-text">{{ translate('Subcategory Availability') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.ads_revenue.index') }}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{ translate('Ad Revenue') }}</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

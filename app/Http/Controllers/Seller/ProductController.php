@@ -9,6 +9,7 @@ use App\Models\AttributeValue;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductFaq;
 use App\Models\ProductTax;
 use App\Models\ProductTranslation;
 use App\Models\Wishlist;
@@ -70,7 +71,13 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-        return view('seller.product.products.create', compact('categories'));
+
+        $seller_products = Product::where('user_id', Auth::user()->id)
+            ->where('digital', 0)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('seller.product.products.create', compact('categories', 'seller_products'));
     }
 
     public function store(ProductRequest $request)
@@ -83,7 +90,15 @@ class ProductController extends Controller
 
 
         $product = $this->productService->store($request->except([
-            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            '_token',
+            'sku',
+            'choice',
+            'tax_id',
+            'tax',
+            'tax_type',
+            'flash_deal_id',
+            'flash_discount',
+            'flash_discount_type'
         ]));
         $request->merge(['product_id' => $product->id]);
 
@@ -93,20 +108,56 @@ class ProductController extends Controller
         //VAT & Tax
         if ($request->tax_id) {
             $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
+                'tax_id',
+                'tax',
+                'tax_type',
+                'product_id'
             ]));
         }
 
         //Product Stock
         $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+            'colors_active',
+            'colors',
+            'choice_no',
+            'unit_price',
+            'sku',
+            'current_stock',
+            'product_id'
         ]), $product);
 
         // Product Translations
         $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
         ProductTranslation::create($request->only([
-            'lang', 'name', 'unit', 'description', 'product_id'
+            'lang',
+            'name',
+            'unit',
+            'description',
+            'product_id'
         ]));
+
+        // Product FAQs
+        if ($request->has('faq_question') && $request->has('faq_answer')) {
+            $questions = $request->input('faq_question', []);
+            $answers   = $request->input('faq_answer', []);
+            foreach ($questions as $index => $question) {
+                if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                    ProductFaq::create([
+                        'product_id' => $product->id,
+                        'question'   => $question,
+                        'answer'     => $answers[$index],
+                    ]);
+                }
+            }
+        }
+
+        // Related Products
+        if ($request->has('related_product_ids')) {
+            $valid_ids = Product::where('user_id', Auth::user()->id)
+                ->whereIn('id', $request->related_product_ids)
+                ->pluck('id');
+            $product->related_products()->sync($valid_ids);
+        }
 
         if (get_setting('product_approve_by_admin') == 1) {
             $users = User::findMany([auth()->user()->id, User::where('user_type', 'admin')->first()->id]);
@@ -131,19 +182,38 @@ class ProductController extends Controller
         }
 
         $lang = $request->lang;
+
+        if ($lang == null) {
+            $lang = env('DEFAULT_LANGUAGE', 'en');
+        }
         $tags = json_decode($product->tags);
         $categories = Category::where('parent_id', 0)
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-        return view('seller.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
+
+        $seller_products = Product::where('user_id', Auth::user()->id)
+            ->where('digital', 0)
+            ->where('id', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('seller.product.products.edit', compact('product', 'categories', 'tags', 'lang', 'seller_products'));
     }
 
     public function update(ProductRequest $request, Product $product)
     {
         //Product
         $product = $this->productService->update($request->except([
-            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            '_token',
+            'sku',
+            'choice',
+            'tax_id',
+            'tax',
+            'tax_type',
+            'flash_deal_id',
+            'flash_discount',
+            'flash_discount_type'
         ]), $product);
 
         $request->merge(['product_id' => $product->id]);
@@ -154,7 +224,13 @@ class ProductController extends Controller
         //Product Stock
         $product->stocks()->delete();
         $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+            'colors_active',
+            'colors',
+            'choice_no',
+            'unit_price',
+            'sku',
+            'current_stock',
+            'product_id'
         ]), $product);
 
         //VAT & Tax
@@ -162,20 +238,55 @@ class ProductController extends Controller
             $product->taxes()->delete();
             $request->merge(['product_id' => $product->id]);
             $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
+                'tax_id',
+                'tax',
+                'tax_type',
+                'product_id'
             ]));
         }
 
         // Product Translations
+        if ($request->lang == null) {
+            $request->merge(['lang' => env('DEFAULT_LANGUAGE', 'en')]);
+        }
         ProductTranslation::updateOrCreate(
             $request->only([
-                'lang', 'product_id'
+                'lang',
+                'product_id'
             ]),
             $request->only([
-                'name', 'unit', 'description'
+                'name',
+                'unit',
+                'description'
             ])
         );
 
+        // Product FAQs
+        $product->faqs()->delete();
+        if ($request->has('faq_question') && $request->has('faq_answer')) {
+            $questions = $request->input('faq_question', []);
+            $answers   = $request->input('faq_answer', []);
+            foreach ($questions as $index => $question) {
+                if (!empty($question) && isset($answers[$index]) && !empty($answers[$index])) {
+                    ProductFaq::create([
+                        'product_id' => $product->id,
+                        'question'   => $question,
+                        'answer'     => $answers[$index],
+                    ]);
+                }
+            }
+        }
+
+        // Related Products
+        if ($request->has('related_product_ids')) {
+            $valid_ids = Product::where('user_id', Auth::user()->id)
+                ->where('id', '!=', $product->id)
+                ->whereIn('id', $request->related_product_ids)
+                ->pluck('id');
+            $product->related_products()->sync($valid_ids);
+        } else {
+            $product->related_products()->detach();
+        }
 
         flash(translate('Product has been updated successfully'))->success();
 
@@ -260,7 +371,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($request->id);
         $product->published = $request->status;
-        if ( $request->status == 1) {
+        if ($request->status == 1) {
             $shop = $product->user->shop;
             if (!seller_package_validity_check()) {
                 return 2;

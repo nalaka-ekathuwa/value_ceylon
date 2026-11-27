@@ -29,10 +29,10 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="mb-3">
-                                    <select class="form-control aiz-selectpicker rounded-0" data-live-search="true" data-placeholder="{{ translate('Select your country') }}" name="country_id" required>
+                                    <select class="form-control aiz-selectpicker rounded-0" data-live-search="true" data-placeholder="{{ translate('Select your country') }}" name="country_id" id="new_country_id" required>
                                         <option value="">{{ translate('Select your country') }}</option>
-                                        @foreach (get_active_countries() as $key => $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @foreach (\App\Models\Country::orderBy('name')->get() as $key => $country)
+                                            <option value="{{ $country->id }}" @if($country->id == 206) selected @endif>{{ $country->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -42,11 +42,11 @@
                         <!-- State -->
                         <div class="row">
                             <div class="col-md-2">
-                                <label>{{ translate('State')}}</label>
+                                <label>{{ translate('State/ District')}}</label>
                             </div>
                             <div class="col-md-10">
                                 <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="state_id" required>
-
+                                    <option value="">{{ translate('Select your state') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                 <label>{{ translate('Postal code')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Your Postal Code')}}" name="postal_code" value="" required>
+                                <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Your Postal Code')}}" name="postal_code" id="new_postal_code" value="">
                             </div>
                         </div>
 
@@ -148,9 +148,15 @@
     <script type="text/javascript">
         function add_new_address(){
             $('#new-address-modal').modal('show');
+            // Auto-load states for the default selected country (Sri Lanka)
+            var defaultCountry = $('#new_country_id').val();
+            if (defaultCountry) {
+                get_states(defaultCountry);
+            }
         }
 
         function edit_address(address) {
+            console.log(address);
             var url = '{{ route("addresses.edit", ":id") }}';
             url = url.replace(':id', address);
             
@@ -189,9 +195,17 @@
             var state_id = $(this).val();
             get_city(state_id);
         });
-        
+
+        $(document).on('change', '[name=city_id]', function() {
+            var selected = $(this).find('option:selected');
+            var postcode = selected.data('postcode');
+            if (postcode) {
+                $('[name="postal_code"]').val(postcode);
+            }
+        });
+
         function get_states(country_id) {
-            $('[name="state"]').html("");
+            $('[name="state_id"]').html("");
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -199,7 +213,7 @@
                 url: "{{route('get-state')}}",
                 type: 'POST',
                 data: {
-                    country_id  : country_id
+                    country_id: country_id
                 },
                 success: function (response) {
                     var obj = JSON.parse(response);
@@ -212,7 +226,7 @@
         }
 
         function get_city(state_id) {
-            $('[name="city"]').html("");
+            $('[name="city_id"]').html("");
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

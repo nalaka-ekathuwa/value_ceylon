@@ -54,11 +54,8 @@
     @endif
 
     <!-- Favicon -->
-    @php
-        $site_icon = uploaded_asset(get_setting('site_icon'));
-    @endphp
-    <link rel="icon" href="{{ $site_icon }}">
-    <link rel="apple-touch-icon" href="{{ $site_icon }}">
+    <link rel="icon" href="{{ get_favicon() }}">
+    <link rel="apple-touch-icon" href="{{ get_favicon() }}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,12 +65,12 @@
         rel="stylesheet">
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendors.css') }}">
     @if ($rtl == 1)
-        <link rel="stylesheet" href="{{ static_asset('assets/css/bootstrap-rtl.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-rtl.min.css') }}">
     @endif
-    <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css?v=') }}{{ rand(1000, 9999) }}">
-    <link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css?v=') }}{{ rand(1000, 9999) }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css?v=') }}{{ rand(1000, 9999) }}">
 
 
     <script>
@@ -135,7 +132,7 @@
             justify-content: space-between;
             width: 100%;
             font-weight: 600;
-            color: #203df0;
+            color: #1b6ca8;
             background: none;
             text-align: left;
             padding: 15px 20px;
@@ -203,13 +200,13 @@
             --dark: #292933;
             --soft-dark: #1b1b28;
             --primary:
-                {{ get_setting('base_color', '#d43533') }}
+                {{ get_setting('base_color', '#1b6ca8') }}
             ;
             --hov-primary:
-                {{ get_setting('base_hov_color', '#9d1b1a') }}
+                {{ get_setting('base_hov_color', '#1b6ca8') }}
             ;
             --soft-primary:
-                {{ hex2rgba(get_setting('base_color', '#d43533'), 0.15) }}
+                {{ hex2rgba(get_setting('base_color', '#1b6ca8'), 0.15) }}
             ;
         }
 
@@ -425,9 +422,9 @@
     @yield('modal')
 
     <!-- SCRIPTS -->
-    <script src="{{ static_asset('assets/js/vendors.js') }}"></script>
-    <script src="{{ static_asset('assets/js/aiz-core.js?v=') }}{{ rand(1000, 9999) }}"></script>
-    <script src="{{ static_asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors.js') }}"></script>
+    <script src="{{ asset('assets/js/aiz-core.js?v=') }}{{ rand(1000, 9999) }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}?v={{ rand(1000, 9999) }}"></script>
 
 
 
@@ -877,7 +874,7 @@
 
             var iti = intlTelInput(input, {
                 separateDialCode: true,
-                utilsScript: "{{ static_asset('assets/js/intlTelutils.js') }}?1590403638580",
+                utilsScript: "{{ asset('assets/js/intlTelutils.js') }}?1590403638580",
                 onlyCountries: @php echo get_active_countries()-> pluck('code') @endphp,
                 customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
                     if (selectedCountryData.iso2 == 'bd') {
@@ -981,6 +978,23 @@
             }
         </script>
     @endif
+
+    <script type="text/javascript">
+        function togglePasswordVisibility(btn) {
+            var $btn = $(btn);
+            var $input = $btn.siblings('input');
+            if ($input.length === 0) {
+                $input = $btn.parent().find('input');
+            }
+            if ($input.attr('type') === 'password') {
+                $input.attr('type', 'text');
+                $btn.removeClass('la-eye').addClass('la-eye-slash');
+            } else {
+                $input.attr('type', 'password');
+                $btn.removeClass('la-eye-slash').addClass('la-eye');
+            }
+        }
+    </script>
 
     @yield('script')
 
