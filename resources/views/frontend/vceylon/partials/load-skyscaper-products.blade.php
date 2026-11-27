@@ -8,7 +8,7 @@
     @endphp
 
     <div
-        class="d-flex mt-3 mt-lg-5 mb-3 mb-md-4 align-items-center justify-content-between bg-primary text-white p-3 rounded-top">
+        class="home-section-bar ">
         <!-- Title -->
         <h3 class="fs-16 fs-md-20 fw-700 mb-0 text-white">
             <span>{{ translate('Best Seller Products') }}</span>

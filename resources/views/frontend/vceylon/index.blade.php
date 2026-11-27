@@ -77,8 +77,8 @@
                                 <a href="{{ $ad_link }}">
                                     <!-- Image -->
                                     <div
-                                        class="d-block mw-100 img-fit overflow-hidden h-180px h-md-320px h-lg-460px h-xl-553px overflow-hidden">
-                                        <img class="img-fit h-100 m-auto has-transition ls-is-cached lazyloaded"
+                                        class="hero-slide d-block">
+                                        <img class="hero-slide-img"
                                             src="{{ uploaded_asset($seller_ad->media) }}" alt="{{ env('APP_NAME') }} promo"
                                             onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
                                     </div>
@@ -93,8 +93,8 @@
                                     <a href="{{ json_decode(get_setting('home_slider_links'), true)[$key] ?? '#' }}">
                                         <!-- Image -->
                                         <div
-                                            class="d-block mw-100 img-fit overflow-hidden h-180px h-md-320px h-lg-460px h-xl-553px overflow-hidden">
-                                            <img class="img-fit h-100 m-auto has-transition ls-is-cached lazyloaded"
+                                            class="hero-slide d-block">
+                                            <img class="hero-slide-img"
                                                 src="{{ $slider ? my_asset($slider->file_name) : static_asset('assets/img/placeholder.jpg') }}"
                                                 alt="{{ env('APP_NAME') }} promo"
                                                 onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
@@ -266,7 +266,7 @@
     @endif
 
     <!-- Category section -->
-    <section class="home-categories pt-4 pt-md-5 pb-3 pb-md-4" style="background: #efefef; padding-top: 35px !important; padding-bottom: 20px !important;">
+    <section class="home-categories pt-4 pt-md-5 pb-3 pb-md-4" >
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 d-none d-lg-block">
@@ -328,17 +328,17 @@
 
     @if (count($product_banners) > 0)
         <section class="home-banners">
-            <div class="container my-5">
-                <div class="row" id="new-banner-products-slider">
+            <div class="container home-product-banners">
+                <div id="new-banner-products-slider">
                     @foreach ($product_banners as $product_banner)
                         @php
                             $product_url = route('product', $product_banner->product->slug);
                         @endphp
-                        <a href="{{ $product_url }}">
-                            <div class="">
-                                <img src="{{ uploaded_asset($product_banner->banner) }}" alt="" class="img-fluid">
-                            </div>
-                        </a>
+                        <div class="product-banner-slide">
+                            <a href="{{ $product_url }}" class="product-banner-card d-block">
+                                <img src="{{ uploaded_asset($product_banner->banner) }}" alt="{{ $product_banner->product->getTranslation('name') }}">
+                            </a>
+                        </div>
                     @endforeach
                 </div>
             </div>
@@ -366,7 +366,7 @@
 
 
 
-                    <div class="rfq-banner my-5">
+                    <div class="rfq-banner my-4 my-md-5">
 
                         <div class="homepage-rfq-slider">
                             <div>
@@ -594,7 +594,7 @@
     </section>
 
 
-    <section class="home-new-arrivals pt-4 pt-md-5 pb-3 pb-md-4" style="background: #efefef; padding-top: 35px !important; padding-bottom: 20px !important;">
+    <section class="home-new-arrivals pt-4 pt-md-5 pb-3 pb-md-4" >
         <div class="container">
             <div id="new_arrivals">
 
@@ -674,7 +674,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="text-center text-md-left">Most Trusted Brand Partners</h3>
+                    <h3 class="home-section-heading text-center text-md-left">Most Trusted Brand Partners</h3>
                     <!-- Top Sellers -->
                     @if (get_setting('vendor_system_activation') == 1)
                         @php
